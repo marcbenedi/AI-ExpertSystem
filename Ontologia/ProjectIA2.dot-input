@@ -1,0 +1,13 @@
+digraph "ProjectIA2" {
+
+"Plato" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Plato|{BebidaUnica|Instance|{Bebida}}|{Precio|Float}|{Nombre|String}|{Estilo|Symbol|{Tradicional|Moderno|Minimalista|...}}|{Disponibilidad|Symbol|{Total|Invierno|Primavera|...}}|{...}}"]
+"Plato"->"Bebida" [style=filled, label="BebidaUnica", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Plato"->"Bebida" [style=filled, label="BebidaIncompatible*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Plato"->"Plato" [style=filled, label="PlatoIncompatible*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Plato"->"Ingrediente" [style=filled, label="Ingredientes*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Menu" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Menu|{BebidaUnica|Instance|{Bebida}}|{Precio|Float}|{Platos|Instance*|{Plato}}}"]
+"Menu"->"Bebida" [style=filled, label="BebidaUnica", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Menu"->"Plato" [style=filled, label="Platos*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Bebida" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Bebida|{Nombre|String}|{Precio|Float}|{TipoBebida|Symbol|{Refresco|Agua|Vino|...}}}"]
+"Ingrediente" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Ingrediente|{Nombre|String}}"]
+}
