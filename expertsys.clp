@@ -1,8 +1,6 @@
-
-;;Ontologia --------------------------------------------------------------------
-
-; Sat May 06 19:42:37 CEST 2017
-;
+\n;; Ontologia -----------------------\n
+; Sat May 06 19:50:10 CEST 2017
+; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
 
@@ -174,15 +172,9 @@
 	(single-slot Nombre
 		(type STRING)
 ;+		(cardinality 1 1)
-		(create-accessor read-write)))
-
-
-;;Instancias --------------------------------------------------------------------
-
-(definstances instancias
-
-; Sat May 06 19:42:37 CEST 2017
-;
+		(create-accessor read-write)))\n;; Instancias -----------------------\n
+; Sat May 06 19:50:10 CEST 2017
+; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
 
@@ -460,15 +452,23 @@
 
 ([KB_565836_Class73] of  Ingrediente
 
-	(Nombre "Oro")))
+	(Nombre "Oro"))
+\n;; Nuestro codigo -----------------------\n
 
   ;; Nuestro código --------------------------------
 
+
   (defmodule MAIN (export ?ALL))
 
-  (defmodule recopilacion-restr
+  (defmodule recopilacion-restricciones
   	 (import MAIN ?ALL)
   	 (export ?ALL)
+  )
+
+  (defmodule procesado-datos
+  	(import MAIN ?ALL)
+  	(import recopilacion-restricciones deftemplate ?ALL)
+  	(export ?ALL)
   )
 
   (defmodule generacion-soluciones
@@ -476,48 +476,12 @@
   	(export ?ALL)
   )
 
-(deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
-	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
-	(printout t ?salida crlf)
-	(bind ?respuesta (read))
-	(while (not (and (<= ?min ?respuerta) (>= ?max ?respuesta)))
-		do
-		(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
-		(printout t ?salida crlf)
-		(bind ?respuesta (read))
-	)
-	?respuesta
-)
-
-(deffunction MAIN::restr-opciones (?preg $?opciones)
-	(bind ?salida (format nil "%s" ?preg))
-	(printout t ?salida crlf)
-	(progn$ (?valor ?opciones)
-		(bind ?salida (format nil "%s" ?valor))
-		(printout t ?salida crlf)
-	)
-	(bind ?resp (restr-eleccion "Escoje una opcion:" 1 (length$ ?opciones)))
-	?resp
-)
-
-(deffunction MAIN::restr-si-no (?preg)
-	(bind ?resp (restr-opciones ?preg si no))
-	(if (or (eq ?resp si) (eq ?resp s))
-		then TRUE
-		else FALSE
-	)
-)
-
-(defmodule procesado-datos
-	(import MAIN ?ALL)
-	(import recopilacion-restres deftemplate ?ALL)
-	(export ?ALL)
-)
-
   (defmodule resultados-output
   	(import MAIN ?ALL)
   	(export ?ALL)
   )
+
+
 
   (deftemplate MAIN::restricciones
   	(slot min (type FLOAT) (default 0.0)) ; precio minimo a pagar
