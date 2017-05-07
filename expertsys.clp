@@ -876,7 +876,7 @@
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   (not (tripleta))
   =>
-  (bind $?ts (find-all-instances ((?c Ingrediente)) TRUE ))
+  (bind $?ts (find-all-instances ((?c Plato)) TRUE ))
   (printout t (length$ $?ts) crlf)
   (loop-for-count (?i 1 (length$ $?ts)) do
     (bind ?curr-obj (nth$ ?i ?ts))

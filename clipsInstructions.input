@@ -1,5 +1,3 @@
 (clear)
-(reset)
 (load /home/marcbenedi/Desktop/AI-ExpertSystem/expertsys.clp)
-(run)
-
+(reset)
