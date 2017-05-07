@@ -830,4 +830,11 @@
 	=>
 	(bind ?d (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Siberita))
 	(modify ?e (estilo ?estilo))
+  (focus generacion-soluciones)
+)
+
+(defrule generacion-soluciones::buscar-instancias "Busca instanciasa de platos"
+  =>
+  (bind ?tripleta (find-all-instances ((?a Plato)(?b Plato)(?c Plato)) TRUE ))
+  (printout t "-->"  "<--" crlf)
 )
