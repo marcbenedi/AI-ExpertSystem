@@ -71,12 +71,10 @@
 )
 
 (defrule recopilacion-restr::gama-precio "Escoje precio maximo"
-	?p <- (restricciones (gama-precio ?precio))
-	(test (< ?precio 0)
-	)
+	(not (restricciones))
 	=>
 	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
-	(modify ?p (gama-precio ?precio))
+	(assert (restricciones (gama-precio ?precio)))
 )
 
 (defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
@@ -84,6 +82,6 @@
 	(test (< ?estilo 0)
 	)
 	=>
-	(bind ?d (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Siberita))
+	(bind ?estilo (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Siberita))
 	(modify ?e (estilo ?estilo))
 )
