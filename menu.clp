@@ -1,28 +1,48 @@
-  (defmodule MAIN (export ?ALL))
+(defmodule MAIN (export ?ALL))
 
-  (defmodule recopilacion-restr
-  	 (import MAIN ?ALL)
-  	 (export ?ALL)
-  )
+(defmodule recopilacion-restr
+	 (import MAIN ?ALL)
+	 (export ?ALL)
+)
 
-  (defmodule generacion-soluciones
-  	(import MAIN ?ALL)
-  	(export ?ALL)
-  )
+(defmodule generacion-soluciones
+	(import MAIN ?ALL)
+	(export ?ALL)
+)
 
-	(defmodule procesado-datos
-		(import MAIN ?ALL)
-		(import recopilacion-restr deftemplate ?ALL)
-		(export ?ALL)
-	)
+(defmodule procesado-datos
+	(import MAIN ?ALL)
+	(import recopilacion-restr deftemplate ?ALL)
+	(export ?ALL)
+)
 
-  (defmodule resultados-output
-  	(import MAIN ?ALL)
-  	(export ?ALL)
-  )
+(defmodule resultados-output
+	(import MAIN ?ALL)
+	(export ?ALL)
+)
+;-------TEMPLATES-----------
+(deftemplate MAIN::restricciones
+	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
+	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
+	(slot estilo (type INTEGER)(default -1)) ;edad general del grupo
+	(slot gama-precio-min (type STRING)(default "indef"))
+	(slot gama-precio-max (type STRING)(default "indef"))
+)
+
+(deftemplate generacion-soluciones::tripleta
+  (slot primero (type INSTANCE))
+  (slot segundo (type INSTANCE))
+  (slot postre  (type INSTANCE))
+)
+
+(defmessage-handler MAIN::Plato imprimir()
+  (format t "%s" ?self:Nombre)
+  (printout t crlf)
+)
 
 (deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
-	(format t "%s (des de %d hasta %d)" ?pregunta ?min ?max)
+	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+	(printout t ?salida crlf)
 	(bind ?respuesta (read))
 	(while (not (and (<= ?min ?respuesta) (>= ?max ?respuesta)))
 		do
@@ -52,13 +72,6 @@
 	)
 )
 
-  (deftemplate MAIN::restricciones
-  	(slot min (type FLOAT) (default 0.0)) ; precio minimo a pagar
-  	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
-  	(slot estilo (type INTEGER)(default -1)) ;edad general del grupo
-		(slot gama-precio (type INTEGER)(default -1))
-  )
-
 (defrule MAIN::regla-inicial "Regla inicial"
 	(declare (salience 10))
 	=>
@@ -70,27 +83,59 @@
 	(focus recopilacion-restr)
 )
 
-(defrule recopilacion-restr::gama-precio "Escoje precio maximo"
-	?p <- (restricciones (gama-precio ?precio))
-	(test (< ?precio 0)
-	)
+(defrule recopilacion-restr::precio-maximo "Escoje precio maximo"
+	(not (restricciones))
 	=>
 	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
-	(modify ?p (gama-precio ?precio))
+	(bind ?restr (assert (restricciones (max ?precio))))
+	(if (>= ?precio 100)
+		then (bind ?maximo-def "Rico")
+		else (if (>= ?precio 50)
+			then (bind ?maximo-def "Medio")
+			else (if (>= ?precio 25)
+				then (bind ?maximo-def "Normal")
+				else (bind ?maximo-def "Economico")
+				)
+			)
+		)
+		(modify ?restr (gama-precio-max ?maximo-def))
+)
+
+(defrule recopilacion-restr::precio-minimo "Escoje precio maximo"
+	?restr <- (restricciones (min ?minimo) (max ?maximo))
+	(test (< ?minimo 0.0))
+	=>
+	(bind ?precio (restr-eleccion "¿Precio minimo?" 1 (- ?maximo 1)))
+	(bind ?restr (modify ?restr (min ?precio)))
+	(if (>= ?precio 100)
+		then (bind ?minimo-def "Rico")
+		else (if (>= ?precio 50)
+			then (bind ?minimo-def "Medio")
+			else (if (>= ?precio 25)
+				then (bind ?minimo-def "Normal")
+				else (bind ?minimo-def "Economico")
+				)
+			)
+		)
+		(modify ?restr (gama-precio-min ?minimo-def))
 )
 
 (defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
-	?e <- (restricciones (estilo ?estilo))
-	(test (< ?estilo 0)
-	)
+	?restr <- (restricciones (estilo ?estilo))
+	(test (< ?estilo 0))
 	=>
-	(bind ?d (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Siberita))
-	(modify ?e (estilo ?estilo))
+	(bind ?estilo (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Sibarita))
+	(modify ?restr (estilo ?estilo))
   (focus generacion-soluciones)
 )
 
-(defrule generacion-soluciones::buscar-instancias "Busca instanciasa de platos"
+(defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
+  (not (tripleta))
   =>
-  (bind ?tripleta (find-all-instances ((?a Plato)(?b Plato)(?c Plato)) TRUE ))
-  (printout t "-->"  "<--" crlf)
+  (bind $?ts (find-all-instances ((?c Plato)) TRUE ))
+  (printout t (length$ $?ts) crlf)
+  (loop-for-count (?i 1 (length$ $?ts)) do
+    (bind ?curr-obj (nth$ ?i ?ts))
+		(printout t (send ?curr-obj imprimir))
+	)
 )
