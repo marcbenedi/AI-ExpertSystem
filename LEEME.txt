@@ -1,0 +1,11 @@
+El fichero expertsys.clp contiene las clases e instancias importadas del Protégé.
+Al final de todo hay el código clips que hemos programado.
+
+Este prototipo es capaz de hacer las preguntas, abstraer el input concreto y generar una solución
+sencilla. (Tenemos el sistema preparado para filtrar las instancias por las características introducidas
+por el usuario pero de momento generamos una solución aleatoria filtrada por estilo de cocina).
+
+Tambien añadimos en el zip el script que hemos utilizado para probar el programa.
+  Primero es el precio maximo
+  Despues el minimo
+  Por ultimo el estilo (Tradicional (1), Moderno (2) o Sibarita (3))

@@ -1,4 +1,4 @@
-; Sun May 07 12:14:37 CEST 2017
+; Sun May 07 20:45:44 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -194,7 +194,7 @@
 	(Estilo Tradicional)
 	(Ingredientes [KB_565836_Class62])
 	(Nombre "Pina en almibar")
-	(Ordinal Primero)
+	(Ordinal Postre)
 	(Precio 4.0)
 	(Temperatura Frio)
 	(TipoPlato Fruta Postre))
@@ -216,7 +216,7 @@
 		[KB_565836_Class51]
 		[KB_565836_Class49])
 	(Nombre "Mariscada")
-	(Ordinal Primero Segundo)
+	(Ordinal Segundo Primero)
 	(PlatoIncompatible [KB_565836_Class55])
 	(Precio 70.0)
 	(Temperatura Caliente)
@@ -325,7 +325,7 @@
 		[ProjectIA2_Class11]
 		[ProjectIA2_Class14])
 	(Nombre "Garbanzos salteados")
-	(Ordinal Primero)
+	(Ordinal Segundo Primero)
 	(Precio 10.0)
 	(Temperatura Caliente)
 	(TipoPlato Legumbre))
@@ -499,7 +499,7 @@
 ([ProjectIA2_Class35] of  Plato
 
 	(Disponibilidad Total)
-	(Estilo Sibarita)
+	(Estilo Moderno)
 	(Ingredientes
 		[ProjectIA2_Class36]
 		[KB_565836_Class43])

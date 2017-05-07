@@ -24,20 +24,21 @@
 (deftemplate MAIN::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
-	(slot estilo (type INTEGER)(default -1)) ;edad general del grupo
+	(slot estilo (type STRING)(default "indef"))
 	(slot gama-precio-min (type STRING)(default "indef"))
 	(slot gama-precio-max (type STRING)(default "indef"))
 )
 
-(deftemplate generacion-soluciones::tripleta
-  (slot primero (type INSTANCE))
-  (slot segundo (type INSTANCE))
-  (slot postre  (type INSTANCE))
+(deftemplate generacion-soluciones::lista-platos
+  (multislot platos (type INSTANCE))
+)
+
+(defmessage-handler MAIN::Menu imprimir()
+
 )
 
 (defmessage-handler MAIN::Plato imprimir()
-  (format t "%s" ?self:Nombre)
-  (printout t crlf)
+  (printout t ?self:Nombre " " ?self:Precio "€" crlf)
 )
 
 (deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
@@ -122,20 +123,52 @@
 
 (defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
 	?restr <- (restricciones (estilo ?estilo))
-	(test (< ?estilo 0))
+	(test (eq ?estilo "indef"))
 	=>
 	(bind ?estilo (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Sibarita))
-	(modify ?restr (estilo ?estilo))
+  (if (eq ?estilo 1) then (bind ?estilo "Tradicional"))
+  (if (eq ?estilo 2) then (bind ?estilo "Moderno"))
+  (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
+  (modify ?restr (estilo ?estilo))
+  (printout t crlf)
   (focus generacion-soluciones)
 )
 
+(deffunction generacion-soluciones::random-slot ( ?li )
+ (bind ?li (create$ ?li))
+ (bind ?max (length ?li))
+ (bind ?r (random 1 ?max))
+ (bind ?ins (nth$ ?r ?li))
+ (return ?ins)
+)
+
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
-  (not (tripleta))
+  ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo))
+  (not (lista-platos))
   =>
-  (bind $?ts (find-all-instances ((?c Plato)) TRUE ))
-  (printout t (length$ $?ts) crlf)
-  (loop-for-count (?i 1 (length$ $?ts)) do
-    (bind ?curr-obj (nth$ ?i ?ts))
-		(printout t (send ?curr-obj imprimir))
+
+  (bind ?tercio (/ (- ?maximo ?minimo ) 3))
+
+  (loop-for-count (?i 1 3) do
+
+    (bind ?min-precio (+ ?minimo (* ?tercio (- ?i 1))))
+    (bind ?max-precio (+ ?minimo (* ?tercio ?i)))
+
+    (bind $?primeros (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Primero") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+    (bind $?segundos (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Segundo") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+    (bind $?postres (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Postre") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+    (bind $?bebidas (find-all-instances ((?a Bebida)) TRUE))
+
+    (bind ?primero (random-slot ?primeros))
+    (bind ?segundo (random-slot ?segundos))
+    (bind ?postre (random-slot ?postres))
+    (bind ?bebida (random-slot ?bebidas))
+
+    (printout t "Primer plato: " (send ?primero imprimir))
+    (printout t "Segundo plato: " (send ?segundo imprimir))
+    (printout t "Postre: " (send ?postre imprimir))
+    (printout t "Para beber: " (send ?bebida get-Nombre) " " (send ?bebida get-Precio) "€" crlf)
+    (printout t "Precio total: " (+ (+ (send ?primero get-Precio) (send ?segundo get-Precio)) (+ (send ?postre get-Precio) (send ?bebida get-Precio))) "€" crlf)
+    (printout t "--------------------" crlf)
 	)
 )
