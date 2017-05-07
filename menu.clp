@@ -180,6 +180,8 @@
 
 ;;Instancias --------------------------------------------------------------------
 
+(definstances instancias
+
 ; Sat May 06 19:42:37 CEST 2017
 ;
 ;+ (version "3.5")
@@ -459,9 +461,7 @@
 
 ([KB_565836_Class73] of  Ingrediente
 
-	(Nombre "Oro"))
-
-
+	(Nombre "Oro")))
 
 
   ;; Nuestro código --------------------------------
@@ -469,14 +469,46 @@
 
 (defmodule MAIN (export ?ALL))
 
-(defmodule recopilacion-restricciones
+(defmodule recopilacion-restres
 	   (import MAIN ?ALL)
 	   (export ?ALL)
 )
 
+(deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
+	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+	(printout t ?salida crlf)
+	(bind ?respuesta (read))
+	(while (not (and (<= ?min ?respuerta) (>= ?max ?respuesta)))
+		do
+		(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+		(printout t ?salida crlf)
+		(bind ?respuesta (read))
+	)
+	?respuesta
+)
+
+(deffunction MAIN::restr-opciones (?preg $?opciones)
+	(bind ?salida (format nil "%s" ?preg))
+	(printout t ?salida crlf)
+	(progn$ (?valor ?opciones)
+		(bind ?salida (format nil "%s" ?valor))
+		(printout t ?salida crlf)
+	)
+	(bind ?resp (restr-eleccion "Escoje una opcion:" 1 (length$ ?opciones)))
+	?resp
+)
+
+(deffunction MAIN::restr-si-no (?preg)
+	(bind ?resp (restr-opciones ?preg si no))
+	(if (or (eq ?resp si) (eq ?resp s))
+		then TRUE
+		else FALSE
+	)
+)
+
 (defmodule procesado-datos
 	(import MAIN ?ALL)
-	(import recopilacion-restricciones deftemplate ?ALL)
+	(import recopilacion-restres deftemplate ?ALL)
 	(export ?ALL)
 )
 
