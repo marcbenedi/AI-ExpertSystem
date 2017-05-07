@@ -1,4 +1,4 @@
-; Sat May 06 19:50:10 CEST 2017
+; Sun May 07 12:14:37 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -278,3 +278,289 @@
 ([KB_565836_Class73] of  Ingrediente
 
 	(Nombre "Oro"))
+
+([ProjectIA2_Class0] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class1]
+		[ProjectIA2_Class2])
+	(Nombre "Fideua")
+	(Ordinal Primero Segundo)
+	(Precio 20.0)
+	(Temperatura Caliente)
+	(TipoPlato Pasta))
+
+([ProjectIA2_Class1] of  Ingrediente
+
+	(Nombre "Fideo"))
+
+([ProjectIA2_Class10] of  Ingrediente
+
+	(Nombre "Cebolla"))
+
+([ProjectIA2_Class11] of  Ingrediente
+
+	(Nombre "Zanahoria"))
+
+([ProjectIA2_Class12] of  Ingrediente
+
+	(Nombre "Pepino"))
+
+([ProjectIA2_Class13] of  Ingrediente
+
+	(Nombre "Mantequilla"))
+
+([ProjectIA2_Class14] of  Ingrediente
+
+	(Nombre "Queso"))
+
+([ProjectIA2_Class15] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class16]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class14])
+	(Nombre "Garbanzos salteados")
+	(Ordinal Primero)
+	(Precio 10.0)
+	(Temperatura Caliente)
+	(TipoPlato Legumbre))
+
+([ProjectIA2_Class16] of  Ingrediente
+
+	(Nombre "Garbanzos"))
+
+([ProjectIA2_Class17] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class18]
+		[ProjectIA2_Class26])
+	(Nombre "Habas con huevo escalfado")
+	(Ordinal Primero)
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Legumbre))
+
+([ProjectIA2_Class18] of  Ingrediente
+
+	(Nombre "Habas"))
+
+([ProjectIA2_Class19] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[KB_565836_Class34]
+		[ProjectIA2_Class11]
+		[KB_565836_Class37])
+	(Nombre "Salsichas a la jardinera")
+	(Ordinal Segundo)
+	(Precio 12.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class2] of  Ingrediente
+
+	(Nombre "Calamar"))
+
+([ProjectIA2_Class21] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class22]
+		[ProjectIA2_Class23]
+		[ProjectIA2_Class13])
+	(Nombre "Costillas de cerdo caramelizadas")
+	(Ordinal Segundo)
+	(Precio 20.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class22] of  Ingrediente
+
+	(Nombre "Costillas de cerdo"))
+
+([ProjectIA2_Class23] of  Ingrediente
+
+	(Nombre "Mazorca maiz"))
+
+([ProjectIA2_Class24] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[KB_565836_Class39]
+		[ProjectIA2_Class14])
+	(Nombre "Flautas de pollo fritas")
+	(Ordinal Segundo)
+	(Precio 12.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class25] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class39]
+		[KB_565836_Class23]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class26])
+	(Nombre "Pechuga de pollo arrebozadas con tomate picante")
+	(Ordinal Segundo)
+	(Precio 7.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class26] of  Ingrediente
+
+	(Nombre "Huevo"))
+
+([ProjectIA2_Class27] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes [ProjectIA2_Class28])
+	(Nombre "Rollos de verdel con germinados y algas")
+	(Ordinal Primero Segundo)
+	(Precio 15.0)
+	(Temperatura Frio)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class28] of  Ingrediente
+
+	(Nombre "Filete de verdel"))
+
+([ProjectIA2_Class29] of  Plato
+
+	(Disponibilidad Primavera)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class30]
+		[ProjectIA2_Class31]
+		[KB_565836_Class23])
+	(Nombre "Cocktail de camarones")
+	(Ordinal Primero)
+	(Precio 12.0)
+	(Temperatura Frio)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class3] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class4]
+		[ProjectIA2_Class5]
+		[ProjectIA2_Class6]
+		[ProjectIA2_Class7])
+	(Nombre "Crema de hongos y castanas con pato confinado")
+	(Ordinal Primero)
+	(Precio 30.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class30] of  Ingrediente
+
+	(Nombre "Camarones"))
+
+([ProjectIA2_Class31] of  Ingrediente
+
+	(Nombre "Aguacate"))
+
+([ProjectIA2_Class32] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class33]
+		[ProjectIA2_Class34])
+	(Nombre "Ostra escabechada con granizado de pepino")
+	(Ordinal Primero)
+	(Precio 10.0)
+	(Temperatura Frio)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class33] of  Ingrediente
+
+	(Nombre "Ostra"))
+
+([ProjectIA2_Class34] of  Ingrediente
+
+	(Nombre "Manzana"))
+
+([ProjectIA2_Class35] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class36]
+		[KB_565836_Class43])
+	(Nombre "Amaranto frito, flores y yogur")
+	(Ordinal Postre)
+	(Precio 15.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class36] of  Ingrediente
+
+	(Nombre "Amaranto"))
+
+([ProjectIA2_Class37] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes [ProjectIA2_Class38])
+	(Nombre "Helado")
+	(Ordinal Postre)
+	(Precio 3.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class38] of  Ingrediente
+
+	(Nombre "Helado"))
+
+([ProjectIA2_Class4] of  Ingrediente
+
+	(Nombre "Pato"))
+
+([ProjectIA2_Class5] of  Ingrediente
+
+	(Nombre "Setas"))
+
+([ProjectIA2_Class6] of  Ingrediente
+
+	(Nombre "Nata"))
+
+([ProjectIA2_Class7] of  Ingrediente
+
+	(Nombre "Castanas"))
+
+([ProjectIA2_Class8] of  Plato
+
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class9]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class12]
+		[ProjectIA2_Class13]
+		[ProjectIA2_Class14])
+	(Nombre "Tortitas de zanahoria blanca con ensalada de quinua negra")
+	(Ordinal Primero)
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Ensalada))
+
+([ProjectIA2_Class9] of  Ingrediente
+
+	(Nombre "Quinua"))

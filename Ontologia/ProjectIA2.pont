@@ -1,4 +1,4 @@
-; Sat May 06 19:50:10 CEST 2017
+; Sun May 07 12:14:37 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -9,7 +9,7 @@
 	(role abstract)
 	(single-slot Precio
 		(type FLOAT)
-		(range 0.0 %3FVARIABLE)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot TipoPlato
@@ -37,13 +37,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Estilo
-		(type SYMBOL)
-		(allowed-values Tradicional Moderno Minimalista Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Nombre
 		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Estilo
+		(type SYMBOL)
+		(allowed-values Tradicional Moderno Sibarita)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
@@ -55,15 +55,15 @@
 ;+		(allowed-classes Plato)
 		(cardinality 3 3)
 		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
-		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
 		(allowed-values Total Invierno Primavera Verano Otono)
 		(default Total)
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot Ingredientes
 		(type INSTANCE)
@@ -81,7 +81,7 @@
 		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
-		(range 0.0 %3FVARIABLE)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot Platos
@@ -98,29 +98,29 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Estilo
-		(type SYMBOL)
-		(allowed-values Tradicional Moderno Minimalista Sibarita)
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Nombre
 		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 %3FVARIABLE)
+	(single-slot Estilo
+		(type SYMBOL)
+		(allowed-values Tradicional Moderno Sibarita)
 ;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
 		(allowed-values Total Invierno Primavera Verano Otono)
 		(default Total)
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot TipoPlato
 		(type SYMBOL)
@@ -132,14 +132,14 @@
 		(allowed-values Frio Caliente)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
+	(multislot PlatoIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Plato)
+		(create-accessor read-write))
 	(multislot Ingredientes
 		(type INSTANCE)
 ;+		(allowed-classes Ingrediente)
 		(cardinality 1 ?VARIABLE)
-		(create-accessor read-write))
-	(multislot PlatoIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Plato)
 		(create-accessor read-write))
 	(multislot Ordinal
 		(type SYMBOL)
@@ -150,13 +150,13 @@
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 %3FVARIABLE)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Nombre
 		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot TipoBebida
