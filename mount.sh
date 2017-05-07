@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "\n;; Ontologia -----------------------\n" > expertsys.clp
+echo ";; Ontologia -----------------------" > expertsys.clp
 cat ./Ontologia/*.pont >> expertsys.clp
-echo "\n;; Instancias -----------------------\n" >> expertsys.clp
+echo ";; Instancias -----------------------" >> expertsys.clp
 cat ./Ontologia/*.pins >> expertsys.clp
-echo "\n;; Nuestro codigo -----------------------\n" >> expertsys.clp
+echo ";; Nuestro codigo -----------------------" >> expertsys.clp
 cat menu.clp >> expertsys.clp
