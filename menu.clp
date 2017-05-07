@@ -32,14 +32,31 @@
 	)
 	?respuesta
 )
+
+(deffunction MAIN::restr-opciones (?preg $?opciones)
+	(bind ?salida (format nil "%s" ?preg))
+	(printout t ?salida crlf)
+	(progn$ (?valor ?opciones)
+		(bind ?salida (format nil " %d. %s" ?valor-index ?valor))
+		(printout t ?salida crlf)
+	)
+	(bind ?resp (restr-eleccion "Escoje una opcion:" 1 (length$ ?opciones)))
+	?resp
+)
+
+(deffunction MAIN::restr-si-no (?preg)
+	(bind ?resp (restr-opciones ?preg si no))
+	(if (or (eq ?resp si) (eq ?resp s))
+		then TRUE
+		else FALSE
+	)
+)
+
   (deftemplate MAIN::restricciones
   	(slot min (type FLOAT) (default 0.0)) ; precio minimo a pagar
   	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
-  	(slot tipo (type INTEGER)(default -1)) ;edad general del grupo
-    (slot dias (type INTEGER)(default -1)) ;nº dias en visitar el museo
-    (slot horasdia (type INTEGER)(default -1)) ;nº horas/dia
-    (slot tiempo (type INTEGER)(default -1)) ;total de tiempo
-		(slot descripcion (type STRING))
+  	(slot estilo (type INTEGER)(default -1)) ;edad general del grupo
+		(slot gama-precio (type INTEGER)(default -1))
   )
 
 (defrule MAIN::regla-inicial "Regla inicial"
@@ -49,38 +66,24 @@
   (printout t"        Bienvenido a nuestro generador de menus           " crlf)
 	(printout t"      Porfavor responda a las siguentes preguntas          " crlf)
 	(printout t"----------------------------------------------------------" crlf)
-  	(printout t crlf)
-	(printout t"¡Bienvenido! A continuacion se le formularan una serie de preguntas para poder recomendarle una visita adecuada a sus preferencias." crlf)
-	(printout t crlf)
+  (printout t crlf)
 	(focus recopilacion-restr)
 )
 
-(defrule recopilacion-restr::precio "Establece precio justo"
-	(not (restricciones))
+(defrule recopilacion-restr::gama-precio "Escoje precio maximo"
+	?p <- (restricciones (gama-precio ?precio))
+	(test (< ?precio 0)
+	)
 	=>
-	(bind ?d (restr-eleccion "¿De cuantos visitantes esta formado el grupo? " 1 100))
-    (if (= ?d 1) then (bind ?descripcion "Individual"))
-    (if (= ?d 2) then (bind ?descripcion "Pareja"))
-    (if (and(> ?d 2) (< ?d 13)) then (bind ?descripcion "Grupo pequeno (3-12)"))
-    (if (and(> ?d 12) (< ?d 26)) then (bind ?descripcion "Grupo mediano (13-25)"))
-    (if (> ?d 25) then (bind ?descripcion "Grupo grande (+25)"))
-	(assert (restricciones (descripcion ?descripcion)))
+	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
+	(modify ?p (gama-precio ?precio))
 )
-	; (deffunction MAIN::restr-opciones (?preg $?opciones)
-	; 	(bind ?salida (format nil "%s" ?preg))
-	; 	(printout t ?salida crlf)
-	; 	(progn$ (?valor ?opciones)
-	; 		(bind ?salida (format nil "%s" ?valor))
-	; 		(printout t ?salida crlf)
-	; 	)
-	; 	(bind ?resp (restr-eleccion "Escoje una opcion:" 1 (length$ ?opciones)))
-	; 	?resp
-	; )
-	;
-	; (deffunction MAIN::restr-si-no (?preg)
-	; 	(bind ?resp (restr-opciones ?preg si no))
-	; 	(if (or (eq ?resp si) (eq ?resp s))
-	; 		then TRUE
-	; 		else FALSE
-	; 	)
-	; )
+
+(defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
+	?e <- (restricciones (estilo ?estilo))
+	(test (< ?estilo 0)
+	)
+	=>
+	(bind ?d (restr-opciones "Escoje el estilo del menu:" Tradicional Moderno Siberita))
+	(modify ?e (estilo ?estilo))
+)
