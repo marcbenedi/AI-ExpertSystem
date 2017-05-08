@@ -29,6 +29,17 @@
 	(slot gama-precio-max (type STRING)(default "indef"))
 )
 
+(deftemplate MAIN::info-evento
+	(slot mes (type INTEGER) (default -1))
+	(slot tamanyo-grupo (type INTEGER) (default -1))
+)
+
+(deftemplate MAIN::info-evento-abs
+	(slot temporada (type STRING) (default "indef")) ;VERANO-PRIMAVERA-OTONO-INVIERNO
+	(slot tamanyo-grupo-abs (type STRING) (default "indef"));Individual-Pareja-Pequeño-Mediano-Grande
+)
+
+
 (deftemplate generacion-soluciones::lista-platos
   (multislot platos (type INSTANCE))
 )
@@ -131,8 +142,55 @@
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
   (printout t crlf)
+)
+
+(defrule recopilacion-restr::mes-evento "Mes en que será el evento"
+	(not (info-evento))
+	=>
+	(bind ?mesR (restr-opciones "¿En que mes sera el evento?" Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre))
+	(bind ?i (assert (info-evento (mes ?mesR))))
+
+	(if (eq ?mesR 12) then (bind ?temp "Invierno"))
+	(if (eq ?mesR 1) then (bind ?temp "Invierno"))
+	(if (eq ?mesR 2) then (bind ?temp "Invierno"))
+
+	(if (eq ?mesR 3) then (bind ?temp "Primavera"))
+	(if (eq ?mesR 4) then (bind ?temp "Primavera"))
+	(if (eq ?mesR 5) then (bind ?temp "Primavera"))
+
+	(if (eq ?mesR 6) then (bind ?temp "Verano"))
+	(if (eq ?mesR 7) then (bind ?temp "Verano"))
+	(if (eq ?mesR 8) then (bind ?temp "Verano"))
+
+	(if (eq ?mesR 9) then (bind ?temp "Otono"))
+	(if (eq ?mesR 10) then (bind ?temp "Otono"))
+	(if (eq ?mesR 11) then (bind ?temp "Otono"))
+	(bind ?ie (assert (info-evento-abs (temporada ?temp))))
+  (printout t crlf)
+)
+
+(defrule recopilacion-restr::tamanyo-del-grupo "Tamanyo del grupo"
+	?info <- (info-evento (tamanyo-grupo ?tam))
+	?info-abs <- (info-evento-abs)
+	(test (eq ?tam -1))
+	=>
+	(bind ?tam (restr-eleccion "¿Cuantos comensales seran?" 1 250))
+  (modify ?info (tamanyo-grupo ?tam))
+
+	(printout t ?tam)
+
+	(if (eq ?tam 1) then (bind ?grup "Individual"))
+	(if (eq ?tam 2) then (bind ?grup "Pareja")) ; 1 - 2 - (3 .. 20) - (21 .. 50) - (51 .. 250)
+
+	(if (and (>= ?tam 3) (<= ?tam 20))  then (bind ?grup "Pequeno"))
+	(if (and (>= ?tam 21) (<= ?tam 50))  then (bind ?grup "Mediano"))
+	(if (>= ?tam 51)  then (bind ?grup "Grande"))
+
+	(modify ?info-abs (tamanyo-grupo-abs ?grup))
+	(printout t crlf)
   (focus generacion-soluciones)
 )
+
 
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
@@ -142,10 +200,23 @@
  (return ?ins)
 )
 
+(deffunction generacion-soluciones::platos-por-estilo (?estilo)
+	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
+	(return ?filtrados)
+) ;TESTADA
+
+(deffunction filtra-ordinal(?lista ?ordinal)
+	(bind $?filtrados (find-all-instances ((?a Plato)) (member ?ordinal (explode$ (str-cat (send ?a get-Ordinal)))) ))
+)
+
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo))
   (not (lista-platos))
   =>
+
+	(bind $?platosTrad (filtra-ordinal  (platos-por-estilo "Tradicional")  "Postre"  ))
+	(progn$ (?var $?platosTrad)
+	(printout t "-->" (send ?var get-Nombre) "<--" crlf)) ;TESTING
 
   (bind ?tercio (/ (- ?maximo ?minimo ) 3))
 
