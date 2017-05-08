@@ -44,9 +44,7 @@
   (multislot platos (type INSTANCE))
 )
 
-(defmessage-handler MAIN::Menu imprimir()
 
-)
 
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
@@ -205,41 +203,56 @@
 	(return ?filtrados)
 ) ;TESTADA
 
-(deffunction filtra-ordinal(?lista ?ordinal)
-	(bind $?filtrados (find-all-instances ((?a Plato)) (member ?ordinal (explode$ (str-cat (send ?a get-Ordinal)))) ))
-)
+(deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
+	;(printout t "-->" (send ?plato get-Nombre) "<--" crlf) ;TESTING
+	(bind ?lis (send ?plato get-Ordinal))
+	(loop-for-count (?i 1 (length$ ?lis) ) do
+		(bind ?e (nth$ ?i ?lis))
+		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
+		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
+	)
+	(return FALSE)
+) ; TESTED
+
+;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
+(deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
+	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
+	(return ?ordinales)
+) ;TESTED
 
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo))
   (not (lista-platos))
   =>
+	(bind ?style ?estilo)
+	(bind ?ordi "Primero")
+	(bind $?platosFilt (filtra-ordinal (platos-por-estilo ?style)  ?ordi  ))
+	(printout t "platos " ?style ", " ?ordi crlf)
+	(progn$ (?var $?platosFilt)
+	(printout t "****   " (send ?var get-Nombre) crlf)) ;TESTING
 
-	(bind $?platosTrad (filtra-ordinal  (platos-por-estilo "Tradicional")  "Postre"  ))
-	(progn$ (?var $?platosTrad)
-	(printout t "-->" (send ?var get-Nombre) "<--" crlf)) ;TESTING
+  ;(bind ?tercio (/ (- ?maximo ?minimo ) 3))
 
-  (bind ?tercio (/ (- ?maximo ?minimo ) 3))
-
-  (loop-for-count (?i 1 3) do
-
-    (bind ?min-precio (+ ?minimo (* ?tercio (- ?i 1))))
-    (bind ?max-precio (+ ?minimo (* ?tercio ?i)))
-
-    (bind $?primeros (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Primero") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-    (bind $?segundos (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Segundo") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-    (bind $?postres (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Postre") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-    (bind $?bebidas (find-all-instances ((?a Bebida)) TRUE))
-
-    (bind ?primero (random-slot ?primeros))
-    (bind ?segundo (random-slot ?segundos))
-    (bind ?postre (random-slot ?postres))
-    (bind ?bebida (random-slot ?bebidas))
-
-    (printout t "Primer plato: " (send ?primero imprimir))
-    (printout t "Segundo plato: " (send ?segundo imprimir))
-    (printout t "Postre: " (send ?postre imprimir))
-    (printout t "Para beber: " (send ?bebida get-Nombre) " " (send ?bebida get-Precio) "€" crlf)
-    (printout t "Precio total: " (+ (+ (send ?primero get-Precio) (send ?segundo get-Precio)) (+ (send ?postre get-Precio) (send ?bebida get-Precio))) "€" crlf)
-    (printout t "--------------------" crlf)
-	)
+  ; (loop-for-count (?i 1 3) do
+	;
+  ;   (bind ?min-precio (+ ?minimo (* ?tercio (- ?i 1))))
+  ;   (bind ?max-precio (+ ?minimo (* ?tercio ?i)))
+	;
+  ;   (bind $?primeros (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Primero") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+  ;   (bind $?segundos (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Segundo") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+  ;   (bind $?postres (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Postre") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
+  ;   (bind $?bebidas (find-all-instances ((?a Bebida)) TRUE))
+	;
+  ;   (bind ?primero (random-slot ?primeros))
+  ;   (bind ?segundo (random-slot ?segundos))
+  ;   (bind ?postre (random-slot ?postres))
+  ;   (bind ?bebida (random-slot ?bebidas))
+	;
+  ;   (printout t "Primer plato: " (send ?primero imprimir))
+  ;   (printout t "Segundo plato: " (send ?segundo imprimir))
+  ;   (printout t "Postre: " (send ?postre imprimir))
+  ;   (printout t "Para beber: " (send ?bebida get-Nombre) " " (send ?bebida get-Precio) "€" crlf)
+  ;   (printout t "Precio total: " (+ (+ (send ?primero get-Precio) (send ?segundo get-Precio)) (+ (send ?postre get-Precio) (send ?bebida get-Precio))) "€" crlf)
+  ;   (printout t "--------------------" crlf)
+	; )
 )
