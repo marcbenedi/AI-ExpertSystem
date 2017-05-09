@@ -1,6 +1,6 @@
 ;; Ontologia -----------------------
-; Sun May 07 20:45:44 CEST 2017
-; 
+; Tue May 09 10:19:20 CEST 2017
+;
 ;+ (version "3.5")
 ;+ (build "Build 663")
 
@@ -8,25 +8,10 @@
 (defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
 	(is-a USER)
 	(role abstract)
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(multislot TipoPlato
 		(type SYMBOL)
 		(allowed-values Carne Pescado Vegano Sopa Pasta Ensalada Legumbre Arroz Fruta Postre)
 		(cardinality 1 ?VARIABLE)
-		(create-accessor read-write))
-	(single-slot Temperatura
-		(type SYMBOL)
-		(allowed-values Frio Caliente)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot TipoBebida
-		(type SYMBOL)
-		(allowed-values Refresco Agua Vino Cerveza Zumo Cava)
-;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot Ordinal
 		(type SYMBOL)
@@ -38,13 +23,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
@@ -56,14 +41,44 @@
 ;+		(allowed-classes Plato)
 		(cardinality 3 3)
 		(create-accessor read-write))
-	(multislot BebidaIncompatible
+	(single-slot Segundo
 		(type INSTANCE)
-;+		(allowed-classes Bebida)
+;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
 		(allowed-values Total Invierno Primavera Verano Otono)
 		(default Total)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
+		(create-accessor read-write))
+	(single-slot Primero
+		(type INSTANCE)
+;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Temperatura
+		(type SYMBOL)
+		(allowed-values Frio Caliente)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot TipoBebida
+		(type SYMBOL)
+		(allowed-values Refresco Agua Vino Cerveza Zumo Cava)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Postre
+		(type INSTANCE)
+;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot Ingredientes
@@ -80,15 +95,25 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot Primero
+		(type INSTANCE)
+;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot Platos
+	(single-slot Segundo
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
-		(cardinality 3 3)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Postre
+		(type INSTANCE)
+;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
 		(create-accessor read-write)))
 
 (defclass Plato
@@ -99,29 +124,29 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Estilo
-		(type SYMBOL)
-		(allowed-values Tradicional Moderno Sibarita)
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Nombre
 		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
+	(single-slot Estilo
+		(type SYMBOL)
+		(allowed-values Tradicional Moderno Sibarita)
 ;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
 		(allowed-values Total Invierno Primavera Verano Otono)
 		(default Total)
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot TipoPlato
 		(type SYMBOL)
@@ -133,14 +158,14 @@
 		(allowed-values Frio Caliente)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
+	(multislot PlatoIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Plato)
+		(create-accessor read-write))
 	(multislot Ingredientes
 		(type INSTANCE)
 ;+		(allowed-classes Ingrediente)
 		(cardinality 1 ?VARIABLE)
-		(create-accessor read-write))
-	(multislot PlatoIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Plato)
 		(create-accessor read-write))
 	(multislot Ordinal
 		(type SYMBOL)
@@ -151,13 +176,13 @@
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot TipoBebida
@@ -172,9 +197,10 @@
 	(single-slot Nombre
 		(type STRING)
 ;+		(cardinality 1 1)
-		(create-accessor read-write)));; Instancias -----------------------
+		(create-accessor read-write)))
+;; Instancias -----------------------
 (definstances instancies
-; Sun May 07 20:45:44 CEST 2017
+; Tue May 09 10:19:20 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -804,10 +830,9 @@
 )
 
 (defmessage-handler MAIN::Menu calculaPrecio()
-  (bind ?coste 0.0)
-	(foreach ?e ?self:Platos
-		(bind ?coste (+ ?coste (send ?e get-Precio)))
-	)
+  (bind ?coste (send ?self:Primero get-Precio))
+	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
+	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
 	(bind ?self:Precio ?coste)
 )
 
@@ -1002,7 +1027,7 @@
 	(return ?ordinales)
 ) ;TESTED
 
-(deffunction monta-menus-comida(?minP ?maxP ?estilo ?tam)
+(deffunction monta-menus-comida(?minP ?maxP ?estilo)
 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
@@ -1010,18 +1035,18 @@
 	(loop-for-count (?i 1 (length ?primeros))
 			(loop-for-count (?j 1 (length ?segundos))
 					(loop-for-count (?k 1 (length ?postres))
-							(bind ?ins (make-instance (gensym) of Menu (Platos (create$ (nth$ ?i ?primeros) (nth$ ?j ?segundos) (nth$ ?k ?postres)))))
+							(bind ?ins (make-instance (gensym) of Menu ( Primero (nth$ ?i ?primeros) ) (Segundo (nth$ ?j ?segundos))  (Postre (nth$ ?k ?postres) )))
 							(send ?ins calculaPrecio)
 					)
 			)
 	)
 
-	(bind $?menus (find-all-instances ((?m Menu))  (= 1 1)   ))
+	(bind $?menus (find-all-instances ((?m Menu))  (and (and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP)) (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ))))
 
 	(foreach ?r $?menus
-			(foreach ?p (send ?r get-Platos)
-					(printout t ">> " (send ?p get-Nombre) crlf)
-			)
+			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
+			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
+			(printout t (send (send ?r get-Postre) get-Nombre) crlf)
 
 			(printout t (send ?r get-Precio) crlf)
 			(printout t "_________________" crlf)
@@ -1034,7 +1059,7 @@
   (not (lista-platos))
   =>
 
-	(bind $?m (monta-menus-comida 1 100 "Tradicional" 90))
+	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo))
 
 
 	; (bind ?style ?estilo)

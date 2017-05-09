@@ -60,10 +60,9 @@
 )
 
 (defmessage-handler MAIN::Menu calculaPrecio()
-  (bind ?coste 0.0)
-	(foreach ?e ?self:Platos
-		(bind ?coste (+ ?coste (send ?e get-Precio)))
-	)
+  (bind ?coste (send ?self:Primero get-Precio))
+	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
+	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
 	(bind ?self:Precio ?coste)
 )
 
@@ -258,7 +257,7 @@
 	(return ?ordinales)
 ) ;TESTED
 
-(deffunction monta-menus-comida(?minP ?maxP ?estilo ?tam)
+(deffunction monta-menus-comida(?minP ?maxP ?estilo)
 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
@@ -266,18 +265,19 @@
 	(loop-for-count (?i 1 (length ?primeros))
 			(loop-for-count (?j 1 (length ?segundos))
 					(loop-for-count (?k 1 (length ?postres))
-							(bind ?ins (make-instance (gensym) of Menu (Platos (create$ (nth$ ?i ?primeros) (nth$ ?j ?segundos) (nth$ ?k ?postres)))))
+							(bind ?ins (make-instance (gensym) of Menu ( Primero (nth$ ?i ?primeros) ) (Segundo (nth$ ?j ?segundos))  (Postre (nth$ ?k ?postres) )))
 							(send ?ins calculaPrecio)
 					)
 			)
 	)
 
-	(bind $?menus (find-all-instances ((?m Menu))  (= 1 1)   ))
+	(bind $?menus (find-all-instances ((?m Menu))  (and (and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP)) (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ))))
 
 	(foreach ?r $?menus
-			(foreach ?p (send ?r get-Platos)
-					(printout t ">> " (send ?p get-Nombre) crlf)
-			)
+			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
+			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
+			(printout t (send (send ?r get-Postre) get-Nombre) crlf)
+
 			(printout t (send ?r get-Precio) crlf)
 			(printout t "_________________" crlf)
 	)
@@ -289,7 +289,7 @@
   (not (lista-platos))
   =>
 
-	(bind $?m (monta-menus-comida 1 100 "Tradicional" 90))
+	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo))
 
 
 	; (bind ?style ?estilo)
