@@ -1,3 +1,16 @@
+; (defclass Recomendacion
+; 	(is-a USER)
+; 	(role concrete)
+;     (slot nombre_cuadro
+; 		(type INSTANCE)
+; 		(create-accessor read-write))
+;     (slot puntuacion
+;         (type INTEGER)
+;         (create-accessor read-write))
+;     (multislot justificaciones
+; 		(type STRING)
+; 		(create-accessor read-write))
+
 (defmodule MAIN (export ?ALL))
 
 (defmodule recopilacion-restr
@@ -46,6 +59,13 @@
   (multislot platos (type INSTANCE))
 )
 
+(defmessage-handler MAIN::Menu calculaPrecio()
+  (bind ?coste 0.0)
+	(foreach ?e ?self:Platos
+		(bind ?coste (+ ?coste (send ?e get-Precio)))
+	)
+	(bind ?self:Precio ?coste)
+)
 
 
 (defmessage-handler MAIN::Plato imprimir()
@@ -195,8 +215,6 @@
 	(bind ?tam (restr-eleccion "¿Cuantos comensales seran?" 1 250))
   (modify ?info (tamanyo-grupo ?tam))
 
-	(printout t ?tam)
-
 	(if (eq ?tam 1) then (bind ?grup "Individual"))
 	(if (eq ?tam 2) then (bind ?grup "Pareja")) ; 1 - 2 - (3 .. 20) - (21 .. 50) - (51 .. 250)
 
@@ -240,16 +258,46 @@
 	(return ?ordinales)
 ) ;TESTED
 
+(deffunction monta-menus-comida(?minP ?maxP ?estilo ?tam)
+	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
+	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
+	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
+
+	(loop-for-count (?i 1 (length ?primeros))
+			(loop-for-count (?j 1 (length ?segundos))
+					(loop-for-count (?k 1 (length ?postres))
+							(bind ?ins (make-instance (gensym) of Menu (Platos (create$ (nth$ ?i ?primeros) (nth$ ?j ?segundos) (nth$ ?k ?postres)))))
+							(send ?ins calculaPrecio)
+					)
+			)
+	)
+
+	(bind $?menus (find-all-instances ((?m Menu))  (= 1 1)   ))
+
+	(foreach ?r $?menus
+			(foreach ?p (send ?r get-Platos)
+					(printout t ">> " (send ?p get-Nombre) crlf)
+			)
+			(printout t (send ?r get-Precio) crlf)
+			(printout t "_________________" crlf)
+	)
+	(return ?menus)
+)
+
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo))
   (not (lista-platos))
   =>
-	(bind ?style ?estilo)
-	(bind ?ordi "Primero")
-	(bind $?platosFilt (filtra-ordinal (platos-por-estilo ?style)  ?ordi  ))
-	(printout t "platos " ?style ", " ?ordi crlf)
-	(progn$ (?var $?platosFilt)
-	(printout t "****   " (send ?var get-Nombre) crlf)) ;TESTING
+
+	(bind $?m (monta-menus-comida 1 100 "Tradicional" 90))
+
+
+	; (bind ?style ?estilo)
+	; (bind ?ordi "Primero")
+	; (bind $?platosFilt (filtra-ordinal (platos-por-estilo ?style)  ?ordi  ))
+	; (printout t "platos " ?style ", " ?ordi crlf)
+	; (progn$ (?var $?platosFilt)
+	; (printout t "****   " (send ?var get-Nombre) crlf)) ;TESTING
 
   ;(bind ?tercio (/ (- ?maximo ?minimo ) 3))
 
