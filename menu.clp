@@ -27,6 +27,8 @@
 	(slot estilo (type STRING)(default "indef"))
 	(slot gama-precio-min (type STRING)(default "indef"))
 	(slot gama-precio-max (type STRING)(default "indef"))
+	(slot alcohol (type STRING) (default "indef"))
+	(slot bebida-por-plato (type STRING) (default "indef"))
 )
 
 (deftemplate MAIN::info-evento
@@ -140,6 +142,24 @@
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
   (printout t crlf)
+)
+
+(defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas"
+	?restr <- (restricciones (alcohol ?alcohol))
+	(test (eq ?alcohol "indef"))
+	=>
+	(bind ?resp (restr-si-no "¿Quieres permitir que se incluyan bebidas alcoholicas?"))
+	(if ?resp then (bind ?r "si") else (bind ?r "no"))
+	(modify ?restr (alcohol ?r))
+)
+
+(defrule recopilacion-restr::bebida-cada-plato "Se quiere una bebida por plato"
+	?restr <- (restricciones (bebida-por-plato ?bpp))
+	(test (eq ?bpp "indef"))
+	=>
+	(bind ?resp (restr-si-no "¿Quieres una bebida por cada plato?"))
+	(if ?resp then (bind ?r "si") else (bind ?r "no"))
+	(modify ?restr (bebida-por-plato ?r))
 )
 
 (defrule recopilacion-restr::mes-evento "Mes en que será el evento"
