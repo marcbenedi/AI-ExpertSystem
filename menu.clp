@@ -45,6 +45,7 @@
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
 	(slot estilo (type STRING)(default "indef"))
+	(multislot ingredientes (type STRING) (default "indef"))
 	(slot gama-precio-min (type STRING)(default "indef"))
 	(slot gama-precio-max (type STRING)(default "indef"))
 	(slot alcohol (type STRING) (default "indef"))
@@ -92,6 +93,20 @@
 	?respuesta
 )
 
+(deffunction MAIN::restr-multi-eleccion (?pregunta ?min ?max)
+	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+	(printout t ?salida crlf)
+	(bind ?respuesta (create$))
+	(bind ?r (read))
+	(bind ?respuesta (insert$ ?respuesta 1 ?r))
+	(while (not (eq ?r 0))
+		do
+		(bind ?r (read))
+		(bind ?respuesta (insert$ ?respuesta 1 ?r))
+	)
+	?respuesta
+)
+
 (deffunction MAIN::restr-opciones (?preg $?opciones)
 	(bind ?salida (format nil "%s" ?preg))
 	(printout t ?salida crlf)
@@ -101,6 +116,43 @@
 	)
 	(bind ?resp (restr-eleccion "Escoje una opcion:" 1 (length$ ?opciones)))
 	?resp
+)
+
+(deffunction MAIN::restr-multi-opciones (?preg $?opciones)
+	(bind ?salida (format nil "%s" ?preg))
+	(printout t ?salida crlf)
+	(progn$ (?valor ?opciones)
+		(bind ?salida (format nil " %d. %s" ?valor-index ?valor))
+		(printout t ?salida crlf)
+	)
+	(bind ?resp (restr-multi-eleccion "Escoje opciones (0 para terminar):" 1 (length$ ?opciones)))
+	?resp
+)
+
+
+
+(defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
+	?restr <- (restricciones (ingredientes ?ingredientes))
+	(test (eq ?ingredientes "indef"))
+	=>
+	(bind ?list (find-all-instances ((?i Ingrediente)) TRUE))
+	(bind ?l (create$))
+	(progn$ (?elemento ?list)
+		(bind ?nombre (send ?elemento get-Nombre))
+		(bind ?l (insert$ ?l 1 ?nombre))
+	)
+	(bind ?resp (restr-multi-opciones "Escoge que ingredientes quieres que NO pongamos: " ?l))
+	(bind ?nombres (create$))
+	(progn$ (?elemento ?resp)
+	(if (not (eq ?elemento 0))
+		then
+			(bind ?nombre (nth$ ?elemento ?l))
+			(bind ?nombres (insert$ ?nombres 1 ?nombre))
+		)
+	)
+	(printout t ?nombres crlf)
+	(modify ?restr (ingredientes ?nombres))
+	(return FALSE)
 )
 
 ; (deffunction MAIN::restr-si-no (?preg)
@@ -300,8 +352,8 @@
 		)
 								)
 	)
-
-	(foreach ?r $?menus
+  ;marc: a mi el foreach no mel troba
+	(progn$ (?r $?menus)
 			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
 			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
 			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
