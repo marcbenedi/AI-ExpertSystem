@@ -835,16 +835,6 @@
 	(slot tamanyo-grupo (type INTEGER) (default -1))
 )
 
-; (deftemplate MAIN::info-evento
-; 	(slot mes (type INTEGER) (default -1))
-; 	(slot tamanyo-grupo (type INTEGER) (default -1))
-; )
-;TODO Pasarlo al modulo abstracto
-(deftemplate MAIN::info-evento-abs
-	(slot temporada (type STRING) (default "indef")) ;VERANO-PRIMAVERA-OTONO-INVIERNO
-	(slot tamanyo-grupo-abs (type STRING) (default "indef"));Individual-Pareja-Pequeño-Mediano-Grande
-)
-
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 

@@ -65,16 +65,6 @@
 	(slot tamanyo-grupo (type INTEGER) (default -1))
 )
 
-; (deftemplate MAIN::info-evento
-; 	(slot mes (type INTEGER) (default -1))
-; 	(slot tamanyo-grupo (type INTEGER) (default -1))
-; )
-;TODO Pasarlo al modulo abstracto
-(deftemplate MAIN::info-evento-abs
-	(slot temporada (type STRING) (default "indef")) ;VERANO-PRIMAVERA-OTONO-INVIERNO
-	(slot tamanyo-grupo-abs (type STRING) (default "indef"));Individual-Pareja-Pequeño-Mediano-Grande
-)
-
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -326,8 +316,6 @@
 				)
 			)
 	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
-	(printout t "El nivel economico maximo es " ?maximo-def crlf)
-	(printout t "El nivel economico minimo es " ?minimo-def crlf)
 	;(printout t "economico" crlf)
 )
 
@@ -339,7 +327,6 @@
 	(test (eq ?est-abs "indef"))
 	=>
 	(modify ?abstract-info (estilo ?estilo))
-	(printout t "Estil abstracte " ?estilo crlf)
 )
 
 (defrule abstraccion::abstraer-temporada-evento ""
@@ -365,7 +352,6 @@
 	(if (eq ?mesR 10) then (bind ?temp "Otono"))
 	(if (eq ?mesR 11) then (bind ?temp "Otono"))
 	(modify ?abstract-info (temporada ?temp))
-	(printout t ?temp crlf)
 )
 (defrule abstraccion::abstraer-tamano-grupo ""
 	(declare (salience 696))
@@ -462,7 +448,7 @@
 	)
 	(return ?menus)
 )
-
+;TODO no mirar a restricciones sino a abstract-info
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
   (not (lista-platos))
