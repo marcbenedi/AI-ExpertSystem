@@ -904,6 +904,27 @@
 	?resp
 )
 
+
+; (deffunction MAIN::restr-si-no (?preg)
+; 	(bind ?resp (restr-opciones ?preg si no))
+; 	(if (or (eq ?resp si) (eq ?resp s))
+; 		then (return "si")
+; 		else (return "no")
+; 	)
+; )
+
+(defrule MAIN::regla-inicial "Regla inicial"
+	(declare (salience 10))
+	=>
+	(printout t"----------------------------------------------------------" crlf)
+  (printout t"        Bienvenido a nuestro generador de menus           " crlf)
+	(printout t"      Por favor responda a las siguentes preguntas          " crlf)
+	(printout t"----------------------------------------------------------" crlf)
+  (printout t crlf)
+	(focus recopilacion-restr)
+)
+
+
 (defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
 	?restr <- (restricciones (ingredientes ?ingredientes))
 	(test (eq ?ingredientes "indef"))
@@ -925,25 +946,6 @@
 	)
 	(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
-)
-
-; (deffunction MAIN::restr-si-no (?preg)
-; 	(bind ?resp (restr-opciones ?preg si no))
-; 	(if (or (eq ?resp si) (eq ?resp s))
-; 		then (return "si")
-; 		else (return "no")
-; 	)
-; )
-
-(defrule MAIN::regla-inicial "Regla inicial"
-	(declare (salience 10))
-	=>
-	(printout t"----------------------------------------------------------" crlf)
-  (printout t"        Bienvenido a nuestro generador de menus           " crlf)
-	(printout t"      Por favor responda a las siguentes preguntas          " crlf)
-	(printout t"----------------------------------------------------------" crlf)
-  (printout t crlf)
-	(focus recopilacion-restr)
 )
 
 (defrule recopilacion-restr::precio-maximo "Escoje precio maximo"
@@ -1088,7 +1090,7 @@
 	(return ?ordinales)
 ) ;TESTED
 
-(deffunction monta-menus-comida(?minP ?maxP ?estilo ?alc)
+(deffunction generacion-soluciones::monta-menus-comida(?minP ?maxP ?estilo ?alc)
 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
