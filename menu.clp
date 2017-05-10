@@ -1,4 +1,4 @@
-; TO-DO
+;TODO
 ;añadir a cada plato si es complejo o no (string)
 ;para las bebidas añadir un campo de si es alcoholica
 ;bebida por plato
@@ -18,7 +18,9 @@
 ; 		(type STRING)
 ; 		(create-accessor read-write))
 
-;--------MODULES--------------
+;------------------------------------MODULES------------------------------------
+;-------------------------------------------------------------------------------
+
 (defmodule MAIN (export ?ALL))
 
 (defmodule recopilacion-restr
@@ -47,7 +49,9 @@
 	(export ?ALL)
 )
 
-;-------TEMPLATES-----------
+;-----------------------------------TEMPLATES-----------------------------------
+;-------------------------------------------------------------------------------
+
 (deftemplate MAIN::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
@@ -63,15 +67,31 @@
 	(slot mes (type INTEGER) (default -1))
 	(slot tamanyo-grupo (type INTEGER) (default -1))
 )
-
+;TODO Pasarlo al modulo abstracto
 (deftemplate MAIN::info-evento-abs
 	(slot temporada (type STRING) (default "indef")) ;VERANO-PRIMAVERA-OTONO-INVIERNO
 	(slot tamanyo-grupo-abs (type STRING) (default "indef"));Individual-Pareja-Pequeño-Mediano-Grande
 )
 
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+(deftemplate abstraccion::abstract-info
+	(slot nivel-economico-min (type STRING) (default "indef"))
+	(slot nivel-economico-max (type STRING) (default "indef"))
+	(slot estilo (type STRING) (default "indef"))
+	(slot temporada (type STRING) (default "undef"))
+)
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
 (deftemplate generacion-soluciones::lista-platos
   (multislot platos (type INSTANCE))
 )
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 (defmessage-handler MAIN::Menu calculaPrecio()
   (bind ?coste (send ?self:Primero get-Precio))
@@ -84,6 +104,9 @@
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
 )
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 (deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
 	(bind ?salida (format nil "%s (desde %d hasta %d)" ?pregunta ?min ?max))
@@ -134,7 +157,6 @@
 	?resp
 )
 
-
 ; (deffunction MAIN::restr-si-no (?preg)
 ; 	(bind ?resp (restr-opciones ?preg si no))
 ; 	(if (or (eq ?resp si) (eq ?resp s))
@@ -144,7 +166,7 @@
 ; )
 
 (defrule MAIN::regla-inicial "Regla inicial"
-	(declare (salience 10))
+	(declare (salience 899))
 	=>
 	(printout t"----------------------------------------------------------" crlf)
   (printout t"        Bienvenido a nuestro generador de menus           " crlf)
@@ -153,36 +175,15 @@
   (printout t crlf)
 	(focus recopilacion-restr)
 )
-
-
-(defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
-	?restr <- (restricciones (ingredientes ?ingredientes))
-	(test (eq ?ingredientes "indef"))
-	=>
-	(bind ?list (find-all-instances ((?i Ingrediente)) TRUE))
-	(bind ?l (create$))
-	(progn$ (?elemento ?list)
-		(bind ?nombre (send ?elemento get-Nombre))
-		(bind ?l (insert$ ?l 1 ?nombre))
-	)
-	(bind ?resp (restr-multi-opciones "Escoge que ingredientes quieres que NO pongamos: " ?l))
-	(bind ?nombres (create$))
-	(progn$ (?elemento ?resp)
-	(if (not (eq ?elemento 0))
-		then
-			(bind ?nombre (nth$ ?elemento ?l))
-			(bind ?nombres (insert$ ?nombres 1 ?nombre))
-		)
-	)
-	(printout t ?nombres crlf)
-	(modify ?restr (ingredientes ?nombres))
-)
-
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 (defrule recopilacion-restr::precio-maximo "Escoje precio maximo"
+	(declare (salience 799))
 	(not (restricciones))
 	=>
 	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
 	(bind ?restr (assert (restricciones (max ?precio))))
+	;TODO hacer esto en abstraccion -> Ya esta hecho
 	(if (>= ?precio 100)
 		then (bind ?maximo-def "Rico")
 		else (if (>= ?precio 50)
@@ -197,11 +198,13 @@
 )
 
 (defrule recopilacion-restr::precio-minimo "Escoje precio maximo"
+	(declare (salience 798))
 	?restr <- (restricciones (min ?minimo) (max ?maximo))
 	(test (< ?minimo 0.0))
 	=>
-	(bind ?precio (restr-eleccion "¿Precio minimo?" 1 (- ?maximo 1)))
+	(bind ?precio (restr-eleccion "¿Precio minimo?" 0 (- ?maximo 1)))
 	(bind ?restr (modify ?restr (min ?precio)))
+	;TODO hacer esto en abstraccion -> Ya esta hecho
 	(if (>= ?precio 100)
 		then (bind ?minimo-def "Rico")
 		else (if (>= ?precio 50)
@@ -216,6 +219,7 @@
 )
 
 (defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
+	(declare (salience 797))
 	?restr <- (restricciones (estilo ?estilo))
 	(test (eq ?estilo "indef"))
 	=>
@@ -224,10 +228,11 @@
   (if (eq ?estilo 2) then (bind ?estilo "Moderno"))
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
-  (printout t crlf)
+  ;(printout t crlf)
 )
 
-(defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas"
+(defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas?"
+	(declare (salience 796))
 	?restr <- (restricciones (alcohol ?alcohol))
 	(test (eq ?alcohol "indef"))
 	=>
@@ -237,6 +242,7 @@
 )
 
 (defrule recopilacion-restr::bebida-cada-plato "Se quiere una bebida por plato"
+	(declare (salience 795))
 	?restr <- (restricciones (bebida-por-plato ?bpp))
 	(test (eq ?bpp "indef"))
 	=>
@@ -246,6 +252,7 @@
 )
 
 (defrule recopilacion-restr::mes-evento "Mes en que será el evento"
+	(declare (salience 794))
 	(not (info-evento))
 	=>
 	(bind ?mesR (restr-opciones "¿En que mes sera el evento?" Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre))
@@ -271,6 +278,7 @@
 )
 
 (defrule recopilacion-restr::tamanyo-del-grupo "Tamanyo del grupo"
+	(declare (salience 793))
 	?info <- (info-evento (tamanyo-grupo ?tam))
 	?info-abs <- (info-evento-abs)
 	(test (eq ?tam -1))
@@ -287,9 +295,87 @@
 
 	(modify ?info-abs (tamanyo-grupo-abs ?grup))
 	(printout t crlf)
-  (focus generacion-soluciones)
 )
 
+(defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
+	(declare (salience 792))
+	?restr <- (restricciones (ingredientes ?ingredientes))
+	(test (eq ?ingredientes "indef"))
+	=>
+	(bind ?list (find-all-instances ((?i Ingrediente)) TRUE))
+	(bind ?l (create$))
+	(progn$ (?elemento ?list)
+		(bind ?nombre (send ?elemento get-Nombre))
+		(bind ?l (insert$ ?l 1 ?nombre))
+	)
+	(bind ?resp (restr-multi-opciones "Escoge que ingredientes quieres que NO pongamos: " ?l))
+	(bind ?nombres (create$))
+	(progn$ (?elemento ?resp)
+	(if (not (eq ?elemento 0))
+		then
+			(bind ?nombre (nth$ ?elemento ?l))
+			(bind ?nombres (insert$ ?nombres 1 ?nombre))
+		)
+	)
+	(printout t ?nombres crlf)
+	(modify ?restr (ingredientes ?nombres))
+  (focus abstraccion)
+)
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+(defrule abstraccion::abstraer-nivel-economico "Convierte el margen max min en Rico - ... - Pobre"
+	(declare (salience 699))
+	?restr <- (restricciones (min ?minimo) (max ?maximo))
+	(not (abstract-info))
+	=>
+	;El maximo
+	(if (>= ?maximo 100)
+		then (bind ?maximo-def "Rico")
+		else (if (>= ?maximo 50)
+			then (bind ?maximo-def "Medio")
+			else (if (>= ?maximo 25)
+				then (bind ?maximo-def "Normal")
+				else (bind ?maximo-def "Economico")
+				)
+			)
+		)
+		;El minimo
+		(if (>= ?minimo 100)
+			then (bind ?minimo-def "Rico")
+			else (if (>= ?minimo 50)
+				then (bind ?minimo-def "Medio")
+				else (if (>= ?minimo 25)
+					then (bind ?minimo-def "Normal")
+					else (bind ?minimo-def "Economico")
+					)
+				)
+			)
+	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
+	(printout t "El nivel economico maximo es " ?maximo-def crlf)
+	(printout t "El nivel economico minimo es " ?minimo-def crlf)
+	;(printout t "economico" crlf)
+)
+
+(defrule abstraccion::abstraer-estilo-alimenticio ""
+	(declare (salience 698))
+	=>
+	(printout t "estilo" crlf)
+)
+
+(defrule abstraccion::abstraer-temporada-evento ""
+	(declare (salience 697))
+	=>
+	(printout t "temporada" crlf)
+)
+
+(defrule abstraccion::abstraer-tamano-grupo ""
+	(declare (salience 696))
+	=>
+	(printout t "tamano" crlf)
+	;(focus generacion-soluciones)
+)
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
  (bind ?max (length ?li))
@@ -407,3 +493,5 @@
   ;   (printout t "--------------------" crlf)
 	; )
 )
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
