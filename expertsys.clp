@@ -799,13 +799,15 @@
 )
 
 (defmodule abstraccion
-	(import MAIN ?ALL)
-	(import recopilacion-restr deftemplate ?ALL)
+	;(import MAIN ?ALL)
+	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule generacion-soluciones
 	(import MAIN ?ALL)
+	(import recopilacion-restr ?ALL)
+	(import abstraccion ?ALL)
 	(export ?ALL)
 )
 
@@ -822,7 +824,18 @@
 ;-----------------------------------TEMPLATES-----------------------------------
 ;-------------------------------------------------------------------------------
 
-(deftemplate MAIN::restricciones
+(deftemplate abstraccion::abstract-info
+	(slot nivel-economico-min (type STRING) (default "indef"))
+	(slot nivel-economico-max (type STRING) (default "indef"))
+	(slot estilo (type STRING) (default "indef"))
+	(slot temporada (type STRING) (default "indef"))
+	(slot tamanyo-grupo (type STRING) (default "indef"))
+)
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+(deftemplate recopilacion-restr::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
 	(slot estilo (type STRING)(default "indef"))
@@ -833,17 +846,6 @@
 	(slot bebida-por-plato (type STRING) (default "indef"))
 	(slot mes (type INTEGER) (default -1))
 	(slot tamanyo-grupo (type INTEGER) (default -1))
-)
-
-;-------------------------------------------------------------------------------
-;-------------------------------------------------------------------------------
-
-(deftemplate abstraccion::abstract-info
-	(slot nivel-economico-min (type STRING) (default "indef"))
-	(slot nivel-economico-max (type STRING) (default "indef"))
-	(slot estilo (type STRING) (default "indef"))
-	(slot temporada (type STRING) (default "indef"))
-	(slot tamanyo-grupo (type STRING) (default "indef"))
 )
 
 ;-------------------------------------------------------------------------------
@@ -1086,8 +1088,6 @@
 				)
 			)
 	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
-	(printout t "El nivel economico maximo es " ?maximo-def crlf)
-	(printout t "El nivel economico minimo es " ?minimo-def crlf)
 	;(printout t "economico" crlf)
 )
 
@@ -1099,7 +1099,6 @@
 	(test (eq ?est-abs "indef"))
 	=>
 	(modify ?abstract-info (estilo ?estilo))
-	(printout t "Estil abstracte " ?estilo crlf)
 )
 
 (defrule abstraccion::abstraer-temporada-evento ""
@@ -1125,9 +1124,8 @@
 	(if (eq ?mesR 10) then (bind ?temp "Otono"))
 	(if (eq ?mesR 11) then (bind ?temp "Otono"))
 	(modify ?abstract-info (temporada ?temp))
-	(printout t ?temp crlf)
 )
-(defrule abstraccion::abstraer-tamano-grupo ""
+(defrule abstraccion::abstraer-tamanyo-grupo ""
 	(declare (salience 696))
 	?restr <- (restricciones (tamanyo-grupo ?tam))
 	?abstract-info <- (abstract-info (tamanyo-grupo ?tam-abs))
@@ -1142,7 +1140,7 @@
 	(if (>= ?tam 51)  then (bind ?grup "Grande"))
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
-	;(focus generacion-soluciones) ;<-------------------------------------------------------------------PER A QUE SEGUEIXI EL PROGRAMA
+	(focus generacion-soluciones)
 )
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
@@ -1222,7 +1220,7 @@
 	)
 	(return ?menus)
 )
-
+;TODO no mirar a restricciones sino a abstract-info
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
   (not (lista-platos))

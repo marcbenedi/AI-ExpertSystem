@@ -29,13 +29,15 @@
 )
 
 (defmodule abstraccion
-	(import MAIN ?ALL)
-	(import recopilacion-restr deftemplate ?ALL)
+	;(import MAIN ?ALL)
+	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule generacion-soluciones
 	(import MAIN ?ALL)
+	(import recopilacion-restr ?ALL)
+	(import abstraccion ?ALL)
 	(export ?ALL)
 )
 
@@ -52,7 +54,18 @@
 ;-----------------------------------TEMPLATES-----------------------------------
 ;-------------------------------------------------------------------------------
 
-(deftemplate MAIN::restricciones
+(deftemplate abstraccion::abstract-info
+	(slot nivel-economico-min (type STRING) (default "indef"))
+	(slot nivel-economico-max (type STRING) (default "indef"))
+	(slot estilo (type STRING) (default "indef"))
+	(slot temporada (type STRING) (default "indef"))
+	(slot tamanyo-grupo (type STRING) (default "indef"))
+)
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+(deftemplate recopilacion-restr::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
 	(slot estilo (type STRING)(default "indef"))
@@ -63,17 +76,6 @@
 	(slot bebida-por-plato (type STRING) (default "indef"))
 	(slot mes (type INTEGER) (default -1))
 	(slot tamanyo-grupo (type INTEGER) (default -1))
-)
-
-;-------------------------------------------------------------------------------
-;-------------------------------------------------------------------------------
-
-(deftemplate abstraccion::abstract-info
-	(slot nivel-economico-min (type STRING) (default "indef"))
-	(slot nivel-economico-max (type STRING) (default "indef"))
-	(slot estilo (type STRING) (default "indef"))
-	(slot temporada (type STRING) (default "indef"))
-	(slot tamanyo-grupo (type STRING) (default "indef"))
 )
 
 ;-------------------------------------------------------------------------------
@@ -353,7 +355,7 @@
 	(if (eq ?mesR 11) then (bind ?temp "Otono"))
 	(modify ?abstract-info (temporada ?temp))
 )
-(defrule abstraccion::abstraer-tamano-grupo ""
+(defrule abstraccion::abstraer-tamanyo-grupo ""
 	(declare (salience 696))
 	?restr <- (restricciones (tamanyo-grupo ?tam))
 	?abstract-info <- (abstract-info (tamanyo-grupo ?tam-abs))
@@ -368,7 +370,7 @@
 	(if (>= ?tam 51)  then (bind ?grup "Grande"))
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
-	;(focus generacion-soluciones) ;<-------------------------------------------------------------------PER A QUE SEGUEIXI EL PROGRAMA
+	(focus generacion-soluciones)
 )
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
