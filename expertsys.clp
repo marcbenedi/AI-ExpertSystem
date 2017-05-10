@@ -953,7 +953,7 @@
 	=>
 	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
 	(bind ?restr (assert (restricciones (max ?precio))))
-	;TODO hacer esto en abstraccion
+	;TODO hacer esto en abstraccion -> Ya esta hecho
 	(if (>= ?precio 100)
 		then (bind ?maximo-def "Rico")
 		else (if (>= ?precio 50)
@@ -974,7 +974,7 @@
 	=>
 	(bind ?precio (restr-eleccion "¿Precio minimo?" 0 (- ?maximo 1)))
 	(bind ?restr (modify ?restr (min ?precio)))
-	;TODO hacer esto en abstraccion
+	;TODO hacer esto en abstraccion -> Ya esta hecho
 	(if (>= ?precio 100)
 		then (bind ?minimo-def "Rico")
 		else (if (>= ?precio 50)
@@ -998,7 +998,7 @@
   (if (eq ?estilo 2) then (bind ?estilo "Moderno"))
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
-  (printout t crlf)
+  ;(printout t crlf)
 )
 
 (defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas?"
@@ -1121,15 +1121,20 @@
 				)
 			)
 	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
-	(printout t "El nivel economico maximo es" ?maximo-def crlf)
-	(printout t "El nivel economico minimo es" ?minimo-def crlf)
+	(printout t "El nivel economico maximo es " ?maximo-def crlf)
+	(printout t "El nivel economico minimo es " ?minimo-def crlf)
 	;(printout t "economico" crlf)
 )
 
 (defrule abstraccion::abstraer-estilo-alimenticio ""
 	(declare (salience 698))
+	?restr <- (restricciones (estilo ?estilo))
+	?abstract-info <- (abstract-info (estilo ?est-abs))
+	(test (neq ?estilo "indef"))
+	(test (eq ?est-abs "indef"))
 	=>
-	(printout t "estilo" crlf)
+	(modify ?abstract-info (estilo ?estilo))
+	(printout t "Lestil abstracte " ?estilo crlf)
 )
 
 (defrule abstraccion::abstraer-temporada-evento ""

@@ -358,8 +358,13 @@
 
 (defrule abstraccion::abstraer-estilo-alimenticio ""
 	(declare (salience 698))
+	?restr <- (restricciones (estilo ?estilo))
+	?abstract-info <- (abstract-info (estilo ?est-abs))
+	(test (neq ?estilo "indef"))
+	(test (eq ?est-abs "indef"))
 	=>
-	(printout t "estilo" crlf)
+	(modify ?abstract-info (estilo ?estilo))
+	(printout t "Estil abstracte " ?estilo crlf)
 )
 
 (defrule abstraccion::abstraer-temporada-evento ""
