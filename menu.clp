@@ -1,3 +1,10 @@
+; TO-DO
+;añadir a cada plato si es complejo o no (string)
+;para las bebidas añadir un campo de si es alcoholica
+;bebida por plato
+
+;-------------------------------------------------------------------------------
+
 ; (defclass Recomendacion
 ; 	(is-a USER)
 ; 	(role concrete)
@@ -11,6 +18,7 @@
 ; 		(type STRING)
 ; 		(create-accessor read-write))
 
+;--------MODULES--------------
 (defmodule MAIN (export ?ALL))
 
 (defmodule recopilacion-restr
@@ -39,7 +47,6 @@
 	(export ?ALL)
 )
 
-
 ;-------TEMPLATES-----------
 (deftemplate MAIN::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
@@ -62,7 +69,6 @@
 	(slot tamanyo-grupo-abs (type STRING) (default "indef"));Individual-Pareja-Pequeño-Mediano-Grande
 )
 
-
 (deftemplate generacion-soluciones::lista-platos
   (multislot platos (type INSTANCE))
 )
@@ -74,7 +80,6 @@
 	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
 	(bind ?self:Precio ?coste)
 )
-
 
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
@@ -128,8 +133,6 @@
 	(bind ?resp (restr-multi-eleccion "Escoje opciones (0 para terminar):" 1 (length$ ?opciones)))
 	?resp
 )
-
-
 
 (defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
 	?restr <- (restricciones (ingredientes ?ingredientes))
@@ -285,7 +288,6 @@
   (focus generacion-soluciones)
 )
 
-
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
  (bind ?max (length ?li))
@@ -324,8 +326,6 @@
 	(bind $?bebidas (find-all-instances ((?a Bebida))
 		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
 
-		;
-
 	(loop-for-count (?i 1 (length ?primeros))
 			(loop-for-count (?j 1 (length ?segundos))
 					(loop-for-count (?k 1 (length ?postres))
@@ -344,14 +344,15 @@
 			)
 	)
 
-	(bind $?menus (find-all-instances ((?m Menu))
-		(and
-			(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
-			(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
+	(bind $?menus
+		(find-all-instances ((?m Menu))
+			(and
+				(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
+				(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
+			)
 		)
-								)
 	)
-  ;marc: a mi el foreach no mel troba
+  ;marc: a mi el foreach no mel troba (soposo que per versió de clips. amb progn fa el mateix)
 	(progn$ (?r $?menus)
 			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
 			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
