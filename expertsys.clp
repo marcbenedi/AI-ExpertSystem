@@ -922,7 +922,6 @@
 	)
 	(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
-	(return FALSE)
 )
 
 ; (deffunction MAIN::restr-si-no (?preg)
