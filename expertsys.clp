@@ -788,14 +788,19 @@
 	 (export ?ALL)
 )
 
+(defmodule abstraccion
+	(import MAIN ?ALL)
+	(import recopilacion-restr deftemplate ?ALL)
+	(export ?ALL)
+)
+
 (defmodule generacion-soluciones
 	(import MAIN ?ALL)
 	(export ?ALL)
 )
 
-(defmodule procesado-datos
+(defmodule refinamiento
 	(import MAIN ?ALL)
-	(import recopilacion-restr deftemplate ?ALL)
 	(export ?ALL)
 )
 
@@ -803,6 +808,8 @@
 	(import MAIN ?ALL)
 	(export ?ALL)
 )
+
+
 ;-------TEMPLATES-----------
 (deftemplate MAIN::restricciones
 	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
@@ -833,6 +840,7 @@
   (bind ?coste (send ?self:Primero get-Precio))
 	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
 	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
+	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
 	(bind ?self:Precio ?coste)
 )
 
@@ -842,12 +850,12 @@
 )
 
 (deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
-	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+	(bind ?salida (format nil "%s (desde %d hasta %d)" ?pregunta ?min ?max))
 	(printout t ?salida crlf)
 	(bind ?respuesta (read))
 	(while (not (and (<= ?min ?respuesta) (>= ?max ?respuesta)))
 		do
-		(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
+		(bind ?salida (format nil "%s (desde %d hasta %d)" ?pregunta ?min ?max))
 		(printout t ?salida crlf)
 		(bind ?respuesta (read))
 	)
@@ -865,20 +873,20 @@
 	?resp
 )
 
-(deffunction MAIN::restr-si-no (?preg)
-	(bind ?resp (restr-opciones ?preg si no))
-	(if (or (eq ?resp si) (eq ?resp s))
-		then TRUE
-		else FALSE
-	)
-)
+; (deffunction MAIN::restr-si-no (?preg)
+; 	(bind ?resp (restr-opciones ?preg si no))
+; 	(if (or (eq ?resp si) (eq ?resp s))
+; 		then (return "si")
+; 		else (return "no")
+; 	)
+; )
 
 (defrule MAIN::regla-inicial "Regla inicial"
 	(declare (salience 10))
 	=>
 	(printout t"----------------------------------------------------------" crlf)
   (printout t"        Bienvenido a nuestro generador de menus           " crlf)
-	(printout t"      Porfavor responda a las siguentes preguntas          " crlf)
+	(printout t"      Por favor responda a las siguentes preguntas          " crlf)
 	(printout t"----------------------------------------------------------" crlf)
   (printout t crlf)
 	(focus recopilacion-restr)
@@ -937,8 +945,8 @@
 	?restr <- (restricciones (alcohol ?alcohol))
 	(test (eq ?alcohol "indef"))
 	=>
-	(bind ?resp (restr-si-no "¿Quieres permitir que se incluyan bebidas alcoholicas?"))
-	(if ?resp then (bind ?r "si") else (bind ?r "no"))
+	(bind ?resp (restr-opciones "¿Quieres permitir que se incluyan bebidas alcoholicas?" Si No))
+	(if (eq ?resp 1) then (bind ?r "si") else (bind ?r "no"))
 	(modify ?restr (alcohol ?r))
 )
 
@@ -946,8 +954,8 @@
 	?restr <- (restricciones (bebida-por-plato ?bpp))
 	(test (eq ?bpp "indef"))
 	=>
-	(bind ?resp (restr-si-no "¿Quieres una bebida por cada plato?"))
-	(if ?resp then (bind ?r "si") else (bind ?r "no"))
+	(bind ?resp (restr-opciones "¿Quieres una bebida por cada plato?" Si No))
+	(if (eq ?resp 1) then (bind ?r "si") else (bind ?r "no"))
 	(modify ?restr (bebida-por-plato ?r))
 )
 
@@ -1027,26 +1035,47 @@
 	(return ?ordinales)
 ) ;TESTED
 
-(deffunction monta-menus-comida(?minP ?maxP ?estilo)
+(deffunction monta-menus-comida(?minP ?maxP ?estilo ?alc)
 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
+	(printout t "bebida alcoholica:" ?alc crlf)
+	(bind $?bebidas (find-all-instances ((?a Bebida))
+		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
+
+		;
 
 	(loop-for-count (?i 1 (length ?primeros))
 			(loop-for-count (?j 1 (length ?segundos))
 					(loop-for-count (?k 1 (length ?postres))
-							(bind ?ins (make-instance (gensym) of Menu ( Primero (nth$ ?i ?primeros) ) (Segundo (nth$ ?j ?segundos))  (Postre (nth$ ?k ?postres) )))
-							(send ?ins calculaPrecio)
+							(loop-for-count (?b 1 (length ?bebidas))
+									(bind ?ins
+										(make-instance (gensym) of Menu
+														(Primero (nth$ ?i ?primeros))
+														(Segundo (nth$ ?j ?segundos))
+														(Postre (nth$ ?k ?postres) )
+														(BebidaUnica (nth$ ?b ?bebidas))
+										)
+									)
+									(send ?ins calculaPrecio)
+							)
 					)
 			)
 	)
 
-	(bind $?menus (find-all-instances ((?m Menu))  (and (and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP)) (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ))))
+	(bind $?menus (find-all-instances ((?m Menu))
+		(and
+			(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
+			(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
+		)
+								)
+	)
 
 	(foreach ?r $?menus
 			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
 			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
-			(printout t (send (send ?r get-Postre) get-Nombre) crlf)
+			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
+			(printout t (send (send ?r get-BebidaUnica) get-Nombre) crlf )
 
 			(printout t (send ?r get-Precio) crlf)
 			(printout t "_________________" crlf)
@@ -1055,11 +1084,11 @@
 )
 
 (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
-  ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo))
+  ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
   (not (lista-platos))
   =>
 
-	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo))
+	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo ?alc))
 
 
 	; (bind ?style ?estilo)
