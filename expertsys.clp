@@ -831,12 +831,14 @@
 	(slot gama-precio-max (type STRING)(default "indef"))
 	(slot alcohol (type STRING) (default "indef"))
 	(slot bebida-por-plato (type STRING) (default "indef"))
-)
-
-(deftemplate MAIN::info-evento
 	(slot mes (type INTEGER) (default -1))
 	(slot tamanyo-grupo (type INTEGER) (default -1))
 )
+
+; (deftemplate MAIN::info-evento
+; 	(slot mes (type INTEGER) (default -1))
+; 	(slot tamanyo-grupo (type INTEGER) (default -1))
+; )
 ;TODO Pasarlo al modulo abstracto
 (deftemplate MAIN::info-evento-abs
 	(slot temporada (type STRING) (default "indef")) ;VERANO-PRIMAVERA-OTONO-INVIERNO
@@ -850,7 +852,8 @@
 	(slot nivel-economico-min (type STRING) (default "indef"))
 	(slot nivel-economico-max (type STRING) (default "indef"))
 	(slot estilo (type STRING) (default "indef"))
-	(slot temporada (type STRING) (default "undef"))
+	(slot temporada (type STRING) (default "indef"))
+	(slot tamanyo-grupo (type STRING) (default "indef"))
 )
 
 ;-------------------------------------------------------------------------------
@@ -1023,48 +1026,20 @@
 
 (defrule recopilacion-restr::mes-evento "Mes en que será el evento"
 	(declare (salience 794))
-	(not (info-evento))
+	?restr <- (restricciones (mes ?mesR))
+	(test (eq ?mesR -1))
 	=>
 	(bind ?mesR (restr-opciones "¿En que mes sera el evento?" Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre))
-	(bind ?i (assert (info-evento (mes ?mesR))))
-
-	(if (eq ?mesR 12) then (bind ?temp "Invierno"))
-	(if (eq ?mesR 1) then (bind ?temp "Invierno"))
-	(if (eq ?mesR 2) then (bind ?temp "Invierno"))
-
-	(if (eq ?mesR 3) then (bind ?temp "Primavera"))
-	(if (eq ?mesR 4) then (bind ?temp "Primavera"))
-	(if (eq ?mesR 5) then (bind ?temp "Primavera"))
-
-	(if (eq ?mesR 6) then (bind ?temp "Verano"))
-	(if (eq ?mesR 7) then (bind ?temp "Verano"))
-	(if (eq ?mesR 8) then (bind ?temp "Verano"))
-
-	(if (eq ?mesR 9) then (bind ?temp "Otono"))
-	(if (eq ?mesR 10) then (bind ?temp "Otono"))
-	(if (eq ?mesR 11) then (bind ?temp "Otono"))
-	(bind ?ie (assert (info-evento-abs (temporada ?temp))))
-  (printout t crlf)
+	(modify ?restr (mes ?mesR))
 )
 
 (defrule recopilacion-restr::tamanyo-del-grupo "Tamanyo del grupo"
 	(declare (salience 793))
-	?info <- (info-evento (tamanyo-grupo ?tam))
-	?info-abs <- (info-evento-abs)
+	?restr <- (restricciones (tamanyo-grupo ?tam))
 	(test (eq ?tam -1))
 	=>
 	(bind ?tam (restr-eleccion "¿Cuantos comensales seran?" 1 250))
-  (modify ?info (tamanyo-grupo ?tam))
-
-	(if (eq ?tam 1) then (bind ?grup "Individual"))
-	(if (eq ?tam 2) then (bind ?grup "Pareja")) ; 1 - 2 - (3 .. 20) - (21 .. 50) - (51 .. 250)
-
-	(if (and (>= ?tam 3) (<= ?tam 20))  then (bind ?grup "Pequeno"))
-	(if (and (>= ?tam 21) (<= ?tam 50))  then (bind ?grup "Mediano"))
-	(if (>= ?tam 51)  then (bind ?grup "Grande"))
-
-	(modify ?info-abs (tamanyo-grupo-abs ?grup))
-	(printout t crlf)
+  (modify ?restr (tamanyo-grupo ?tam))
 )
 
 (defrule recopilacion-restr::ingredientes-prohibidos "Lista de ingredientes prohibidos"
@@ -1134,20 +1109,50 @@
 	(test (eq ?est-abs "indef"))
 	=>
 	(modify ?abstract-info (estilo ?estilo))
-	(printout t "Lestil abstracte " ?estilo crlf)
+	(printout t "Estil abstracte " ?estilo crlf)
 )
 
 (defrule abstraccion::abstraer-temporada-evento ""
 	(declare (salience 697))
+	?restr <- (restricciones (mes ?mesR))
+	?abstract-info <- (abstract-info (temporada ?temp-abs))
+	(test (neq ?mesR -1))
+	(test (eq ?temp-abs "indef"))
 	=>
-	(printout t "temporada" crlf)
-)
+	(if (eq ?mesR 12) then (bind ?temp "Invierno"))
+	(if (eq ?mesR 1) then (bind ?temp "Invierno"))
+	(if (eq ?mesR 2) then (bind ?temp "Invierno"))
 
+	(if (eq ?mesR 3) then (bind ?temp "Primavera"))
+	(if (eq ?mesR 4) then (bind ?temp "Primavera"))
+	(if (eq ?mesR 5) then (bind ?temp "Primavera"))
+
+	(if (eq ?mesR 6) then (bind ?temp "Verano"))
+	(if (eq ?mesR 7) then (bind ?temp "Verano"))
+	(if (eq ?mesR 8) then (bind ?temp "Verano"))
+
+	(if (eq ?mesR 9) then (bind ?temp "Otono"))
+	(if (eq ?mesR 10) then (bind ?temp "Otono"))
+	(if (eq ?mesR 11) then (bind ?temp "Otono"))
+	(modify ?abstract-info (temporada ?temp))
+	(printout t ?temp crlf)
+)
 (defrule abstraccion::abstraer-tamano-grupo ""
 	(declare (salience 696))
+	?restr <- (restricciones (tamanyo-grupo ?tam))
+	?abstract-info <- (abstract-info (tamanyo-grupo ?tam-abs))
+	(test (neq ?tam -1))
+	(test (eq ?tam-abs "indef"))
 	=>
-	(printout t "tamano" crlf)
-	;(focus generacion-soluciones)
+	(if (eq ?tam 1) then (bind ?grup "Individual"))
+	(if (eq ?tam 2) then (bind ?grup "Pareja")) ; 1 - 2 - (3 .. 20) - (21 .. 50) - (51 .. 250)
+
+	(if (and (>= ?tam 3) (<= ?tam 20))  then (bind ?grup "Pequeno"))
+	(if (and (>= ?tam 21) (<= ?tam 50))  then (bind ?grup "Mediano"))
+	(if (>= ?tam 51)  then (bind ?grup "Grande"))
+
+	(modify ?abstract-info (tamanyo-grupo ?grup))
+	;(focus generacion-soluciones) ;<-------------------------------------------------------------------PER A QUE SEGUEIXI EL PROGRAMA
 )
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
