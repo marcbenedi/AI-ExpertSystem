@@ -775,19 +775,6 @@
 
 ;-------------------------------------------------------------------------------
 
-; (defclass Recomendacion
-; 	(is-a USER)
-; 	(role concrete)
-;     (slot nombre_cuadro
-; 		(type INSTANCE)
-; 		(create-accessor read-write))
-;     (slot puntuacion
-;         (type INTEGER)
-;         (create-accessor read-write))
-;     (multislot justificaciones
-; 		(type STRING)
-; 		(create-accessor read-write))
-
 ;------------------------------------MODULES------------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -840,8 +827,6 @@
 	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
 	(slot estilo (type STRING)(default "indef"))
 	(multislot ingredientes (type STRING) (default "indef"))
-	(slot gama-precio-min (type STRING)(default "indef"))
-	(slot gama-precio-max (type STRING)(default "indef"))
 	(slot alcohol (type STRING) (default "indef"))
 	(slot bebida-por-plato (type STRING) (default "indef"))
 	(slot mes (type INTEGER) (default -1))
@@ -948,18 +933,6 @@
 	=>
 	(bind ?precio (restr-eleccion "¿Precio maximo?" 1 50000))
 	(bind ?restr (assert (restricciones (max ?precio))))
-	;TODO hacer esto en abstraccion -> Ya esta hecho
-	(if (>= ?precio 100)
-		then (bind ?maximo-def "Rico")
-		else (if (>= ?precio 50)
-			then (bind ?maximo-def "Medio")
-			else (if (>= ?precio 25)
-				then (bind ?maximo-def "Normal")
-				else (bind ?maximo-def "Economico")
-				)
-			)
-		)
-		(modify ?restr (gama-precio-max ?maximo-def))
 )
 
 (defrule recopilacion-restr::precio-minimo "Escoje precio maximo"
@@ -969,18 +942,6 @@
 	=>
 	(bind ?precio (restr-eleccion "¿Precio minimo?" 0 (- ?maximo 1)))
 	(bind ?restr (modify ?restr (min ?precio)))
-	;TODO hacer esto en abstraccion -> Ya esta hecho
-	(if (>= ?precio 100)
-		then (bind ?minimo-def "Rico")
-		else (if (>= ?precio 50)
-			then (bind ?minimo-def "Medio")
-			else (if (>= ?precio 25)
-				then (bind ?minimo-def "Normal")
-				else (bind ?minimo-def "Economico")
-				)
-			)
-		)
-		(modify ?restr (gama-precio-min ?minimo-def))
 )
 
 (defrule recopilacion-restr::estilo-alimentacion "Estilo de alimentacion"
