@@ -1,6 +1,6 @@
 ;; Ontologia -----------------------
-; Tue May 09 10:19:20 CEST 2017
-;
+; Fri May 12 11:16:51 CEST 2017
+; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
 
@@ -23,13 +23,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
@@ -41,10 +41,24 @@
 ;+		(allowed-classes Plato)
 		(cardinality 3 3)
 		(create-accessor read-write))
+	(single-slot Alcoholica
+		(type STRING)
+		(default "No")
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Complejo
+		(type STRING)
+		(default "No")
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Segundo
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
@@ -52,18 +66,14 @@
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
+;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Temperatura
@@ -95,14 +105,14 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Primero
-		(type INSTANCE)
-;+		(allowed-classes Plato)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Primero
+		(type INSTANCE)
+;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Segundo
@@ -119,34 +129,15 @@
 (defclass Plato
 	(is-a USER)
 	(role concrete)
-	(single-slot BebidaUnica
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Nombre
+	(single-slot Complejo
 		(type STRING)
+		(default "No")
 ;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Estilo
-		(type SYMBOL)
-		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Disponibilidad
-		(type SYMBOL)
-		(allowed-values Total Invierno Primavera Verano Otono)
-		(default Total)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot TipoPlato
 		(type SYMBOL)
@@ -158,36 +149,65 @@
 		(allowed-values Frio Caliente)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot PlatoIncompatible
+	(multislot Ordinal
+		(type SYMBOL)
+		(allowed-values Primero Segundo Postre)
+		(cardinality 1 3)
+		(create-accessor read-write))
+	(single-slot BebidaUnica
 		(type INSTANCE)
-;+		(allowed-classes Plato)
+;+		(allowed-classes Bebida)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Estilo
+		(type SYMBOL)
+		(allowed-values Tradicional Moderno Sibarita)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
+		(create-accessor read-write))
+	(single-slot Disponibilidad
+		(type SYMBOL)
+		(allowed-values Total Invierno Primavera Verano Otono)
+		(default Total)
+;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot Ingredientes
 		(type INSTANCE)
 ;+		(allowed-classes Ingrediente)
 		(cardinality 1 ?VARIABLE)
 		(create-accessor read-write))
-	(multislot Ordinal
-		(type SYMBOL)
-		(allowed-values Primero Segundo Postre)
-		(cardinality 1 3)
+	(multislot PlatoIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Plato)
 		(create-accessor read-write)))
 
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot TipoBebida
 		(type SYMBOL)
 		(allowed-values Refresco Agua Vino Cerveza Zumo Cava)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Alcoholica
+		(type STRING)
+		(default "No")
 ;+		(cardinality 1 1)
 		(create-accessor read-write)))
 
@@ -197,10 +217,9 @@
 	(single-slot Nombre
 		(type STRING)
 ;+		(cardinality 1 1)
-		(create-accessor read-write)))
-;; Instancias -----------------------
+		(create-accessor read-write)));; Instancias -----------------------
 (definstances instancies
-; Tue May 09 10:19:20 CEST 2017
+; Fri May 12 11:16:51 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -215,6 +234,7 @@
 
 ([KB_565836_Class25] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -228,30 +248,35 @@
 
 ([KB_565836_Class26] of  Bebida
 
+	(Alcoholica "No")
 	(Nombre "Agua natural sin gas")
 	(Precio 1.0)
 	(TipoBebida Agua))
 
 ([KB_565836_Class27] of  Bebida
 
+	(Alcoholica "Si")
 	(Nombre "Vino blanco")
 	(Precio 15.0)
 	(TipoBebida Vino))
 
 ([KB_565836_Class28] of  Bebida
 
+	(Alcoholica "Si")
 	(Nombre "Vino tinto")
 	(Precio 17.0)
 	(TipoBebida Vino))
 
 ([KB_565836_Class29] of  Bebida
 
+	(Alcoholica "No")
 	(Nombre "Cocacola")
 	(Precio 1.5)
 	(TipoBebida Refresco))
 
 ([KB_565836_Class30] of  Bebida
 
+	(Alcoholica "No")
 	(Nombre "Zumo naranja natural")
 	(Precio 2.0)
 	(TipoBebida Zumo))
@@ -292,6 +317,7 @@
 
 	(BebidaIncompatible [KB_565836_Class30])
 	(BebidaUnica [KB_565836_Class27])
+	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -353,6 +379,7 @@
 
 ([KB_565836_Class55] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -366,6 +393,7 @@
 
 ([KB_565836_Class57] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [KB_565836_Class43])
@@ -378,6 +406,7 @@
 ([KB_565836_Class59] of  Plato
 
 	(BebidaUnica [KB_565836_Class27])
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -392,6 +421,7 @@
 
 ([KB_565836_Class61] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [KB_565836_Class62])
@@ -409,6 +439,7 @@
 
 	(BebidaIncompatible [KB_565836_Class28])
 	(BebidaUnica [KB_565836_Class27])
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -426,6 +457,7 @@
 
 ([KB_565836_Class64] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -439,12 +471,14 @@
 
 ([KB_565836_Class65] of  Bebida
 
+	(Alcoholica "Si")
 	(Nombre "Cava con motas de oro de 24 kilates")
 	(Precio 200.0)
 	(TipoBebida Cava))
 
 ([KB_565836_Class66] of  Bebida
 
+	(Alcoholica "No")
 	(Nombre "Champan pinky")
 	(Precio 10.0)
 	(TipoBebida Cava))
@@ -452,6 +486,7 @@
 ([KB_565836_Class67] of  Plato
 
 	(BebidaUnica [KB_565836_Class65])
+	(Complejo "Si")
 	(Disponibilidad Verano)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -483,6 +518,7 @@
 
 ([ProjectIA2_Class0] of  Plato
 
+	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -520,6 +556,7 @@
 
 ([ProjectIA2_Class15] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -538,6 +575,7 @@
 
 ([ProjectIA2_Class17] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -555,13 +593,14 @@
 
 ([ProjectIA2_Class19] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
 		[KB_565836_Class34]
 		[ProjectIA2_Class11]
 		[KB_565836_Class37])
-	(Nombre "Salsichas a la jardinera")
+	(Nombre "Salchichas a la jardinera")
 	(Ordinal Segundo)
 	(Precio 12.0)
 	(Temperatura Caliente)
@@ -573,6 +612,7 @@
 
 ([ProjectIA2_Class21] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -595,6 +635,7 @@
 
 ([ProjectIA2_Class24] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -608,6 +649,7 @@
 
 ([ProjectIA2_Class25] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -627,6 +669,7 @@
 
 ([ProjectIA2_Class27] of  Plato
 
+	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes [ProjectIA2_Class28])
@@ -642,6 +685,7 @@
 
 ([ProjectIA2_Class29] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Primavera)
 	(Estilo Moderno)
 	(Ingredientes
@@ -656,6 +700,7 @@
 
 ([ProjectIA2_Class3] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -679,6 +724,7 @@
 
 ([ProjectIA2_Class32] of  Plato
 
+	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -700,6 +746,7 @@
 
 ([ProjectIA2_Class35] of  Plato
 
+	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -717,6 +764,7 @@
 
 ([ProjectIA2_Class37] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [ProjectIA2_Class38])
@@ -748,6 +796,7 @@
 
 ([ProjectIA2_Class8] of  Plato
 
+	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -768,13 +817,6 @@
 	(Nombre "Quinua"))
 )
 ;; Nuestro codigo -----------------------
-;TODO
-;añadir a cada plato si es complejo o no (string)
-;para las bebidas añadir un campo de si es alcoholica
-;bebida por plato
-
-;-------------------------------------------------------------------------------
-
 ;------------------------------------MODULES------------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -792,19 +834,22 @@
 )
 
 (defmodule generacion-soluciones
-	(import MAIN ?ALL)
-	(import recopilacion-restr ?ALL)
+	;(import MAIN ?ALL)
+	;(import recopilacion-restr ?ALL)
 	(import abstraccion ?ALL)
 	(export ?ALL)
 )
 
 (defmodule refinamiento
 	(import MAIN ?ALL)
+	(import generacion-soluciones ?ALL)
+	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule resultados-output
 	(import MAIN ?ALL)
+	(import generacion-soluciones ?ALL)
 	(export ?ALL)
 )
 
@@ -817,6 +862,8 @@
 	(slot estilo (type STRING) (default "indef"))
 	(slot temporada (type STRING) (default "indef"))
 	(slot tamanyo-grupo (type STRING) (default "indef"))
+	(slot bebida-por-plato (type STRING) (default "indef"))
+	(slot permitir-alcoholica (type STRING) (default "indef"))
 )
 
 ;-------------------------------------------------------------------------------
@@ -836,8 +883,8 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
-(deftemplate generacion-soluciones::lista-platos
-  (multislot platos (type INSTANCE))
+(deftemplate generacion-soluciones::lista-menus
+  (multislot menus (type INSTANCE))
 )
 
 ;-------------------------------------------------------------------------------
@@ -1101,10 +1148,67 @@
 	(if (>= ?tam 51)  then (bind ?grup "Grande"))
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
-	(focus generacion-soluciones)
 )
+
+
+;
+; (slot bebida-por-plato (type STRING) (default "indef"))
+; (slot permitir-alcoholica (type STRING) (default "indef"))
+
+(defrule abstraccion::abstraer-permitir-alcohol ""
+		(declare (salience 695))
+		?restr <- (restricciones (alcohol ?alc))
+		?abstract-info <- (abstract-info (permitir-alcoholica ?abs-alc))
+		(test (neq ?alc "indef"))
+		(test (eq ?abs-alc "indef"))
+	=>
+		(modify ?abstract-info (permitir-alcoholica ?alc))
+)
+
+(defrule abstraccion::abstraer-bebida-por-plato ""
+		(declare (salience 694))
+		?restr <- (restricciones (bebida-por-plato ?alc))
+		?abstract-info <- (abstract-info (bebida-por-plato ?abs-alc))
+		(test (neq ?alc "indef"))
+		(test (eq ?abs-alc "indef"))
+	=>
+		(modify ?abstract-info (bebida-por-plato ?alc))
+		(focus generacion-soluciones)
+)
+
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
+
+(deffunction generacion-soluciones::generar-combinaciones(?est-abs)
+	(return (create$ a b c d e f g))
+)
+
+(deffunction generacion-soluciones::eliminar-duplicados(?lista)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::calcular-precio(?lista)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
+	(return ?lista)
+)
+
+
+
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
  (bind ?max (length ?li))
@@ -1135,92 +1239,64 @@
 	(return ?ordinales)
 ) ;TESTED
 
-(deffunction generacion-soluciones::monta-menus-comida(?minP ?maxP ?estilo ?alc)
-	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
-	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
-	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
-	(printout t "bebida alcoholica:" ?alc crlf)
-	(bind $?bebidas (find-all-instances ((?a Bebida))
-		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
+(defrule generacion-soluciones::generar-menus ""
+		(declare (salience 599))
+		?abs-inf <- (abstract-info (nivel-economico-min ?min) (nivel-economico-max ?max)
+														(estilo ?est-abs) (temporada ?temp) (tamanyo-grupo ?tam)
+														(bebida-por-plato ?bpp) (permitir-alcoholica ?pa))
+    (not (lista-menus))
+	=>
+		(bind ?lista (generar-combinaciones ?est-abs))
+		;Eliminar platos duplicados e incompatibilidades de menu
+		(bind ?lista (eliminar-duplicados ?lista))
 
-	(loop-for-count (?i 1 (length ?primeros))
-			(loop-for-count (?j 1 (length ?segundos))
-					(loop-for-count (?k 1 (length ?postres))
-							(loop-for-count (?b 1 (length ?bebidas))
-									(bind ?ins
-										(make-instance (gensym) of Menu
-														(Primero (nth$ ?i ?primeros))
-														(Segundo (nth$ ?j ?segundos))
-														(Postre (nth$ ?k ?postres) )
-														(BebidaUnica (nth$ ?b ?bebidas))
-										)
-									)
-									(send ?ins calculaPrecio)
-							)
-					)
-			)
-	)
+		(bind ?lista (filtrar-temporada ?lista ?temp))
+		(bind ?lista (filtrar-complejidad ?lista ?tam))
+		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
+		(bind ?lista (calcular-precio ?lista))
+		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 
-	(bind $?menus
-		(find-all-instances ((?m Menu))
-			(and
-				(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
-				(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
-			)
-		)
-	)
-  ;marc: a mi el foreach no mel troba (soposo que per versió de clips. amb progn fa el mateix)
-	(progn$ (?r $?menus)
-			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
-			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
-			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
-			(printout t (send (send ?r get-BebidaUnica) get-Nombre) crlf )
+		(assert (lista-menus (menus ?lista)))
 
-			(printout t (send ?r get-Precio) crlf)
-			(printout t "_________________" crlf)
-	)
-	(return ?menus)
-)
-;TODO no mirar a restricciones sino a abstract-info
-(defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
-  ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
-  (not (lista-platos))
-  =>
+		(focus refinamiento)
 
-	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo ?alc))
-
-
-	; (bind ?style ?estilo)
-	; (bind ?ordi "Primero")
-	; (bind $?platosFilt (filtra-ordinal (platos-por-estilo ?style)  ?ordi  ))
-	; (printout t "platos " ?style ", " ?ordi crlf)
-	; (progn$ (?var $?platosFilt)
-	; (printout t "****   " (send ?var get-Nombre) crlf)) ;TESTING
-
-  ;(bind ?tercio (/ (- ?maximo ?minimo ) 3))
-
-  ; (loop-for-count (?i 1 3) do
-	;
-  ;   (bind ?min-precio (+ ?minimo (* ?tercio (- ?i 1))))
-  ;   (bind ?max-precio (+ ?minimo (* ?tercio ?i)))
-	;
-  ;   (bind $?primeros (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Primero") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?segundos (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Segundo") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?postres (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Postre") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?bebidas (find-all-instances ((?a Bebida)) TRUE))
-	;
-  ;   (bind ?primero (random-slot ?primeros))
-  ;   (bind ?segundo (random-slot ?segundos))
-  ;   (bind ?postre (random-slot ?postres))
-  ;   (bind ?bebida (random-slot ?bebidas))
-	;
-  ;   (printout t "Primer plato: " (send ?primero imprimir))
-  ;   (printout t "Segundo plato: " (send ?segundo imprimir))
-  ;   (printout t "Postre: " (send ?postre imprimir))
-  ;   (printout t "Para beber: " (send ?bebida get-Nombre) " " (send ?bebida get-Precio) "€" crlf)
-  ;   (printout t "Precio total: " (+ (+ (send ?primero get-Precio) (send ?segundo get-Precio)) (+ (send ?postre get-Precio) (send ?bebida get-Precio))) "€" crlf)
-  ;   (printout t "--------------------" crlf)
-	; )
 )
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
+
+(deffunction filtrar-ingredientes-prohibidos(?lista ?proh)
+	(return ?lista)
+)
+
+(deffunction filtrar-precio-concreto(?lista ?min ?max)
+	(return ?lista)
+)
+
+(deffunction ordenar(?lista)
+	(return ?lista)
+)
+
+(defrule refinamiento::refinar ""
+		;(lista-menus)
+		(declare (salience 499))
+		?listam <- (lista-menus (menus ?lista))
+		?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
+	=>
+		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		(bind ?lista (ordenar ?lista))
+		(modify ?listam (menus ?lista))
+		(focus resultados-output)
+)
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+(defrule resultados-output::printear ""
+		(declare (salience 399))
+		?listam <- (lista-menus (menus ?lista))
+	=>
+		(send (nth$ 1 ?lista) imprimir)
+		(send (nth$ (/ (length$ ?lista) 2) ?lista) imprimir)
+		(send (nth$ (length$ ?lista) ?lista) imprimir)
+)

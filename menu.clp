@@ -23,6 +23,7 @@
 
 (defmodule refinamiento
 	(import MAIN ?ALL)
+	(import generacion-soluciones ?ALL)
 	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
@@ -358,6 +359,37 @@
 
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
+
+(deffunction generacion-soluciones::generar-combinaciones(?est-abs)
+	(return (create$ a b c d e f g))
+)
+
+(deffunction generacion-soluciones::eliminar-duplicados(?lista)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::calcular-precio(?lista)
+	(return ?lista)
+)
+
+(deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
+	(return ?lista)
+)
+
+
+
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
  (bind ?max (length ?li))
@@ -387,97 +419,6 @@
 	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
 	(return ?ordinales)
 ) ;TESTED
-;
-; (deffunction generacion-soluciones::monta-menus-comida(?minP ?maxP ?estilo ?alc)
-; 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
-; 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
-; 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
-; 	;TODO cambiar variable abstracta
-; 	(printout t "bebida alcoholica:" ?alc crlf)
-; 	(bind $?bebidas (find-all-instances ((?a Bebida))
-; 	;TODO cambiar para la variable abstracta
-; 		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
-;
-;   ;TODO hacer un buble diferente para si es bebida por plato o unica
-; 	(loop-for-count (?i 1 (length ?primeros))
-; 			(loop-for-count (?j 1 (length ?segundos))
-; 					(loop-for-count (?k 1 (length ?postres))
-; 							(loop-for-count (?b 1 (length ?bebidas))
-; 									(bind ?ins
-; 										(make-instance (gensym) of Menu
-; 														(Primero (nth$ ?i ?primeros))
-; 														(Segundo (nth$ ?j ?segundos))
-; 														(Postre (nth$ ?k ?postres) )
-; 														(BebidaUnica (nth$ ?b ?bebidas))
-; 										)
-; 									)
-; 									(send ?ins calculaPrecio)
-; 							)
-; 					)
-; 			)
-; 	)
-;
-; 	(bind $?menus
-; 		(find-all-instances ((?m Menu))
-; 			(and
-; 				(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
-; 				(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
-; 			)
-; 		)
-; 	)
-;   ;marc: a mi el foreach no mel troba (soposo que per versió de clips. amb progn fa el mateix)
-; 	(progn$ (?r $?menus)
-; 			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
-; 			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
-; 			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
-; 			(printout t (send (send ?r get-BebidaUnica) get-Nombre) crlf )
-;
-; 			(printout t (send ?r get-Precio) crlf)
-; 			(printout t "_________________" crlf)
-; 	)
-; 	(return ?menus)
-; )
-; ;TODO no mirar a restricciones sino a abstract-info
-; (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
-;   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
-;   (not (lista-platos))
-;   =>
-;
-; 	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo ?alc))
-;
-
-	; (bind ?style ?estilo)
-	; (bind ?ordi "Primero")
-	; (bind $?platosFilt (filtra-ordinal (platos-por-estilo ?style)  ?ordi  ))
-	; (printout t "platos " ?style ", " ?ordi crlf)
-	; (progn$ (?var $?platosFilt)
-	; (printout t "****   " (send ?var get-Nombre) crlf)) ;TESTING
-
-  ;(bind ?tercio (/ (- ?maximo ?minimo ) 3))
-
-  ; (loop-for-count (?i 1 3) do
-	;
-  ;   (bind ?min-precio (+ ?minimo (* ?tercio (- ?i 1))))
-  ;   (bind ?max-precio (+ ?minimo (* ?tercio ?i)))
-	;
-  ;   (bind $?primeros (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Primero") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?segundos (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Segundo") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?postres (find-all-instances ((?a Plato)) (and (eq (str-cat (nth$ 1 (send ?a get-Ordinal))) "Postre") (eq (str-cat (send ?a get-Estilo)) ?estilo)) ))
-  ;   (bind $?bebidas (find-all-instances ((?a Bebida)) TRUE))
-	;
-  ;   (bind ?primero (random-slot ?primeros))
-  ;   (bind ?segundo (random-slot ?segundos))
-  ;   (bind ?postre (random-slot ?postres))
-  ;   (bind ?bebida (random-slot ?bebidas))
-	;
-  ;   (printout t "Primer plato: " (send ?primero imprimir))
-  ;   (printout t "Segundo plato: " (send ?segundo imprimir))
-  ;   (printout t "Postre: " (send ?postre imprimir))
-  ;   (printout t "Para beber: " (send ?bebida get-Nombre) " " (send ?bebida get-Precio) "€" crlf)
-  ;   (printout t "Precio total: " (+ (+ (send ?primero get-Precio) (send ?segundo get-Precio)) (+ (send ?postre get-Precio) (send ?bebida get-Precio))) "€" crlf)
-  ;   (printout t "--------------------" crlf)
-	; )
-)
 
 (defrule generacion-soluciones::generar-menus ""
 		(declare (salience 599))
@@ -496,13 +437,25 @@
 		(bind ?lista (calcular-precio ?lista))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 
-		(assert lista-menus (menus ?lista))
+		(assert (lista-menus (menus ?lista)))
 
 		(focus refinamiento)
 
 )
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
+
+(deffunction filtrar-ingredientes-prohibidos(?lista ?proh)
+	(return ?lista)
+)
+
+(deffunction filtrar-precio-concreto(?lista ?min ?max)
+	(return ?lista)
+)
+
+(deffunction ordenar(?lista)
+	(return ?lista)
+)
 
 (defrule refinamiento::refinar ""
 		;(lista-menus)
