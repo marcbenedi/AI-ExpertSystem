@@ -1,10 +1,3 @@
-;TODO
-;añadir a cada plato si es complejo o no (string)
-;para las bebidas añadir un campo de si es alcoholica
-;bebida por plato
-
-;-------------------------------------------------------------------------------
-
 ;------------------------------------MODULES------------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -22,19 +15,21 @@
 )
 
 (defmodule generacion-soluciones
-	(import MAIN ?ALL)
-	(import recopilacion-restr ?ALL)
+	;(import MAIN ?ALL)
+	;(import recopilacion-restr ?ALL)
 	(import abstraccion ?ALL)
 	(export ?ALL)
 )
 
 (defmodule refinamiento
 	(import MAIN ?ALL)
+	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule resultados-output
 	(import MAIN ?ALL)
+	(import generacion-soluciones ?ALL)
 	(export ?ALL)
 )
 
@@ -47,6 +42,8 @@
 	(slot estilo (type STRING) (default "indef"))
 	(slot temporada (type STRING) (default "indef"))
 	(slot tamanyo-grupo (type STRING) (default "indef"))
+	(slot bebida-por-plato (type STRING) (default "indef"))
+	(slot permitir-alcoholica (type STRING) (default "indef"))
 )
 
 ;-------------------------------------------------------------------------------
@@ -66,8 +63,8 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
-(deftemplate generacion-soluciones::lista-platos
-  (multislot platos (type INSTANCE))
+(deftemplate generacion-soluciones::lista-menus
+  (multislot menus (type INSTANCE))
 )
 
 ;-------------------------------------------------------------------------------
@@ -331,8 +328,34 @@
 	(if (>= ?tam 51)  then (bind ?grup "Grande"))
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
-	(focus generacion-soluciones)
 )
+
+
+;
+; (slot bebida-por-plato (type STRING) (default "indef"))
+; (slot permitir-alcoholica (type STRING) (default "indef"))
+
+(defrule abstraccion::abstraer-permitir-alcohol ""
+		(declare (salience 695))
+		?restr <- (restricciones (alcohol ?alc))
+		?abstract-info <- (abstract-info (permitir-alcoholica ?abs-alc))
+		(test (neq ?alc "indef"))
+		(test (eq ?abs-alc "indef"))
+	=>
+		(modify ?abstract-info (permitir-alcoholica ?alc))
+)
+
+(defrule abstraccion::abstraer-bebida-por-plato ""
+		(declare (salience 694))
+		?restr <- (restricciones (bebida-por-plato ?alc))
+		?abstract-info <- (abstract-info (bebida-por-plato ?abs-alc))
+		(test (neq ?alc "indef"))
+		(test (eq ?abs-alc "indef"))
+	=>
+		(modify ?abstract-info (bebida-por-plato ?alc))
+		(focus generacion-soluciones)
+)
+
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 (deffunction generacion-soluciones::random-slot ( ?li )
@@ -364,61 +387,64 @@
 	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
 	(return ?ordinales)
 ) ;TESTED
-
-(deffunction generacion-soluciones::monta-menus-comida(?minP ?maxP ?estilo ?alc)
-	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
-	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
-	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
-	(printout t "bebida alcoholica:" ?alc crlf)
-	(bind $?bebidas (find-all-instances ((?a Bebida))
-		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
-
-	(loop-for-count (?i 1 (length ?primeros))
-			(loop-for-count (?j 1 (length ?segundos))
-					(loop-for-count (?k 1 (length ?postres))
-							(loop-for-count (?b 1 (length ?bebidas))
-									(bind ?ins
-										(make-instance (gensym) of Menu
-														(Primero (nth$ ?i ?primeros))
-														(Segundo (nth$ ?j ?segundos))
-														(Postre (nth$ ?k ?postres) )
-														(BebidaUnica (nth$ ?b ?bebidas))
-										)
-									)
-									(send ?ins calculaPrecio)
-							)
-					)
-			)
-	)
-
-	(bind $?menus
-		(find-all-instances ((?m Menu))
-			(and
-				(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
-				(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
-			)
-		)
-	)
-  ;marc: a mi el foreach no mel troba (soposo que per versió de clips. amb progn fa el mateix)
-	(progn$ (?r $?menus)
-			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
-			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
-			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
-			(printout t (send (send ?r get-BebidaUnica) get-Nombre) crlf )
-
-			(printout t (send ?r get-Precio) crlf)
-			(printout t "_________________" crlf)
-	)
-	(return ?menus)
-)
-;TODO no mirar a restricciones sino a abstract-info
-(defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
-  ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
-  (not (lista-platos))
-  =>
-
-	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo ?alc))
-
+;
+; (deffunction generacion-soluciones::monta-menus-comida(?minP ?maxP ?estilo ?alc)
+; 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?estilo) "Primero" ))
+; 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?estilo) "Segundo" ))
+; 	(bind $?postres (filtra-ordinal (platos-por-estilo ?estilo) "Postre" ))
+; 	;TODO cambiar variable abstracta
+; 	(printout t "bebida alcoholica:" ?alc crlf)
+; 	(bind $?bebidas (find-all-instances ((?a Bebida))
+; 	;TODO cambiar para la variable abstracta
+; 		(if (eq ?alc "si") then (= 1 1) else (and (neq (str-cat (send ?a get-TipoBebida)) "Cerveza" ) (neq (str-cat (send ?a get-TipoBebida)) "Vino")) )))
+;
+;   ;TODO hacer un buble diferente para si es bebida por plato o unica
+; 	(loop-for-count (?i 1 (length ?primeros))
+; 			(loop-for-count (?j 1 (length ?segundos))
+; 					(loop-for-count (?k 1 (length ?postres))
+; 							(loop-for-count (?b 1 (length ?bebidas))
+; 									(bind ?ins
+; 										(make-instance (gensym) of Menu
+; 														(Primero (nth$ ?i ?primeros))
+; 														(Segundo (nth$ ?j ?segundos))
+; 														(Postre (nth$ ?k ?postres) )
+; 														(BebidaUnica (nth$ ?b ?bebidas))
+; 										)
+; 									)
+; 									(send ?ins calculaPrecio)
+; 							)
+; 					)
+; 			)
+; 	)
+;
+; 	(bind $?menus
+; 		(find-all-instances ((?m Menu))
+; 			(and
+; 				(and (>= (send ?m get-Precio) ?minP) (<= (send ?m get-Precio) ?maxP))
+; 				(neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) )
+; 			)
+; 		)
+; 	)
+;   ;marc: a mi el foreach no mel troba (soposo que per versió de clips. amb progn fa el mateix)
+; 	(progn$ (?r $?menus)
+; 			(printout t (send (send ?r get-Primero) get-Nombre) crlf)
+; 			(printout t (send (send ?r get-Segundo) get-Nombre) crlf)
+; 			(printout t (send (send ?r get-Postre) get-Nombre) crlf )
+; 			(printout t (send (send ?r get-BebidaUnica) get-Nombre) crlf )
+;
+; 			(printout t (send ?r get-Precio) crlf)
+; 			(printout t "_________________" crlf)
+; 	)
+; 	(return ?menus)
+; )
+; ;TODO no mirar a restricciones sino a abstract-info
+; (defrule generacion-soluciones::buscar-instancias "Busca instancias de platos"
+;   ?restr <- (restricciones (min ?minimo) (max ?maximo) (estilo ?estilo) (alcohol ?alc))
+;   (not (lista-platos))
+;   =>
+;
+; 	(bind $?m (monta-menus-comida ?minimo ?maximo ?estilo ?alc))
+;
 
 	; (bind ?style ?estilo)
 	; (bind ?ordi "Primero")
@@ -452,5 +478,53 @@
   ;   (printout t "--------------------" crlf)
 	; )
 )
+
+(defrule generacion-soluciones::generar-menus ""
+		(declare (salience 599))
+		?abs-inf <- (abstract-info (nivel-economico-min ?min) (nivel-economico-max ?max)
+														(estilo ?est-abs) (temporada ?temp) (tamanyo-grupo ?tam)
+														(bebida-por-plato ?bpp) (permitir-alcoholica ?pa))
+    (not (lista-menus))
+	=>
+		(bind ?lista (generar-combinaciones ?est-abs))
+		;Eliminar platos duplicados e incompatibilidades de menu
+		(bind ?lista (eliminar-duplicados ?lista))
+
+		(bind ?lista (filtrar-temporada ?lista ?temp))
+		(bind ?lista (filtrar-complejidad ?lista ?tam))
+		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
+		(bind ?lista (calcular-precio ?lista))
+		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
+
+		(assert lista-menus (menus ?lista))
+
+		(focus refinamiento)
+
+)
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
+
+(defrule refinamiento::refinar ""
+		;(lista-menus)
+		(declare (salience 499))
+		?listam <- (lista-menus (menus ?lista))
+		?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
+	=>
+		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		(bind ?lista (ordenar ?lista))
+		(modify ?listam (menus ?lista))
+		(focus resultados-output)
+)
+
+;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+(defrule resultados-output::printear ""
+		(declare (salience 399))
+		?listam <- (lista-menus (menus ?lista))
+	=>
+		(send (nth$ 1 ?lista) imprimir)
+		(send (nth$ (/ (length$ ?lista) 2) ?lista) imprimir)
+		(send (nth$ (length$ ?lista) ?lista) imprimir)
+)
