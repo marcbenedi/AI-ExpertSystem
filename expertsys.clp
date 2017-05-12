@@ -1202,22 +1202,35 @@
 	)
 	(return (find-all-instances ((?m Menu))  TRUE  ))
 )
-
-(deffunction generacion-soluciones::eliminar-duplicados(?lista)
+;TODO: Solo elimina menus que no tengan el primero y el segundo igual
+;				pero no elimina dos menus iguales
+(deffunction generacion-soluciones::eliminar-menus-platos-duplicados(?lista)
 	(return (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
 )
 
+(deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
+	(return $lista )
+	;get de lista menu1 menu2  not primero = primero and segundo = segundo and postre1 = postre2
+	; = -> primer1 != primero2 or segundo1 != segundo2 or postre1 != postre2
+)
+
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
-	(return ?lista)
+	(return ?lista )
+	;per tot menu de lista mirar que menu temp = ?temp o que menu temp = total
 )
 
 (deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
 	(return ?lista)
+	;Si menu tamany es Individual parella o petit i complejidad plato dificil aleshores no l'agafem
 )
 
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
 	(return ?lista)
+	;?bpp = bebida por plato           ?pa = permite alcohol
+	;si bebida per plato
 )
+
+;TODO: Falta mirar plato incompatibles dins d'un menu
 
 (deffunction generacion-soluciones::calcular-precio(?lista)
 	(return ?lista)
@@ -1226,8 +1239,6 @@
 (deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
 	(return ?lista)
 )
-
-
 
 (deffunction generacion-soluciones::random-slot ( ?li )
  (bind ?li (create$ ?li))
@@ -1268,8 +1279,8 @@
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
 		;Eliminar platos duplicados e incompatibilidades de menu
-		(bind ?lista (eliminar-duplicados ?lista))
-
+		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
+		(bind ?lista (eliminar-menus-duplicados ?lista))
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
@@ -1284,15 +1295,15 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
-(deffunction filtrar-ingredientes-prohibidos(?lista ?proh)
+(deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
 	(return ?lista)
 )
 
-(deffunction filtrar-precio-concreto(?lista ?min ?max)
+(deffunction refinamiento::filtrar-precio-concreto(?lista ?min ?max)
 	(return ?lista)
 )
 
-(deffunction ordenar(?lista)
+(deffunction refinamiento::ordenar(?lista)
 	(return ?lista)
 )
 
