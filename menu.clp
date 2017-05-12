@@ -389,6 +389,11 @@
 	(return (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
 )
 
+;TODO: Falta mirar plato incompatibles dins d'un menu
+(deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
+	(return ?lista)
+)
+
 (deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
 	(return $lista )
 	;get de lista menu1 menu2  not primero = primero and segundo = segundo and postre1 = postre2
@@ -408,10 +413,15 @@
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
 	(return ?lista)
 	;?bpp = bebida por plato           ?pa = permite alcohol
-	;si bebida per plato
+	;si bebida per plato asignar una bebida per plato.
+	;			s'ha de mirar que no hi hagi incompatibilitat entre bebias de platos
+	;						si nhi ha, doncs es cambia una per a que no hi hagi incompatibilitat
+	;						el mateix si un plat te bebida alcoholica i no ho permetem
+	;si no hi ha bebida per plato
+	; intentarem agafar al beguda del primer plat i mirarem que no tingui incompatibilitats
+	;	si en te agafarem el segon i farem el mateix
+	;	si no doncs en triarem una random fins a obtenir una que ens vagi bé
 )
-
-;TODO: Falta mirar plato incompatibles dins d'un menu
 
 (deffunction generacion-soluciones::calcular-precio(?lista)
 	(return ?lista)
@@ -462,6 +472,7 @@
 		;Eliminar platos duplicados e incompatibilidades de menu
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
 		(bind ?lista (eliminar-menus-duplicados ?lista))
+		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
