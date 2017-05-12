@@ -828,14 +828,11 @@
 )
 
 (defmodule abstraccion
-	;(import MAIN ?ALL)
 	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule generacion-soluciones
-	;(import MAIN ?ALL)
-	;(import recopilacion-restr ?ALL)
 	(import abstraccion ?ALL)
 	(export ?ALL)
 )
@@ -954,14 +951,6 @@
 	?resp
 )
 
-; (deffunction MAIN::restr-si-no (?preg)
-; 	(bind ?resp (restr-opciones ?preg si no))
-; 	(if (or (eq ?resp si) (eq ?resp s))
-; 		then (return "si")
-; 		else (return "no")
-; 	)
-; )
-
 (defrule MAIN::regla-inicial "Regla inicial"
 	(declare (salience 899))
 	=>
@@ -1001,7 +990,6 @@
   (if (eq ?estilo 2) then (bind ?estilo "Moderno"))
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
-  ;(printout t crlf)
 )
 
 (defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas?"
@@ -1096,7 +1084,6 @@
 				)
 			)
 	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
-	;(printout t "economico" crlf)
 )
 
 (defrule abstraccion::abstraer-estilo-alimenticio ""
@@ -1149,11 +1136,6 @@
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
 )
-
-
-;
-; (slot bebida-por-plato (type STRING) (default "indef"))
-; (slot permitir-alcoholica (type STRING) (default "indef"))
 
 (defrule abstraccion::abstraer-permitir-alcohol ""
 		(declare (salience 695))
@@ -1254,6 +1236,28 @@
  (bind ?ins (nth$ ?r ?li))
  (return ?ins)
 )
+
+(deffunction generacion-soluciones::platos-por-estilo (?estilo)
+	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
+	(return ?filtrados)
+) ;TESTADA
+
+(deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
+	(bind ?lis (send ?plato get-Ordinal))
+	(loop-for-count (?i 1 (length$ ?lis) ) do
+		(bind ?e (nth$ ?i ?lis))
+		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
+		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
+	)
+	(return FALSE)
+) ; TESTED
+
+;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
+(deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
+	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
+	(return ?ordinales)
+) ;TESTED
+
 
 (defrule generacion-soluciones::generar-menus ""
 		(declare (salience 599))
