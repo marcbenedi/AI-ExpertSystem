@@ -360,12 +360,50 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
+(deffunction generacion-soluciones::platos-por-estilo (?estilo)
+	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
+	(return ?filtrados)
+) ;TESTADA
+
+(deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
+	;(printout t "-->" (send ?plato get-Nombre) "<--" crlf) ;TESTING
+	(bind ?lis (send ?plato get-Ordinal))
+	(loop-for-count (?i 1 (length$ ?lis) ) do
+		(bind ?e (nth$ ?i ?lis))
+		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
+		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
+	)
+	(return FALSE)
+) ; TESTED
+
+;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
+(deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
+	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
+	(return ?ordinales)
+) ;TESTED
+
+
 (deffunction generacion-soluciones::generar-combinaciones(?est-abs)
-	(return (create$ a b c d e f g))
+	(bind $?primeros (filtra-ordinal (platos-por-estilo ?est-abs) "Primero" ))
+	(bind $?segundos (filtra-ordinal (platos-por-estilo ?est-abs) "Segundo" ))
+	(bind $?postres  (filtra-ordinal (platos-por-estilo ?est-abs) "Postre"  ))
+
+	(loop-for-count (?i 1 (length ?primeros))
+		(loop-for-count (?j 1 (length ?segundos))
+			(loop-for-count (?k 1 (length ?postres))
+				(make-instance (gensym) of Menu
+					(Primero (nth$ ?i ?primeros))
+					(Segundo (nth$ ?j ?segundos))
+					(Postre (nth$ ?k  ?postres ))
+				)
+			)
+		)
+	)
+	(return (find-all-instances ((?m Menu))  TRUE  ))
 )
 
 (deffunction generacion-soluciones::eliminar-duplicados(?lista)
-	(return ?lista)
+	(return (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
 )
 
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
@@ -397,28 +435,6 @@
  (bind ?ins (nth$ ?r ?li))
  (return ?ins)
 )
-
-(deffunction generacion-soluciones::platos-por-estilo (?estilo)
-	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
-	(return ?filtrados)
-) ;TESTADA
-
-(deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
-	;(printout t "-->" (send ?plato get-Nombre) "<--" crlf) ;TESTING
-	(bind ?lis (send ?plato get-Ordinal))
-	(loop-for-count (?i 1 (length$ ?lis) ) do
-		(bind ?e (nth$ ?i ?lis))
-		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
-		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
-	)
-	(return FALSE)
-) ; TESTED
-
-;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
-(deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
-	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
-	(return ?ordinales)
-) ;TESTED
 
 (defrule generacion-soluciones::generar-menus ""
 		(declare (salience 599))
