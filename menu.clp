@@ -9,14 +9,11 @@
 )
 
 (defmodule abstraccion
-	;(import MAIN ?ALL)
 	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
 (defmodule generacion-soluciones
-	;(import MAIN ?ALL)
-	;(import recopilacion-restr ?ALL)
 	(import abstraccion ?ALL)
 	(export ?ALL)
 )
@@ -135,14 +132,6 @@
 	?resp
 )
 
-; (deffunction MAIN::restr-si-no (?preg)
-; 	(bind ?resp (restr-opciones ?preg si no))
-; 	(if (or (eq ?resp si) (eq ?resp s))
-; 		then (return "si")
-; 		else (return "no")
-; 	)
-; )
-
 (defrule MAIN::regla-inicial "Regla inicial"
 	(declare (salience 899))
 	=>
@@ -182,7 +171,6 @@
   (if (eq ?estilo 2) then (bind ?estilo "Moderno"))
   (if (eq ?estilo 3) then (bind ?estilo "Sibarita"))
   (modify ?restr (estilo ?estilo))
-  ;(printout t crlf)
 )
 
 (defrule recopilacion-restr::permite-alcoholica "Se permiten bebidas alcoholicas?"
@@ -277,7 +265,6 @@
 				)
 			)
 	(bind ?abstract-info (assert (abstract-info (nivel-economico-min ?minimo-def) (nivel-economico-max ?maximo-def))))
-	;(printout t "economico" crlf)
 )
 
 (defrule abstraccion::abstraer-estilo-alimenticio ""
@@ -330,11 +317,6 @@
 
 	(modify ?abstract-info (tamanyo-grupo ?grup))
 )
-
-
-;
-; (slot bebida-por-plato (type STRING) (default "indef"))
-; (slot permitir-alcoholica (type STRING) (default "indef"))
 
 (defrule abstraccion::abstraer-permitir-alcohol ""
 		(declare (salience 695))
@@ -404,7 +386,6 @@
 ) ;TESTADA
 
 (deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
-	;(printout t "-->" (send ?plato get-Nombre) "<--" crlf) ;TESTING
 	(bind ?lis (send ?plato get-Ordinal))
 	(loop-for-count (?i 1 (length$ ?lis) ) do
 		(bind ?e (nth$ ?i ?lis))
