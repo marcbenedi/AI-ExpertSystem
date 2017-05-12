@@ -1244,41 +1244,23 @@
 
 (deffunction generacion-soluciones::calcular-precio(?lista)
 	(return ?lista)
+	;sumar preu dels plats postre i beguda
 )
 
 (deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
 	(return ?lista)
+	;min max seran strings del tipus economic bla bla ....
+	;haurem d'agafar el preu del menu -> abstraurel a string economic bla bla ....
+	;mirar que el preu abs del menu estigui entre el min i max
 )
 
-(deffunction generacion-soluciones::random-slot ( ?li )
- (bind ?li (create$ ?li))
- (bind ?max (length ?li))
- (bind ?r (random 1 ?max))
- (bind ?ins (nth$ ?r ?li))
- (return ?ins)
-)
-
-(deffunction generacion-soluciones::platos-por-estilo (?estilo)
-	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
-	(return ?filtrados)
-) ;TESTADA
-
-(deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
-	(bind ?lis (send ?plato get-Ordinal))
-	(loop-for-count (?i 1 (length$ ?lis) ) do
-		(bind ?e (nth$ ?i ?lis))
-		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
-		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
-	)
-	(return FALSE)
-) ; TESTED
-
-;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
-(deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
-	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
-	(return ?ordinales)
-) ;TESTED
-
+; (deffunction generacion-soluciones::random-slot ( ?li )
+;  (bind ?li (create$ ?li))
+;  (bind ?max (length ?li))
+;  (bind ?r (random 1 ?max))
+;  (bind ?ins (nth$ ?r ?li))
+;  (return ?ins)
+; )
 
 (defrule generacion-soluciones::generar-menus ""
 		(declare (salience 599))
