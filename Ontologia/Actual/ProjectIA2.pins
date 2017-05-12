@@ -1,4 +1,4 @@
-; Fri May 12 11:16:51 CEST 2017
+; Tue May 09 10:19:20 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -13,7 +13,6 @@
 
 ([KB_565836_Class25] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -27,35 +26,30 @@
 
 ([KB_565836_Class26] of  Bebida
 
-	(Alcoholica "No")
 	(Nombre "Agua natural sin gas")
 	(Precio 1.0)
 	(TipoBebida Agua))
 
 ([KB_565836_Class27] of  Bebida
 
-	(Alcoholica "Si")
 	(Nombre "Vino blanco")
 	(Precio 15.0)
 	(TipoBebida Vino))
 
 ([KB_565836_Class28] of  Bebida
 
-	(Alcoholica "Si")
 	(Nombre "Vino tinto")
 	(Precio 17.0)
 	(TipoBebida Vino))
 
 ([KB_565836_Class29] of  Bebida
 
-	(Alcoholica "No")
 	(Nombre "Cocacola")
 	(Precio 1.5)
 	(TipoBebida Refresco))
 
 ([KB_565836_Class30] of  Bebida
 
-	(Alcoholica "No")
 	(Nombre "Zumo naranja natural")
 	(Precio 2.0)
 	(TipoBebida Zumo))
@@ -96,7 +90,6 @@
 
 	(BebidaIncompatible [KB_565836_Class30])
 	(BebidaUnica [KB_565836_Class27])
-	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -158,7 +151,6 @@
 
 ([KB_565836_Class55] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -172,7 +164,6 @@
 
 ([KB_565836_Class57] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [KB_565836_Class43])
@@ -185,7 +176,6 @@
 ([KB_565836_Class59] of  Plato
 
 	(BebidaUnica [KB_565836_Class27])
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -200,7 +190,6 @@
 
 ([KB_565836_Class61] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [KB_565836_Class62])
@@ -218,7 +207,6 @@
 
 	(BebidaIncompatible [KB_565836_Class28])
 	(BebidaUnica [KB_565836_Class27])
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -236,7 +224,6 @@
 
 ([KB_565836_Class64] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -250,14 +237,12 @@
 
 ([KB_565836_Class65] of  Bebida
 
-	(Alcoholica "Si")
 	(Nombre "Cava con motas de oro de 24 kilates")
 	(Precio 200.0)
 	(TipoBebida Cava))
 
 ([KB_565836_Class66] of  Bebida
 
-	(Alcoholica "No")
 	(Nombre "Champan pinky")
 	(Precio 10.0)
 	(TipoBebida Cava))
@@ -265,7 +250,6 @@
 ([KB_565836_Class67] of  Plato
 
 	(BebidaUnica [KB_565836_Class65])
-	(Complejo "Si")
 	(Disponibilidad Verano)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -297,7 +281,6 @@
 
 ([ProjectIA2_Class0] of  Plato
 
-	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -335,7 +318,6 @@
 
 ([ProjectIA2_Class15] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -354,7 +336,6 @@
 
 ([ProjectIA2_Class17] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -372,14 +353,13 @@
 
 ([ProjectIA2_Class19] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
 		[KB_565836_Class34]
 		[ProjectIA2_Class11]
 		[KB_565836_Class37])
-	(Nombre "Salchichas a la jardinera")
+	(Nombre "Salsichas a la jardinera")
 	(Ordinal Segundo)
 	(Precio 12.0)
 	(Temperatura Caliente)
@@ -391,7 +371,6 @@
 
 ([ProjectIA2_Class21] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -414,7 +393,6 @@
 
 ([ProjectIA2_Class24] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -428,7 +406,6 @@
 
 ([ProjectIA2_Class25] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes
@@ -448,7 +425,6 @@
 
 ([ProjectIA2_Class27] of  Plato
 
-	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes [ProjectIA2_Class28])
@@ -464,7 +440,6 @@
 
 ([ProjectIA2_Class29] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Primavera)
 	(Estilo Moderno)
 	(Ingredientes
@@ -479,7 +454,6 @@
 
 ([ProjectIA2_Class3] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -503,7 +477,6 @@
 
 ([ProjectIA2_Class32] of  Plato
 
-	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Sibarita)
 	(Ingredientes
@@ -525,7 +498,6 @@
 
 ([ProjectIA2_Class35] of  Plato
 
-	(Complejo "Si")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes
@@ -543,7 +515,6 @@
 
 ([ProjectIA2_Class37] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
 	(Ingredientes [ProjectIA2_Class38])
@@ -575,7 +546,6 @@
 
 ([ProjectIA2_Class8] of  Plato
 
-	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Moderno)
 	(Ingredientes

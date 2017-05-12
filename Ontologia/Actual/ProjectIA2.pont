@@ -1,5 +1,5 @@
-; Fri May 12 11:16:51 CEST 2017
-; 
+; Tue May 09 10:19:20 CEST 2017
+;
 ;+ (version "3.5")
 ;+ (build "Build 663")
 
@@ -22,13 +22,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
@@ -40,24 +40,10 @@
 ;+		(allowed-classes Plato)
 		(cardinality 3 3)
 		(create-accessor read-write))
-	(single-slot Alcoholica
-		(type STRING)
-		(default "No")
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Complejo
-		(type STRING)
-		(default "No")
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Segundo
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
@@ -65,14 +51,18 @@
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
-;+		(cardinality 1 1)
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Temperatura
@@ -104,14 +94,14 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Segundo
@@ -128,15 +118,34 @@
 (defclass Plato
 	(is-a USER)
 	(role concrete)
+	(single-slot BebidaUnica
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Complejo
+	(single-slot Nombre
 		(type STRING)
-		(default "No")
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Estilo
+		(type SYMBOL)
+		(allowed-values Tradicional Moderno Sibarita)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Disponibilidad
+		(type SYMBOL)
+		(allowed-values Total Invierno Primavera Verano Otono)
+		(default Total)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot BebidaIncompatible
+		(type INSTANCE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot TipoPlato
 		(type SYMBOL)
@@ -148,65 +157,36 @@
 		(allowed-values Frio Caliente)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot Ordinal
-		(type SYMBOL)
-		(allowed-values Primero Segundo Postre)
-		(cardinality 1 3)
-		(create-accessor read-write))
-	(single-slot BebidaUnica
+	(multislot PlatoIncompatible
 		(type INSTANCE)
-;+		(allowed-classes Bebida)
-;+		(cardinality 0 1)
-		(create-accessor read-write))
-	(single-slot Estilo
-		(type SYMBOL)
-		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
-		(create-accessor read-write))
-	(single-slot Disponibilidad
-		(type SYMBOL)
-		(allowed-values Total Invierno Primavera Verano Otono)
-		(default Total)
-;+		(cardinality 1 1)
+;+		(allowed-classes Plato)
 		(create-accessor read-write))
 	(multislot Ingredientes
 		(type INSTANCE)
 ;+		(allowed-classes Ingrediente)
 		(cardinality 1 ?VARIABLE)
 		(create-accessor read-write))
-	(multislot PlatoIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Plato)
+	(multislot Ordinal
+		(type SYMBOL)
+		(allowed-values Primero Segundo Postre)
+		(cardinality 1 3)
 		(create-accessor read-write)))
 
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot TipoBebida
 		(type SYMBOL)
 		(allowed-values Refresco Agua Vino Cerveza Zumo Cava)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Alcoholica
-		(type STRING)
-		(default "No")
 ;+		(cardinality 1 1)
 		(create-accessor read-write)))
 

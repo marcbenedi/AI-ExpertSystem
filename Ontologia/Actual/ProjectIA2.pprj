@@ -1,4 +1,4 @@
-; Fri May 12 11:16:37 CEST 2017
+; Tue May 09 10:19:09 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -20,13 +20,13 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[ProjectIA2_ProjectKB_Class20055]
-		[ProjectIA2_ProjectKB_Class20056]
-		[ProjectIA2_ProjectKB_Class20057]
-		[ProjectIA2_ProjectKB_Class20058]
-		[ProjectIA2_ProjectKB_Class20059]
-		[ProjectIA2_ProjectKB_Class20060]
-		[ProjectIA2_ProjectKB_Class20061]))
+		[ProjectIA2_ProjectKB_Class10004]
+		[ProjectIA2_ProjectKB_Class10005]
+		[ProjectIA2_ProjectKB_Class10006]
+		[ProjectIA2_ProjectKB_Class10007]
+		[ProjectIA2_ProjectKB_Class10008]
+		[ProjectIA2_ProjectKB_Class10009]
+		[ProjectIA2_ProjectKB_Class10010]))
 
 ([CLSES_TAB] of  Widget
 
@@ -70,9 +70,6 @@
 	(is_hidden FALSE)
 	(widget_class_name "edu.stanford.smi.protege.widget.InstancesTab"))
 
-([KB_117508_Class3] of  Map
-)
-
 ([KB_468814_Class0] of  String
 
 	(name "factory_class_name")
@@ -81,9 +78,9 @@
 ([KB_468814_Class1] of  Map
 
 	(entries
-		[ProjectIA2_ProjectKB_Class20062]
-		[ProjectIA2_ProjectKB_Class20063]
-		[ProjectIA2_ProjectKB_Class20064]))
+		[ProjectIA2_ProjectKB_Class10011]
+		[ProjectIA2_ProjectKB_Class10012]
+		[ProjectIA2_ProjectKB_Class10013]))
 
 ([KB_468814_Class159] of  String
 
@@ -177,6 +174,9 @@
 
 	(properties [ProjectIA2_ProjectKB_Class161]))
 
+([KB_604891_Class3] of  Map
+)
+
 ([LAYOUT_PROPERTIES] of  Property_List
 
 	(name "layout properties")
@@ -261,8 +261,8 @@
 	(browser_slot_names [BROWSER_SLOT_NAMES])
 	(customized_instance_widgets
 		[INSTANCE_ANNOTATION_FORM_WIDGET]
-		[STANDARD_FACET_FORM_WIDGET]
 		[STANDARD_SLOT_FORM_WIDGET]
+		[STANDARD_FACET_FORM_WIDGET]
 		[PAL_FORM_WIDGET]
 		[STANDARD_CLASS_FORM_WIDGET])
 	(default_cls_metaclass ":STANDARD-CLASS")
@@ -327,6 +327,62 @@
 ([ProjectIA2_ProjectKB_Class10] of  Property_List
 )
 
+([ProjectIA2_ProjectKB_Class10004] of  String
+
+	(name ":INSTANCE-ANNOTATION")
+	(string_value "%3AANNOTATION-TEXT"))
+
+([ProjectIA2_ProjectKB_Class10005] of  String
+
+	(name "Plato")
+	(string_value "Nombre"))
+
+([ProjectIA2_ProjectKB_Class10006] of  String
+
+	(name ":PAL-CONSTRAINT")
+	(string_value "%3APAL-NAME"))
+
+([ProjectIA2_ProjectKB_Class10007] of  String
+
+	(name ":META-CLASS")
+	(string_value "%3ANAME"))
+
+([ProjectIA2_ProjectKB_Class10008] of  String
+
+	(name "Menu")
+	(string_value "Platos"))
+
+([ProjectIA2_ProjectKB_Class10009] of  String
+
+	(name "Bebida")
+	(string_value "Nombre"))
+
+([ProjectIA2_ProjectKB_Class10010] of  String
+
+	(name "Ingrediente")
+	(string_value "Nombre"))
+
+([ProjectIA2_ProjectKB_Class10011] of  Map_Entry
+
+	(key "add_name_on_instance_form")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
+([ProjectIA2_ProjectKB_Class10012] of  Map_Entry
+
+	(key "change_tracking_active")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
+([ProjectIA2_ProjectKB_Class10013] of  Map_Entry
+
+	(key "suppress_instance_counting")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
 ([ProjectIA2_ProjectKB_Class11] of  Widget
 
 	(is_hidden TRUE)
@@ -378,62 +434,6 @@
 
 ([ProjectIA2_ProjectKB_Class20] of  Property_List
 )
-
-([ProjectIA2_ProjectKB_Class20055] of  String
-
-	(name ":INSTANCE-ANNOTATION")
-	(string_value "%3AANNOTATION-TEXT"))
-
-([ProjectIA2_ProjectKB_Class20056] of  String
-
-	(name "Plato")
-	(string_value "Nombre"))
-
-([ProjectIA2_ProjectKB_Class20057] of  String
-
-	(name ":META-CLASS")
-	(string_value "%3ANAME"))
-
-([ProjectIA2_ProjectKB_Class20058] of  String
-
-	(name ":PAL-CONSTRAINT")
-	(string_value "%3APAL-NAME"))
-
-([ProjectIA2_ProjectKB_Class20059] of  String
-
-	(name "Menu")
-	(string_value "Platos"))
-
-([ProjectIA2_ProjectKB_Class20060] of  String
-
-	(name "Bebida")
-	(string_value "Nombre"))
-
-([ProjectIA2_ProjectKB_Class20061] of  String
-
-	(name "Ingrediente")
-	(string_value "Nombre"))
-
-([ProjectIA2_ProjectKB_Class20062] of  Map_Entry
-
-	(key "add_name_on_instance_form")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
-
-([ProjectIA2_ProjectKB_Class20063] of  Map_Entry
-
-	(key "change_tracking_active")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
-
-([ProjectIA2_ProjectKB_Class20064] of  Map_Entry
-
-	(key "suppress_instance_counting")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
 
 ([ProjectIA2_ProjectKB_Class21] of  Widget
 
