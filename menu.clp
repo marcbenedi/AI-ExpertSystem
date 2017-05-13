@@ -453,12 +453,47 @@
 
 	)
 
-
 	(return ?respuesta )
 )
 
 (deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
-	(return ?lista)
+	(bind ?respuesta (create$))
+
+	(progn$ (?m ?lista)
+
+		(bind ?primer-plato (send ?m get-Primero))
+		(bind ?segundo-plato (send ?m get-Segundo))
+		(bind ?postre (send ?m get-Postre))
+
+		(bind ?comp-primero (send ?primer-plato get-Complejo))
+		(bind ?comp-segundo (send ?segundo-plato get-Complejo))
+		(bind ?comp-postre (send ?postre get-Complejo))
+
+		(bind ?platos-complejos "No")
+
+		(if (eq ?comp-primero "Si")
+			then (bind ?platos-complejos "Si")
+		)
+		(if (eq ?comp-segundo "Si")
+			then (bind ?platos-complejos "Si")
+		)
+		(if (eq ?comp-postre "Si")
+			then (bind ?platos-complejos "Si")
+		)
+
+		(if (eq ?platos-complejos "Si")
+			then
+				(if (or (eq ?tam "Medianoi") (eq ?tam Grande))
+					then
+						(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;Hay platos complejos pero son mucha gente
+				)
+			else
+				(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;No hay platos complejos
+		)
+
+	)
+
+	(return ?respuesta )
 	;Si menu tamany es Individual parella o petit i complejidad plato dificil aleshores no l'agafem
 )
 
