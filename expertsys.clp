@@ -1233,16 +1233,47 @@
 )
 
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
-	; (loop-for-count (?i 1 (length$ ?lista) ) do
-	; 	(bind ?m (nth$ ?i ?lista))
-	; 	(printout t (send (send ?m get-Primero) get-Nombre) crlf)
+	; (progn$ (?menu ?lista)
+	;
+	; 	(bind  ?platos-incompatibles (create$)) ;lista donde se guardara el nombre de todos los platos incompatibles del menu
+	;
+	; 	(bind ?inc-primero (send (send ?menu get-Primero) get-PlatoIncompatible))
+	; 	;(printout t (length ?inc-primero) crlf)
+	; 	(loop-for-count (?i 1 (length$ ?inc-primero)) do
+	; 		;?p <- (nth$ ?i ?inc-primero)
+	; 		(bind ?p (nth$ ?i ?inc-primero))                   ;No funciona, diu que no troba l'instancia
+	; 		(printout t (send ?p get-Nombre) crlf)
+	; 	)
 	; )
 	(return ?lista)
 )
 
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
-	(return ?lista )
-	;per tot menu de lista mirar que menu temp = ?temp o que menu temp = total
+
+	(bind ?respuesta (create$))
+
+	(progn$ (?m ?lista)
+
+		(bind ?primer-plato (send ?m get-Primero))
+		(bind ?segundo-plato (send ?m get-Segundo))
+		(bind ?postre (send ?m get-Postre))
+
+		(bind ?temp-primero (str-cat(send ?primer-plato get-Disponibilidad)))
+		(bind ?temp-segundo (str-cat(send ?segundo-plato get-Disponibilidad)))
+		(bind ?temp-postre (str-cat(send ?postre get-Disponibilidad)))
+
+		(if (and
+					(or (eq ?temp-primero ?temp) (eq ?temp-primero "Total"))
+					(or (eq ?temp-segundo ?temp) (eq ?temp-segundo "Total"))
+					(or (eq ?temp-postre ?temp) (eq ?temp-postre "Total"))
+				)
+			then (bind ?respuesta (insert$ ?respuesta 1 ?m))
+		)
+
+	)
+
+
+	(return ?respuesta )
 )
 
 (deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
