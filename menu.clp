@@ -511,15 +511,20 @@
 
 (deffunction generacion-soluciones::calcular-precio(?lista)
 
-	(loop-for-count (?i 1 (length$ ?lista)) do
-			;?m <- (nth$ ?i ?lista)
-			(bind ?m (nth$ ?i ?lista))
-			;(modify ?m (Precio 30.0)) ;No funciona -> [ARGACCES5] Function modify expected argument #1 to be of type non-void return value
-	)
+	; (bind ?m (nth$ 1 ?lista))
+	; (modify ?m (Precio 30.0))
+	; (printout t (send ?m get-Precio) crlf)
+
+
+	; (loop-for-count (?i 1 (length$ ?lista)) do
+	; 		;?m <- (nth$ ?i ?lista)
+	; 		(bind ?m (nth$ ?i ?lista))
+	; 		;(modify ?m (Precio 30.0)) ;No funciona -> [ARGACCES5] Function modify expected argument #1 to be of type non-void return value
+	; )
 
 	(progn$ (?m ?lista)
 
-		(printout t (send ?m get-Precio) crlf)
+		;(printout t (send ?m get-Precio) crlf)
 
 	)
 
