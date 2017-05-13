@@ -1313,7 +1313,6 @@
 	)
 
 	(return ?respuesta )
-	;Si menu tamany es Individual parella o petit i complejidad plato dificil aleshores no l'agafem
 )
 
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
@@ -1330,8 +1329,21 @@
 )
 
 (deffunction generacion-soluciones::calcular-precio(?lista)
+
+	(loop-for-count (?i 1 (length$ ?lista)) do
+			;?m <- (nth$ ?i ?lista)
+			(bind ?m (nth$ ?i ?lista))
+			(modify ?m (Precio 30))
+	)
+
+	(progn$ (?m ?lista)
+
+		(printout t (send ?m get-Precio) crlf)
+
+	)
+
+
 	(return ?lista)
-	;sumar preu dels plats postre i beguda
 )
 
 (deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
