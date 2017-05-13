@@ -1202,21 +1202,42 @@
 	)
 	(return (find-all-instances ((?m Menu))  TRUE  ))
 )
-;TODO: Solo elimina menus que no tengan el primero y el segundo igual
-;				pero no elimina dos menus iguales
-(deffunction generacion-soluciones::eliminar-menus-platos-duplicados(?lista)
-	(return (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
-)
 
-;TODO: Falta mirar plato incompatibles dins d'un menu
-(deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
-	(return ?lista)
+
+(deffunction generacion-soluciones::eliminar-menus-platos-duplicados(?lista)
+	(bind ?temp (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
+	(return ?temp)
 )
 
 (deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
-	(return $lista )
-	;get de lista menu1 menu2  not primero = primero and segundo = segundo and postre1 = postre2
-	; = -> primer1 != primero2 or segundo1 != segundo2 or postre1 != postre2
+	(bind ?respuesta (create$))
+	;Para todos los menus de la ?lista miramos si hay algunos que sean iguales
+	(progn$ (?menu ?lista)
+		(bind ?boolean "no_existent")
+		;Miramos que no haya un menu igual a ?menu es la lisa ?respuesta
+		(progn$ (?existent ?respuesta)
+			(if
+				(and
+					(eq (send (send ?menu get-Primero) get-Nombre) (send (send ?existent get-Primero) get-Nombre))
+					(eq (send (send ?menu get-Segundo) get-Nombre) (send (send ?existent get-Segundo) get-Nombre))
+					(eq (send (send ?menu get-Postre) get-Nombre) (send (send ?existent get-Postre) get-Nombre))
+				)
+				then
+					(bind ?boolean "existent")
+			)
+		)
+		;Cuando ya los hemos mirado todos de ?respuesta, si no hemos encontrado uno igual insertamos
+		(if (neq ?boolean "existent") then (bind ?respuesta (insert$ ?respuesta 1 ?menu)))
+	)
+	(return ?respuesta )
+)
+
+(deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
+	; (loop-for-count (?i 1 (length$ ?lista) ) do
+	; 	(bind ?m (nth$ ?i ?lista))
+	; 	(printout t (send (send ?m get-Primero) get-Nombre) crlf)
+	; )
+	(return ?lista)
 )
 
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
@@ -1270,8 +1291,8 @@
     (not (lista-menus))
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
-		;Eliminar platos duplicados e incompatibilidades de menu
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
+
 		(bind ?lista (eliminar-menus-duplicados ?lista))
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
 		(bind ?lista (filtrar-temporada ?lista ?temp))
