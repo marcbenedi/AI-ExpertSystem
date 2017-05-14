@@ -360,29 +360,29 @@
 ;------------------------------generacion-soluciones----------------------------
 ;-------------------------------------------------------------------------------
 
+;Devuelve platos que tienen un estilo concreto
 (deffunction generacion-soluciones::platos-por-estilo (?estilo)
 	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
 	(return ?filtrados)
 ) ;TESTADA
 
+;Devuelve TRUE o FALSE dependiendo de si el plato puede ser servido como ordinal
 (deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
-	;(printout t "-->" (send ?plato get-Nombre) "<--" crlf) ;TESTING
 	(bind ?lis (send ?plato get-Ordinal))
 	(loop-for-count (?i 1 (length$ ?lis) ) do
 		(bind ?e (nth$ ?i ?lis))
-		;(printout t "-->" (str-cat ?e) "<--" crlf) ;TESTING
 		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
 	)
 	(return FALSE)
 ) ; TESTED
 
-;DADA UNA LISTA DE PLATOS, FILTRA POR ORDINAL ("Primero Segundo Postre")
+;Dada una lista de platos, filtra por ordinal ("Primero Segundo Postre")
 (deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
 	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
 	(return ?ordinales)
 ) ;TESTED
 
-
+;Genera todos los menus posibles que tengan un estilo concreto
 (deffunction generacion-soluciones::generar-combinaciones(?est-abs)
 	(bind $?primeros (filtra-ordinal (platos-por-estilo ?est-abs) "Primero" ))
 	(bind $?segundos (filtra-ordinal (platos-por-estilo ?est-abs) "Segundo" ))
@@ -402,7 +402,7 @@
 	(return (find-all-instances ((?m Menu))  TRUE  ))
 )
 
-
+;Elimina los menus en que su primer plato es igual que el segundo
 (deffunction generacion-soluciones::eliminar-menus-platos-duplicados(?lista)
 	(bind ?temp (find-all-instances ((?m Menu)) (and (neq (send (send ?m get-Primero) get-Nombre) (send (send ?m get-Segundo) get-Nombre) ) (member ?m ?lista) )))
 	(return ?temp)
@@ -431,6 +431,7 @@
 ; 	(return ?respuesta )
 ; )
 
+;Elimina de la lista los menus que contienen platos incompatibles entre si
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
 	; (progn$ (?menu ?lista)
 	;
@@ -447,6 +448,7 @@
 	(return ?lista)
 )
 
+;Elimina los menus que tengan algun plato disponible en una temporada
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
 
 	(bind ?respuesta (create$))
@@ -474,6 +476,7 @@
 	(return ?respuesta )
 )
 
+;Elimina los menus que tengan platos complejos si es un grupo no lo suficientemente grande
 (deffunction generacion-soluciones::filtrar-complejidad(?lista ?tam)
 	(bind ?respuesta (create$))
 
@@ -514,6 +517,7 @@
 	(return ?respuesta )
 )
 
+;Asigna una bebida al menu (o por plato)
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
 	(return ?lista)
 	;?bpp = bebida por plato           ?pa = permite alcohol
@@ -527,6 +531,7 @@
 	;	si no doncs en triarem una random fins a obtenir una que ens vagi bé
 )
 
+;Calcula el precio del menu
 (deffunction generacion-soluciones::calcular-precio(?lista)
 	(loop-for-count (?i 1 (length$ ?lista)) do
 
@@ -545,7 +550,7 @@
 	(return ?lista)
 )
 
-
+;Elimina los menus que no esten dentro del rango del precio
 (deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
 	;Economico Normal Medio Rico
 	;    0       1      2     3
@@ -593,6 +598,7 @@
 ;  (return ?ins)
 ; )
 
+;Genera menus y los filtra con las restricciones abstractas
 (defrule generacion-soluciones::generar-menus ""
 		(declare (salience 599))
 		?abs-inf <- (abstract-info (nivel-economico-min ?min) (nivel-economico-max ?max)
@@ -619,18 +625,22 @@
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
 
+;Elimina los menus que contengan un plato que contenga un ingrediente prohibido
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
 	(return ?lista)
 )
 
+;Elimina los menus que no esten dentro del rango de precio
 (deffunction refinamiento::filtrar-precio-concreto(?lista ?min ?max)
 	(return ?lista)
 )
 
+;Ordena los menus por precio
 (deffunction refinamiento::ordenar(?lista)
 	(return ?lista)
 )
 
+;Filtra los menus con las restricciones concretas
 (defrule refinamiento::refinar ""
 		;(lista-menus)
 		(declare (salience 499))
@@ -647,6 +657,7 @@
 ;----------------------------resultados-output----------------------------------
 ;-------------------------------------------------------------------------------
 
+;Imprime 3 menus, el más barato, el más caro y el del medio
 (defrule resultados-output::printear ""
 		(declare (salience 399))
 		?listam <- (lista-menus (menus ?lista))
