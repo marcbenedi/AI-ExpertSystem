@@ -527,11 +527,44 @@
 	(return ?lista)
 )
 
+
 (deffunction generacion-soluciones::filtrar-rango-precio(?lista ?min ?max)
-	(return ?lista)
-	;min max seran strings del tipus economic bla bla ....
-	;haurem d'agafar el preu del menu -> abstraurel a string economic bla bla ....
-	;mirar que el preu abs del menu estigui entre el min i max
+	;Economico Normal Medio Rico
+	;    0       1      2     3
+
+	(if (eq ?min "Economico") then (bind ?min-def 0))
+	(if (eq ?min "Normal") then (bind ?min-def 1))
+	(if (eq ?min "Medio") then (bind ?min-def 2))
+	(if (eq ?min "Economico") then (bind ?min-def 3))
+
+	(if (eq ?max "Economico") then (bind ?max-def 0))
+	(if (eq ?max "Normal") then (bind ?max-def 1))
+	(if (eq ?max "Medio") then (bind ?max-def 2))
+	(if (eq ?max "Economico") then (bind ?max-def 3))
+
+	(bind ?resultado (create$))
+
+	(loop-for-count (?i 1 (length$ ?lista) ) do
+		(bind ?m (nth$ ?i ?lista))
+		(bind ?precio (send ?m get-Precio))
+		(if (>= ?precio 100.0)
+			then (bind ?def 3)
+			else (if (>= ?precio 50.0)
+							then (bind ?def 2)
+							else (if (>= ?precio 25.0)
+											then (bind ?def 1)
+											else (bind ?def 0)
+										)
+						)
+		)
+
+		(if (and (>= ?def ?min-def) (>= ?max-def ?def)) ;<---------TODO:Comprobar que estiguib bé les comparacions
+				then
+					(insert$ ?resultado 1 ?m)
+		)
+
+	)
+	(return ?resultado)
 )
 
 ; (deffunction generacion-soluciones::random-slot ( ?li )
