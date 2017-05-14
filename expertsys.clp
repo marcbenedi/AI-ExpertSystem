@@ -1209,28 +1209,28 @@
 	(return ?temp)
 )
 
-(deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
-	(bind ?respuesta (create$))
-	;Para todos los menus de la ?lista miramos si hay algunos que sean iguales
-	(progn$ (?menu ?lista)
-		(bind ?boolean "no_existent")
-		;Miramos que no haya un menu igual a ?menu es la lisa ?respuesta
-		(progn$ (?existent ?respuesta)
-			(if
-				(and
-					(eq (send (send ?menu get-Primero) get-Nombre) (send (send ?existent get-Primero) get-Nombre))
-					(eq (send (send ?menu get-Segundo) get-Nombre) (send (send ?existent get-Segundo) get-Nombre))
-					(eq (send (send ?menu get-Postre) get-Nombre) (send (send ?existent get-Postre) get-Nombre))
-				)
-				then
-					(bind ?boolean "existent")
-			)
-		)
-		;Cuando ya los hemos mirado todos de ?respuesta, si no hemos encontrado uno igual insertamos
-		(if (neq ?boolean "existent") then (bind ?respuesta (insert$ ?respuesta 1 ?menu)))
-	)
-	(return ?respuesta )
-)
+; (deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
+; 	(bind ?respuesta (create$))
+; 	;Para todos los menus de la ?lista miramos si hay algunos que sean iguales
+; 	(progn$ (?menu ?lista)
+; 		(bind ?boolean "no_existent")
+; 		;Miramos que no haya un menu igual a ?menu es la lisa ?respuesta
+; 		(progn$ (?existent ?respuesta)
+; 			(if
+; 				(and
+; 					(eq (send (send ?menu get-Primero) get-Nombre) (send (send ?existent get-Primero) get-Nombre))
+; 					(eq (send (send ?menu get-Segundo) get-Nombre) (send (send ?existent get-Segundo) get-Nombre))
+; 					(eq (send (send ?menu get-Postre) get-Nombre) (send (send ?existent get-Postre) get-Nombre))
+; 				)
+; 				then
+; 					(bind ?boolean "existent")
+; 			)
+; 		)
+; 		;Cuando ya los hemos mirado todos de ?respuesta, si no hemos encontrado uno igual insertamos
+; 		(if (neq ?boolean "existent") then (bind ?respuesta (insert$ ?respuesta 1 ?menu)))
+; 	)
+; 	(return ?respuesta )
+; )
 
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
 	; (progn$ (?menu ?lista)
@@ -1403,8 +1403,8 @@
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
-
-		(bind ?lista (eliminar-menus-duplicados ?lista))
+		;Por la generación que hacemos, no se pueden dar menus duplicados
+		;(bind ?lista (eliminar-menus-duplicados ?lista))
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
