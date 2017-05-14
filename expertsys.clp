@@ -822,21 +822,26 @@
 
 (defmodule MAIN (export ?ALL))
 
+;Modulo encargado de hacer preguntas y guardar las respuestas
 (defmodule recopilacion-restr
 	 (import MAIN ?ALL)
 	 (export ?ALL)
 )
 
+;Modulo encargado de coger las respuestas y abstraer las que sean necesarias
 (defmodule abstraccion
 	(import recopilacion-restr ?ALL)
 	(export ?ALL)
 )
 
+;Modulo encargado de generar menus y asegurarse de que cumplen las condiciones
+;impuestas por las variables abstractas
 (defmodule generacion-soluciones
 	(import abstraccion ?ALL)
 	(export ?ALL)
 )
 
+;Modulo encargado de filtrar los menus restantes con las variables concretas
 (defmodule refinamiento
 	(import MAIN ?ALL)
 	(import generacion-soluciones ?ALL)
@@ -844,6 +849,7 @@
 	(export ?ALL)
 )
 
+;Modulo encargado de imprimir 3 menus (economico, medio,caro)
 (defmodule resultados-output
 	(import MAIN ?ALL)
 	(import generacion-soluciones ?ALL)
@@ -853,6 +859,7 @@
 ;-----------------------------------TEMPLATES-----------------------------------
 ;-------------------------------------------------------------------------------
 
+;Guarda las variables abstractas
 (deftemplate abstraccion::abstract-info
 	(slot nivel-economico-min (type STRING) (default "indef"))
 	(slot nivel-economico-max (type STRING) (default "indef"))
@@ -866,9 +873,10 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
+;Guarda las restricciones concretas
 (deftemplate recopilacion-restr::restricciones
-	(slot min (type FLOAT) (default -1.0)) ; precio minimo a pagar
-	(slot max (type FLOAT)(default 9999.99)) ; precio maximo a pagar
+	(slot min (type FLOAT) (default -1.0))
+	(slot max (type FLOAT)(default 9999.99))
 	(slot estilo (type STRING)(default "indef"))
 	(multislot ingredientes (type STRING) (default "indef"))
 	(slot alcohol (type STRING) (default "indef"))
@@ -880,6 +888,7 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
+;Guarda una lista de menus que cumplen las restricciones abstractas
 (deftemplate generacion-soluciones::lista-menus
   (multislot menus (type INSTANCE))
 )
@@ -887,22 +896,35 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
-(defmessage-handler MAIN::Menu calculaPrecio()
-  (bind ?coste (send ?self:Primero get-Precio))
-	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
-	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
-	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
-	(bind ?self:Precio ?coste)
+; (defmessage-handler MAIN::Menu calculaPrecio()
+;   (bind ?coste (send ?self:Primero get-Precio))
+; 	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
+; 	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
+; 	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
+; 	(bind ?self:Precio ?coste)
+; )
+
+; (defmessage-handler MAIN::Plato imprimir()
+;   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
+; )
+
+;--------------------------------MAIN-------------------------------------------
+;-------------------------------------------------------------------------------
+(defrule MAIN::regla-inicial "Regla inicial"
+	(declare (salience 899))
+	=>
+	(printout t"----------------------------------------------------------" crlf)
+  (printout t"        Bienvenido a nuestro generador de menus           " crlf)
+	(printout t"      Por favor responda a las siguentes preguntas          " crlf)
+	(printout t"----------------------------------------------------------" crlf)
+  (printout t crlf)
+	(focus recopilacion-restr)
 )
 
-(defmessage-handler MAIN::Plato imprimir()
-  (printout t ?self:Nombre " " ?self:Precio "€" crlf)
-)
-
-;-------------------------------------------------------------------------------
+;----------------------------recopilacion-restr---------------------------------
 ;-------------------------------------------------------------------------------
 
-(deffunction MAIN::restr-eleccion (?pregunta ?min ?max)
+(deffunction recopilacion-restr::restr-eleccion (?pregunta ?min ?max)
 	(bind ?salida (format nil "%s (desde %d hasta %d)" ?pregunta ?min ?max))
 	(printout t ?salida crlf)
 	(bind ?respuesta (read))
@@ -915,7 +937,7 @@
 	?respuesta
 )
 
-(deffunction MAIN::restr-multi-eleccion (?pregunta ?min ?max)
+(deffunction recopilacion-restr::restr-multi-eleccion (?pregunta ?min ?max)
 	(bind ?salida (format nil "%s (des de %d hasta %d)" ?pregunta ?min ?max))
 	(printout t ?salida crlf)
 	(bind ?respuesta (create$))
@@ -929,7 +951,7 @@
 	?respuesta
 )
 
-(deffunction MAIN::restr-opciones (?preg $?opciones)
+(deffunction recopilacion-restr::restr-opciones (?preg $?opciones)
 	(bind ?salida (format nil "%s" ?preg))
 	(printout t ?salida crlf)
 	(progn$ (?valor ?opciones)
@@ -940,7 +962,7 @@
 	?resp
 )
 
-(deffunction MAIN::restr-multi-opciones (?preg $?opciones)
+(deffunction recopilacion-restr::restr-multi-opciones (?preg $?opciones)
 	(bind ?salida (format nil "%s" ?preg))
 	(printout t ?salida crlf)
 	(progn$ (?valor ?opciones)
@@ -951,18 +973,6 @@
 	?resp
 )
 
-(defrule MAIN::regla-inicial "Regla inicial"
-	(declare (salience 899))
-	=>
-	(printout t"----------------------------------------------------------" crlf)
-  (printout t"        Bienvenido a nuestro generador de menus           " crlf)
-	(printout t"      Por favor responda a las siguentes preguntas          " crlf)
-	(printout t"----------------------------------------------------------" crlf)
-  (printout t crlf)
-	(focus recopilacion-restr)
-)
-;-------------------------------------------------------------------------------
-;-------------------------------------------------------------------------------
 (defrule recopilacion-restr::precio-maximo "Escoje precio maximo"
 	(declare (salience 799))
 	(not (restricciones))
@@ -1054,7 +1064,7 @@
 	(modify ?restr (ingredientes ?nombres))
   (focus abstraccion)
 )
-;-------------------------------------------------------------------------------
+;-----------------------------------abstraccion---------------------------------
 ;-------------------------------------------------------------------------------
 (defrule abstraccion::abstraer-nivel-economico "Convierte el margen max min en Rico - ... - Pobre"
 	(declare (salience 699))
@@ -1158,7 +1168,7 @@
 		(focus generacion-soluciones)
 )
 
-;-------------------------------------------------------------------------------
+;------------------------------generacion-soluciones----------------------------
 ;-------------------------------------------------------------------------------
 
 (deffunction generacion-soluciones::platos-por-estilo (?estilo)
@@ -1417,7 +1427,7 @@
 		(focus refinamiento)
 
 )
-;-------------------------------------------------------------------------------
+;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
 
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
@@ -1445,7 +1455,7 @@
 		(focus resultados-output)
 )
 
-;-------------------------------------------------------------------------------
+;----------------------------resultados-output----------------------------------
 ;-------------------------------------------------------------------------------
 
 (defrule resultados-output::printear ""
