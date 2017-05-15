@@ -904,9 +904,16 @@
 ; 	(bind ?self:Precio ?coste)
 ; )
 
-; (defmessage-handler MAIN::Plato imprimir()
-;   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
-; )
+(defmessage-handler MAIN::Plato imprimir()
+  (printout t ?self:Nombre " " ?self:Precio "€" crlf)
+)
+
+(defmessage-handler MAIN::Menu imprimir()
+  (send ?self:Primero imprimir)
+  (send ?self:Segundo imprimir)
+  (send ?self:Postre imprimir)
+	(printout t "_____________________" crlf)
+)
 
 ;--------------------------------MAIN-------------------------------------------
 ;-------------------------------------------------------------------------------
@@ -1060,7 +1067,7 @@
 			(bind ?nombres (insert$ ?nombres 1 ?nombre))
 		)
 	)
-	(printout t ?nombres crlf)
+	;(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
   (focus abstraccion)
 )
@@ -1252,19 +1259,17 @@
 
 ;Elimina de la lista los menus que contienen platos incompatibles entre si
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
-	; (progn$ (?menu ?lista)
-	;
-	; 	(bind  ?platos-incompatibles (create$)) ;lista donde se guardara el nombre de todos los platos incompatibles del menu
-	;
-	; 	(bind ?inc-primero (send (send ?menu get-Primero) get-PlatoIncompatible))
-	; 	;(printout t (length ?inc-primero) crlf)
-	; 	(loop-for-count (?i 1 (length$ ?inc-primero)) do
-	; 		;?p <- (nth$ ?i ?inc-primero)
-	; 		(bind ?p (nth$ ?i ?inc-primero))                   ;No funciona, diu que no troba l'instancia
-	; 		(printout t (send ?p get-Nombre) crlf)
-	; 	)
-	; )
-	(return ?lista)
+	(bind ?temp (find-all-instances ((?m Menu))
+		(and
+			(not (member (send ?m get-Primero) (send (send ?m get-Segundo) get-PlatoIncompatible)))
+			(not (member (send ?m get-Segundo) (send (send ?m get-Primero) get-PlatoIncompatible)))
+			(member ?m ?lista)
+		)          )
+	)
+	(progn$ (?m ?temp)
+		(send ?m imprimir)
+	)
+	(return ?temp)
 )
 
 ;Elimina los menus que tengan algun plato disponible en una temporada

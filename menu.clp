@@ -85,9 +85,16 @@
 ; 	(bind ?self:Precio ?coste)
 ; )
 
-; (defmessage-handler MAIN::Plato imprimir()
-;   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
-; )
+(defmessage-handler MAIN::Plato imprimir()
+  (printout t ?self:Nombre " " ?self:Precio "€" crlf)
+)
+
+(defmessage-handler MAIN::Menu imprimir()
+  (send ?self:Primero imprimir)
+  (send ?self:Segundo imprimir)
+  (send ?self:Postre imprimir)
+	(printout t "_____________________" crlf)
+)
 
 ;--------------------------------MAIN-------------------------------------------
 ;-------------------------------------------------------------------------------
@@ -241,7 +248,7 @@
 			(bind ?nombres (insert$ ?nombres 1 ?nombre))
 		)
 	)
-	(printout t ?nombres crlf)
+	;(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
   (focus abstraccion)
 )
@@ -433,28 +440,23 @@
 
 ;Elimina de la lista los menus que contienen platos incompatibles entre si
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
-	; (progn$ (?menu ?lista)
-	;
-	; 	(bind  ?platos-incompatibles (create$)) ;lista donde se guardara el nombre de todos los platos incompatibles del menu
-	;
-	; 	(bind ?inc-primero (send (send ?menu get-Primero) get-PlatoIncompatible))
-	; 	;(printout t (length ?inc-primero) crlf)
-	; 	(loop-for-count (?i 1 (length$ ?inc-primero)) do
-	; 		;?p <- (nth$ ?i ?inc-primero)
-	; 		(bind ?p (nth$ ?i ?inc-primero))                   ;No funciona, diu que no troba l'instancia
-	; 		(printout t (send ?p get-Nombre) crlf)
-	; 	)
-	; )
-	(return ?lista)
+	(bind ?temp (find-all-instances ((?m Menu))
+		(and
+			(not (member (send ?m get-Primero) (send (send ?m get-Segundo) get-PlatoIncompatible)))
+			(not (member (send ?m get-Segundo) (send (send ?m get-Primero) get-PlatoIncompatible)))
+			(member ?m ?lista)
+		)          )
+	)
+	(progn$ (?m ?temp)
+		(send ?m imprimir)
+	)
+	(return ?temp)
 )
 
-;Elimina los menus que tengan algun plato disponible en una temporada
+;Elimina los menus que tengan algun plato no disponible en la temporada temp
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
-
 	(bind ?respuesta (create$))
-
 	(progn$ (?m ?lista)
-
 		(bind ?primer-plato (send ?m get-Primero))
 		(bind ?segundo-plato (send ?m get-Segundo))
 		(bind ?postre (send ?m get-Postre))
@@ -470,10 +472,8 @@
 				)
 			then (bind ?respuesta (insert$ ?respuesta 1 ?m))
 		)
-
 	)
-
-	(return ?respuesta )
+	(return ?respuesta)
 )
 
 ;Elimina los menus que tengan platos complejos si es un grupo no lo suficientemente grande
@@ -504,17 +504,16 @@
 
 		(if (eq ?platos-complejos "Si")
 			then
-				(if (or (eq ?tam "Medianoi") (eq ?tam Grande))
+				(if (or (eq ?tam "Mediano") (eq ?tam "Grande"))
 					then
 						(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;Hay platos complejos pero son mucha gente
 				)
 			else
 				(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;No hay platos complejos
 		)
-
 	)
 
-	(return ?respuesta )
+	(return ?respuesta)
 )
 
 ;Asigna una bebida al menu (o por plato)
