@@ -908,12 +908,35 @@
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
 )
 
+(defmessage-handler MAIN::Bebida imprimir()
+  (printout t ?self:Nombre " " ?self:Precio "€" crlf)
+)
+
+(defmessage-handler MAIN::Menu obtenir-BebidaUnica ()
+	(dynamic-get BebidaUnica)
+)
+
+(defmessage-handler MAIN::Plato obtenir-BebidaUnica ()
+	(dynamic-get BebidaUnica)
+)
+
+(defmessage-handler MAIN::Plato precio-con-bebida ()
+	(return (+ ?self:Precio (send ?self:BebidaUnica get-Precio) ))
+)
+
 (defmessage-handler MAIN::Menu imprimir()
   (send ?self:Primero imprimir)
   (send ?self:Segundo imprimir)
   (send ?self:Postre imprimir)
+	(if (neq (send ?self obtenir-BebidaUnica) [nil]) then
+		(printout t "Bebida: " )
+		(send ?self:BebidaUnica imprimir)
+		(printout t "Precio total: " (+ (send ?self:Primero get-Precio) (send ?self:Segundo get-Precio) (send ?self:Postre get-Precio) (send ?self:BebidaUnica get-Precio) ) "€" crlf)
+	)
 	(printout t "_____________________" crlf)
 )
+
+
 
 ;--------------------------------MAIN-------------------------------------------
 ;-------------------------------------------------------------------------------
@@ -1234,29 +1257,6 @@
 	(return ?temp)
 )
 
-; (deffunction generacion-soluciones::eliminar-menus-duplicados(?lista)
-; 	(bind ?respuesta (create$))
-; 	;Para todos los menus de la ?lista miramos si hay algunos que sean iguales
-; 	(progn$ (?menu ?lista)
-; 		(bind ?boolean "no_existent")
-; 		;Miramos que no haya un menu igual a ?menu es la lisa ?respuesta
-; 		(progn$ (?existent ?respuesta)
-; 			(if
-; 				(and
-; 					(eq (send (send ?menu get-Primero) get-Nombre) (send (send ?existent get-Primero) get-Nombre))
-; 					(eq (send (send ?menu get-Segundo) get-Nombre) (send (send ?existent get-Segundo) get-Nombre))
-; 					(eq (send (send ?menu get-Postre) get-Nombre) (send (send ?existent get-Postre) get-Nombre))
-; 				)
-; 				then
-; 					(bind ?boolean "existent")
-; 			)
-; 		)
-; 		;Cuando ya los hemos mirado todos de ?respuesta, si no hemos encontrado uno igual insertamos
-; 		(if (neq ?boolean "existent") then (bind ?respuesta (insert$ ?respuesta 1 ?menu)))
-; 	)
-; 	(return ?respuesta )
-; )
-
 ;Elimina de la lista los menus que contienen platos incompatibles entre si
 (deffunction  generacion-soluciones::eliminar-menus-platos-incompatibles(?lista)
 	(bind ?temp (find-all-instances ((?m Menu))
@@ -1266,19 +1266,13 @@
 			(member ?m ?lista)
 		)          )
 	)
-	(progn$ (?m ?temp)
-		(send ?m imprimir)
-	)
 	(return ?temp)
 )
 
-;Elimina los menus que tengan algun plato disponible en una temporada
+;Elimina los menus que tengan algun plato no disponible en la temporada temp
 (deffunction generacion-soluciones::filtrar-temporada(?lista ?temp)
-
 	(bind ?respuesta (create$))
-
 	(progn$ (?m ?lista)
-
 		(bind ?primer-plato (send ?m get-Primero))
 		(bind ?segundo-plato (send ?m get-Segundo))
 		(bind ?postre (send ?m get-Postre))
@@ -1294,10 +1288,8 @@
 				)
 			then (bind ?respuesta (insert$ ?respuesta 1 ?m))
 		)
-
 	)
-
-	(return ?respuesta )
+	(return ?respuesta)
 )
 
 ;Elimina los menus que tengan platos complejos si es un grupo no lo suficientemente grande
@@ -1328,21 +1320,89 @@
 
 		(if (eq ?platos-complejos "Si")
 			then
-				(if (or (eq ?tam "Medianoi") (eq ?tam Grande))
+				(if (or (eq ?tam "Mediano") (eq ?tam "Grande"))
 					then
 						(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;Hay platos complejos pero son mucha gente
 				)
 			else
 				(bind ?respuesta (insert$ ?respuesta 1 ?m)) ;No hay platos complejos
 		)
-
 	)
 
-	(return ?respuesta )
+	(return ?respuesta)
+)
+
+(deffunction generacion-soluciones::puede-bebida-en-menu(?bebida ?menu ?pa)
+	;(printout t "pa: " ?pa crlf)
+	;(printout t "bebida: " (send ?bebida get-Nombre) crlf)
+	; (printout t "bebida alcoholica: " (send ?bebida get-Alcoholica) crlf)
+	(if (and (eq ?pa "no") (eq (send ?bebida get-Alcoholica) "Si" )) then
+	 (return FALSE)
+	)
+	(bind $?incPri (send (send ?menu get-Primero) get-BebidaIncompatible))
+	(bind $?incSeg (send (send ?menu get-Segundo) get-BebidaIncompatible))
+	(if (and (not (member$ ?bebida $?incPri)) (not (member$ ?bebida $?incSeg)) )
+		then (return TRUE)
+		else (return FALSE)
+ 	)
+)
+
+(deffunction generacion-soluciones::random-slot ( ?li )
+ (bind ?li (create$ ?li))
+ (bind ?max (length ?li))
+ (bind ?r (random 1 ?max))
+ (bind ?ins (nth$ ?r ?li))
+ (return ?ins)
 )
 
 ;Asigna una bebida al menu (o por plato)
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
+	;(bind ?respuesta (create$))
+	;(printout t ?pa crlf)
+	(progn$ (?m ?lista)
+		(if (eq ?bpp "no") then
+			(bind ?recPri (send (send ?m get-Primero) obtenir-BebidaUnica))
+			(bind ?recSeg (send (send ?m get-Segundo) obtenir-BebidaUnica))
+
+			;(printout t ?recPri crlf)
+			;(printout t ?recSeg crlf)
+
+			(if (eq ?recPri [nil]) then
+				;(printout t "++++++++++++++++ recPri es nil" crlf)
+				else
+				(if (eq (puede-bebida-en-menu ?recPri ?m ?pa) TRUE)
+					then (send ?m put-BebidaUnica ?recPri)
+					;(printout t "Bebida de primero asignada" crlf)
+				)
+				;(printout t "------------------ recPri NO es nil" crlf)
+			)
+
+			(if (neq ?recSeg [nil]) then
+				(if (eq (puede-bebida-en-menu ?recSeg ?m ?pa) TRUE)
+					then (send ?m put-BebidaUnica ?recSeg)
+					;(printout t "Bebida de segundo asignada" crlf)
+				)
+				;(printout t "------------------ recSeg NO es nil" crlf)
+				;else (printout t "++++++++++++++++ recSeg es nil" crlf)
+			)
+
+			(if (eq (send ?m obtenir-BebidaUnica) [nil]) then
+				;(printout t "ENTRO EN LA SELECCION ALEATORIA" crlf)
+				(bind $?incPri (send (send ?m get-Primero) get-BebidaIncompatible))
+				(bind $?incSeg (send (send ?m get-Segundo) get-BebidaIncompatible))
+				(bind ?bebs (find-all-instances ((?b Bebida))
+				 (and
+					 (not (member$ ?b $?incPri))
+					 (not (member$ ?b $?incSeg))
+				 )))
+				 (if (eq ?pa "no") then
+				 		(bind ?bebs (find-all-instances ((?b Bebida)) (and (neq (send ?b get-Alcoholica) "Si") (member$ ?b ?bebs))))
+				 )
+				 (send ?m put-BebidaUnica (random-slot ?bebs))
+			)
+		)
+		(printout t (send ?m imprimir))
+	)
 	(return ?lista)
 	;?bpp = bebida por plato           ?pa = permite alcohol
 	;si bebida per plato asignar una bebida per plato.
@@ -1356,7 +1416,7 @@
 )
 
 ;Calcula el precio del menu
-(deffunction generacion-soluciones::calcular-precio(?lista)
+(deffunction generacion-soluciones::calcular-precio(?lista ?bpp)
 	(loop-for-count (?i 1 (length$ ?lista)) do
 
 			(bind ?m (nth$ ?i ?lista))
@@ -1365,10 +1425,12 @@
 			(bind ?segundo-plato (send ?m get-Segundo))
 			(bind ?postre (send ?m get-Postre))
 
-			;(bind ?bebida (send ?m get-BebidaUnica))
-			;(bind ?preu (+ (send ?primer-plato get-Precio)  (send ?segundo-plato get-Precio) (send ?postre get-Precio)  (send ?bebida get-Precio) ))
-			(bind ?preu (+ (send ?primer-plato get-Precio)  (send ?segundo-plato get-Precio) (send ?postre get-Precio) ))
-
+			(if (eq ?bpp "no") then
+				(bind ?bebida (send ?m get-BebidaUnica))
+				(bind ?preu (+ (send ?primer-plato get-Precio) (send ?segundo-plato get-Precio) (send ?postre get-Precio) (send ?bebida get-Precio) ))
+			else
+				(bind ?preu (+ (send ?primer-plato precio-con-bebida) (send ?segundo-plato precio-con-bebida) (send ?postre get-Precio) ))
+			)
 			(send ?m put-Precio ?preu)
 	)
 	(return ?lista)
@@ -1382,12 +1444,12 @@
 	(if (eq ?min "Economico") then (bind ?min-def 0))
 	(if (eq ?min "Normal") then (bind ?min-def 1))
 	(if (eq ?min "Medio") then (bind ?min-def 2))
-	(if (eq ?min "Economico") then (bind ?min-def 3))
+	(if (eq ?min "Rico") then (bind ?min-def 3))
 
 	(if (eq ?max "Economico") then (bind ?max-def 0))
 	(if (eq ?max "Normal") then (bind ?max-def 1))
 	(if (eq ?max "Medio") then (bind ?max-def 2))
-	(if (eq ?max "Economico") then (bind ?max-def 3))
+	(if (eq ?max "Rico") then (bind ?max-def 3))
 
 	(bind ?resultado (create$))
 
@@ -1405,7 +1467,7 @@
 						)
 		)
 
-		(if (and (>= ?def ?min-def) (>= ?max-def ?def)) ;<---------TODO:Comprobar que estiguib bé les comparacions
+		(if (and (>= ?def ?min-def) (>= ?max-def ?def))
 				then
 					(insert$ ?resultado 1 ?m)
 		)
@@ -1413,14 +1475,6 @@
 	)
 	(return ?resultado)
 )
-
-; (deffunction generacion-soluciones::random-slot ( ?li )
-;  (bind ?li (create$ ?li))
-;  (bind ?max (length ?li))
-;  (bind ?r (random 1 ?max))
-;  (bind ?ins (nth$ ?r ?li))
-;  (return ?ins)
-; )
 
 ;Genera menus y los filtra con las restricciones abstractas
 (defrule generacion-soluciones::generar-menus ""
@@ -1432,13 +1486,11 @@
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
-		;Por la generación que hacemos, no se pueden dar menus duplicados
-		;(bind ?lista (eliminar-menus-duplicados ?lista))
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
-		(bind ?lista (calcular-precio ?lista))
+		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 
 		(assert (lista-menus (menus ?lista)))
