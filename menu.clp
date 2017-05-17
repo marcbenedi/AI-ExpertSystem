@@ -87,6 +87,10 @@
 
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
+	(if (neq (send ?self obtenir-BebidaUnica) [nil]) then
+		(printout t "	Bebida: " )
+		(send ?self:BebidaUnica imprimir)
+	)
 )
 
 (defmessage-handler MAIN::Bebida imprimir()
@@ -112,8 +116,9 @@
 	(if (neq (send ?self obtenir-BebidaUnica) [nil]) then
 		(printout t "Bebida: " )
 		(send ?self:BebidaUnica imprimir)
-		(printout t "Precio total: " (+ (send ?self:Primero get-Precio) (send ?self:Segundo get-Precio) (send ?self:Postre get-Precio) (send ?self:BebidaUnica get-Precio) ) "€" crlf)
 	)
+	(printout t "Precio total: " ?self:Precio "€" crlf)
+
 	(printout t "_____________________" crlf)
 )
 
@@ -541,30 +546,21 @@
 	;(bind ?respuesta (create$))
 	;(printout t ?pa crlf)
 	(progn$ (?m ?lista)
+		(bind ?recPri (send (send ?m get-Primero) obtenir-BebidaUnica))
+		(bind ?recSeg (send (send ?m get-Segundo) obtenir-BebidaUnica))
 		(if (eq ?bpp "no") then
-			(bind ?recPri (send (send ?m get-Primero) obtenir-BebidaUnica))
-			(bind ?recSeg (send (send ?m get-Segundo) obtenir-BebidaUnica))
-
-			;(printout t ?recPri crlf)
-			;(printout t ?recSeg crlf)
 
 			(if (eq ?recPri [nil]) then
-				;(printout t "++++++++++++++++ recPri es nil" crlf)
 				else
 				(if (eq (puede-bebida-en-menu ?recPri ?m ?pa) TRUE)
 					then (send ?m put-BebidaUnica ?recPri)
-					;(printout t "Bebida de primero asignada" crlf)
 				)
-				;(printout t "------------------ recPri NO es nil" crlf)
 			)
 
 			(if (neq ?recSeg [nil]) then
 				(if (eq (puede-bebida-en-menu ?recSeg ?m ?pa) TRUE)
 					then (send ?m put-BebidaUnica ?recSeg)
-					;(printout t "Bebida de segundo asignada" crlf)
 				)
-				;(printout t "------------------ recSeg NO es nil" crlf)
-				;else (printout t "++++++++++++++++ recSeg es nil" crlf)
 			)
 
 			(if (eq (send ?m obtenir-BebidaUnica) [nil]) then
@@ -581,8 +577,28 @@
 				 )
 				 (send ?m put-BebidaUnica (random-slot ?bebs))
 			)
+			else ;Bebida para cada plato (1 y 2)
+			(if
+				(or
+					(eq ?recPri [nil])
+					(and (eq ?pa "no") (eq (send ?recPri get-Alcoholica) "Si" ))
+
+			 	) then
+						(send (send ?m get-Primero) put-BebidaUnica
+							(random-slot (find-all-instances ((?b Bebida))
+								(not (member$ ?b (send (send ?m get-Primero) get-BebidaIncompatible))) )))
+			)
+			(if
+				(or
+					(eq ?recSeg [nil])
+					(and (eq ?pa "no") (eq (send ?recSeg get-Alcoholica) "Si" ))
+
+			 	) then
+						(send (send ?m get-Segundo) put-BebidaUnica
+							(random-slot (find-all-instances ((?b Bebida))
+								(not (member$ ?b (send (send ?m get-Segundo) get-BebidaIncompatible))) )))
+			)
 		)
-		(printout t (send ?m imprimir))
 	)
 	(return ?lista)
 	;?bpp = bebida por plato           ?pa = permite alcohol
@@ -613,6 +629,8 @@
 				(bind ?preu (+ (send ?primer-plato precio-con-bebida) (send ?segundo-plato precio-con-bebida) (send ?postre get-Precio) ))
 			)
 			(send ?m put-Precio ?preu)
+
+			;(printout t (send ?m imprimir))
 	)
 	(return ?lista)
 )
@@ -648,11 +666,10 @@
 						)
 		)
 
-		(if (and (>= ?def ?min-def) (>= ?max-def ?def))
+		(if (and (>= ?def ?min-def) (<= ?def ?max-def))
 				then
-					(insert$ ?resultado 1 ?m)
+					(bind ?resultado (insert$ ?resultado 1 ?m))
 		)
-
 	)
 	(return ?resultado)
 )
@@ -666,13 +683,20 @@
     (not (lista-menus))
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
+			;(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
+			;(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
+			;(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-temporada ?lista ?temp))
+			;(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
+			;(printout t (length$ ?lista) crlf)
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
+			;(printout t (length$ ?lista) crlf)
+		;(progn$ (?m ?lista) (send ?m imprimir))
 
 		(assert (lista-menus (menus ?lista)))
 
@@ -704,6 +728,7 @@
 		?listam <- (lista-menus (menus ?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
 	=>
+		(printout t "Entro en refinamiento " crtf)
 		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
 		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
 		(bind ?lista (ordenar ?lista))
