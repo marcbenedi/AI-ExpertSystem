@@ -696,43 +696,95 @@
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 			;(printout t (length$ ?lista) crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
+		(progn$ (?m ?lista) (send ?m imprimir))
 
 		(assert (lista-menus (menus ?lista)))
 
 		(focus refinamiento)
-
 )
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
 
 ;Elimina los menus que contengan un plato que contenga un ingrediente prohibido
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
-	(return ?lista)
+	(bind ?resultado (create$))
+	(loop-for-count (?i 1 (length$ ?lista) ) do
+		(bind ?m (nth$ ?i ?lista))
+			(bind ?ingrPrimero (send (send ?m get-Primero) get-Ingredientes))
+			(bind ?ingrSegundo (send (send ?m get-Segundo) get-Ingredientes))
+			(bind ?ingrPostre (send (send ?m get-Postre) get-Ingredientes))
+
+			(progn$ (?ing ?proh)
+				(if (and
+					(not (member$ ?ing ?ingrPrimero))
+					(not (member$ ?ing ?ingrSegundo))
+					(not (member$ ?ing ?ingrPostre))
+				) then
+						(bind ?resultado (insert$ ?resultado 1 ?))
+				)
+			)
+		)
+		(return ?lista)
 )
 
 ;Elimina los menus que no esten dentro del rango de precio
 (deffunction refinamiento::filtrar-precio-concreto(?lista ?min ?max)
-	(return ?lista)
+	(bind ?resultado (create$))
+	(loop-for-count (?i 1 (length$ ?lista) ) do
+		(bind ?m (nth$ ?i ?lista))
+		(bind ?p (send ?m get-Precio))
+			(if (and (>= ?p ?min) (<= ?p ?max) then (bind ?resultado (insert$ ?resultado 1 ?m))))
+		)
 )
 
-;Ordena los menus por precio
-(deffunction refinamiento::ordenar(?lista)
-	(return ?lista)
+(deffunction refinamiento::obtener-barato(?lista)
+	(bind ?minPrec 0.0)
+	(progn$ (?m ?lista)
+		(if (< (send ?m get-Precio) ?minPrec) then
+				(bind ?minPrec (send ?m get-Precio))
+				(bind ?barato ?m)
+		)
+	)
+	(return ?barato)
 )
+
+(deffunction refinamiento::obtener-caro(?lista)
+	(bind ?maxPrec 50000.0)
+	(progn$ (?m ?lista)
+		(if (> (send ?m get-Precio) ?maxPrec) then
+				(bind ?maxPrec (send ?m get-Precio))
+				(bind ?caro ?m)
+		)
+	)
+	(return ?caro)
+)
+
+(deffunction refinamiento::obtener-medio(?lista, ?min, ?max)
+	(bind ?midPrec (/ (+ ?min ?max) 2) )
+	(bind ?minDifFound 5000.0)
+
+	(progn$ (?m ?lista)
+		(if (< (abs (- (send ?m get-Precio) ?midPrec)) ?minDifFound ) then
+				(bind ?minDifFound (abs (- (send ?m get-Precio) ?midPrec)))
+				(bind ?menu ?m)
+		)
+	)
+	(return ?menu)
+)
+
 
 ;Filtra los menus con las restricciones concretas
 (defrule refinamiento::refinar ""
 		;(lista-menus)
-		(declare (salience 499))
+		;(declare (salience 499))
 		?listam <- (lista-menus (menus ?lista))
-		?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
+		; ?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
 	=>
-		(printout t "Entro en refinamiento " crtf)
-		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
-		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
-		(bind ?lista (ordenar ?lista))
-		(modify ?listam (menus ?lista))
+		(printout t "Entro en refinamiento " crlf)
+		; (bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		; (bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		; (bind ?lista (ordenar ?lista))
+		; (modify ?listam (menus ?lista))
 		(focus resultados-output)
 )
 
@@ -741,7 +793,7 @@
 
 ;Imprime 3 menus, el más barato, el más caro y el del medio
 (defrule resultados-output::printear ""
-		(declare (salience 399))
+		;(declare (salience 399))
 		?listam <- (lista-menus (menus ?lista))
 	=>
 		(send (nth$ 1 ?lista) imprimir)

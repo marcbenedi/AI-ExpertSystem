@@ -1515,12 +1515,11 @@
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 			;(printout t (length$ ?lista) crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
+		(progn$ (?m ?lista) (send ?m imprimir))
 
 		(assert (lista-menus (menus ?lista)))
 
 		(focus refinamiento)
-
 )
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
@@ -1543,15 +1542,15 @@
 ;Filtra los menus con las restricciones concretas
 (defrule refinamiento::refinar ""
 		;(lista-menus)
-		(declare (salience 499))
+		;(declare (salience 499))
 		?listam <- (lista-menus (menus ?lista))
-		?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
+		; ?restr <- (restricciones (min ?min) (max ?max) (ingredientes ?proh))
 	=>
-		(printout t "Entro en refinamiento " crtf)
-		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
-		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
-		(bind ?lista (ordenar ?lista))
-		(modify ?listam (menus ?lista))
+		(printout t "Entro en refinamiento " crlf)
+		; (bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		; (bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		; (bind ?lista (ordenar ?lista))
+		; (modify ?listam (menus ?lista))
 		(focus resultados-output)
 )
 
@@ -1560,7 +1559,7 @@
 
 ;Imprime 3 menus, el más barato, el más caro y el del medio
 (defrule resultados-output::printear ""
-		(declare (salience 399))
+		;(declare (salience 399))
 		?listam <- (lista-menus (menus ?lista))
 	=>
 		(send (nth$ 1 ?lista) imprimir)
