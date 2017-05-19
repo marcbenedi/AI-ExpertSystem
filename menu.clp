@@ -716,11 +716,12 @@
 
 			(progn$ (?ing ?proh)
 				(if (and
-					(not (member$ ?ing ?ingrPrimero))
-					(not (member$ ?ing ?ingrSegundo))
-					(not (member$ ?ing ?ingrPostre))
-				) then
-						(bind ?resultado (insert$ ?resultado 1 ?))
+							(not (member$ ?ing ?ingrPrimero))
+							(not (member$ ?ing ?ingrSegundo))
+							(not (member$ ?ing ?ingrPostre))
+						)
+					then
+						(bind ?resultado (insert$ ?resultado 1 ?m))
 				)
 			)
 		)
@@ -733,7 +734,9 @@
 	(loop-for-count (?i 1 (length$ ?lista) ) do
 		(bind ?m (nth$ ?i ?lista))
 		(bind ?p (send ?m get-Precio))
-			(if (and (>= ?p ?min) (<= ?p ?max) then (bind ?resultado (insert$ ?resultado 1 ?m))))
+			(if
+				(and (>= ?p ?min) (<= ?p ?max)) then (bind ?resultado (insert$ ?resultado 1 ?m))
+			)
 		)
 )
 
@@ -759,7 +762,7 @@
 	(return ?caro)
 )
 
-(deffunction refinamiento::obtener-medio(?lista, ?min, ?max)
+(deffunction refinamiento::obtener-medio(?lista ?min ?max)
 	(bind ?midPrec (/ (+ ?min ?max) 2) )
 	(bind ?minDifFound 5000.0)
 
