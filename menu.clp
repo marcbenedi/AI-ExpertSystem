@@ -704,36 +704,46 @@
 )
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
-
-;Elimina los menus que contengan un plato que contenga un ingrediente prohibido
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
 	(bind ?resultado (create$))
+
 	(loop-for-count (?i 1 (length$ ?lista) ) do
 			(bind ?m (nth$ ?i ?lista))
+
 			(bind ?ingrPrimero (send (send ?m get-Primero) get-Ingredientes))
+			(bind ?nombresPrimero (create$))
+			(progn$ (?ing ?ingrPrimero) (bind ?nombresPrimero (insert$ ?nombresPrimero 1 (send (instance-address * ?ing) get-Nombre ))))
+
 			(bind ?ingrSegundo (send (send ?m get-Segundo) get-Ingredientes))
+			(bind ?nombresSegundo (create$))
+			(progn$ (?ing ?ingrSegundo) (bind ?nombresSegundo (insert$ ?nombresSegundo 1 (send (instance-address * ?ing) get-Nombre ))))
+
 			(bind ?ingrPostre (send (send ?m get-Postre) get-Ingredientes))
+			(bind ?nombresPostre (create$))
+			(progn$ (?ing ?ingrPostre) (bind ?nombresPostre (insert$ ?nombresPostre 1 (send (instance-address * ?ing) get-Nombre ))))
 
 			(bind ?posible TRUE)
 
 			(progn$ (?ing ?proh)
-				(printout t "Filtrando ingrediente prohibido " ?ing crlf)
-				(bind ?instance-ing (find-instance ((?ingrd Ingrediente))  (eq ?ingrd:Nombre ?ing)   ))
 				(if (or
-							(member$ ?instance-ing ?ingrPrimero)
-							(member$ ?instance-ing ?ingrSegundo)
-							(member$ ?instance-ing ?ingrPostre)
+							(member ?ing ?nombresPrimero)
+							(member ?ing ?nombresSegundo)
+							(member ?ing ?nombresPostre)
 						)
 					then
-						(printout "iepa ingrediente prohibido XXXXXXXXXXXXXX")
+						;(printout t "el ingrediente " ?ing crlf)
 						(bind ?posible FALSE)
 				)
 			)
 
-			(if (eq ?posible TRUE) then (bind ?resultado (insert$ ?resultado 1 ?m)))
+			(if (eq ?posible TRUE) then
+				;(printout t "insertamos el menu" crlf)
+				(bind ?resultado (insert$ ?resultado 1 ?m))
+				;else (printout t "No INSERTAMOS EL MENU " crlf)
+			)
 
 		)
-		(return ?lista)
+		(return ?resultado)
 )
 
 ;Elimina los menus que no esten dentro del rango de precio
@@ -791,11 +801,14 @@
 		?listam <- (lista-menus (menus $?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes $?proh))
 	=>
-		(printout t "Entro en refinamiento " crlf)
-		(bind $?lista (filtrar-ingredientes-prohibidos $?lista ?proh))
+		;(printout t "Entro en refinamiento " crlf)
+		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
+		;(progn$ (?m ?lista) (send ?m imprimir))
+		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
 		; (bind $?lista (filtrar-precio-concreto $?lista ?min ?max))
 		; (bind $?lista (ordenar $?lista))
-		; (modify ?listam (menus $?lista))
+		(modify ?listam (menus $?lista))
 		(focus resultados-output)
 )
 
