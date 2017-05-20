@@ -31,11 +31,11 @@
 )
 
 ;Modulo encargado de imprimir 3 menus (economico, medio,caro)
-(defmodule resultados-output
-	(import MAIN ?ALL)
-	(import generacion-soluciones ?ALL)
-	(export ?ALL)
-)
+; (defmodule resultados-output
+; 	(import MAIN ?ALL)
+; 	(import generacion-soluciones ?ALL)
+; 	(export ?ALL)
+; )
 
 ;-----------------------------------TEMPLATES-----------------------------------
 ;-------------------------------------------------------------------------------
@@ -683,19 +683,19 @@
     (not (lista-menus))
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-temporada ?lista ?temp))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		;(progn$ (?m ?lista) (send ?m imprimir))
 
 		(assert (lista-menus (menus ?lista)))
@@ -756,10 +756,11 @@
 				(and (>= ?p ?min) (<= ?p ?max)) then (bind ?resultado (insert$ ?resultado 1 ?m))
 			)
 		)
+		(return ?resultado)
 )
 
 (deffunction refinamiento::obtener-barato(?lista)
-	(bind ?minPrec 0.0)
+	(bind ?minPrec 10000.0)
 	(progn$ (?m ?lista)
 		(if (< (send ?m get-Precio) ?minPrec) then
 				(bind ?minPrec (send ?m get-Precio))
@@ -770,7 +771,7 @@
 )
 
 (deffunction refinamiento::obtener-caro(?lista)
-	(bind ?maxPrec 50000.0)
+	(bind ?maxPrec 0.0)
 	(progn$ (?m ?lista)
 		(if (> (send ?m get-Precio) ?maxPrec) then
 				(bind ?maxPrec (send ?m get-Precio))
@@ -801,29 +802,48 @@
 		?listam <- (lista-menus (menus $?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes $?proh))
 	=>
+	(printout t (length$ ?lista) crlf)
 		;(printout t "Entro en refinamiento " crlf)
 		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
 		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
 		;(progn$ (?m ?lista) (send ?m imprimir))
 		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
-		; (bind $?lista (filtrar-precio-concreto $?lista ?min ?max))
+		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		(printout t (length$ ?lista) crlf)
 		; (bind $?lista (ordenar $?lista))
-		(modify ?listam (menus $?lista))
-		(focus resultados-output)
+		;(modify ?listam (menus ?lista))
+		;(focus resultados-output)
+
+		;(progn$ (?m ?lista) (send ?m imprimir))
+			(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
+
+		(bind ?barato (obtener-barato ?lista))
+		(bind ?minPrec (send ?barato get-Precio))
+		(send ?barato imprimir)
+
+		(bind ?caro (obtener-caro ?lista))
+		(bind ?maxPrec (send ?caro get-Precio))
+
+		(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
+		(printout t "El menu medio es: " crlf)
+		(send ?medio imprimir)
+
+		(printout t "El menu caro es: " crlf)
+		(send ?caro imprimir)
 )
 
 ;----------------------------resultados-output----------------------------------
 ;-------------------------------------------------------------------------------
-
-;Imprime 3 menus, el más barato, el más caro y el del medio
-(defrule resultados-output::printear ""
-		;(declare (salience 399))
-		?listam <- (lista-menus (menus $?lista))
-	=>
-		(printout t "El menu economico es: " crlf)
-		(send (nth$ 1 $?lista) imprimir)
-		(printout t "El menu medio es: " crlf)
-		(send (nth$ (/ (length$ $?lista) 2) $?lista) imprimir)
-		(printout t "El menu caro es: " crlf)
-		(send (nth$ (length$ $?lista) $?lista) imprimir)
-)
+;
+; ;Imprime 3 menus, el más barato, el más caro y el del medio
+; (defrule resultados-output::printear ""
+; 		;(declare (salience 399))
+; 		?listam <- (lista-menus (menus $?lista))
+; 	=>
+; 		(printout t "El menu economico es: " crlf)
+; 		(send (nth$ 1 $?lista) imprimir)
+; 		(printout t "El menu medio es: " crlf)
+; 		(send (nth$ (/ (length$ $?lista) 2) $?lista) imprimir)
+; 		(printout t "El menu caro es: " crlf)
+; 		(send (nth$ (length$ $?lista) $?lista) imprimir)
+; )

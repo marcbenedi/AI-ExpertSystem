@@ -817,7 +817,49 @@
 	(Nombre "Quinua"))
 )
 ;; Nuestro codigo -----------------------
-;------------------------------------MODULES------------------------------------
+[15:26, 5/19/2017] Hermes Valenciano: (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
+	(bind ?resultado (create$))
+
+	(loop-for-count (?i 1 (length$ ?lista) ) do
+			(bind ?m (nth$ ?i ?lista))
+
+			(bind ?ingrPrimero (send (send ?m get-Primero) get-Ingredientes))
+			(bind ?nombresPrimero (create$))
+			(progn$ (?ing ?ingrPrimero) (bind ?nombresPrimero (insert$ ?nombresPrimero 1 (send (instance-address * ?ing) get-Nombre ))))
+
+			(bind ?ingrSegundo (send (send ?m get-Segundo) get-Ingredientes))
+			(bind ?nombresSegundo (create$))
+			(progn$ (?ing ?ingrSegundo) (bind ?nombresSegundo (insert$ ?nombresSegundo 1 (send (instance-address * ?ing) get-Nombre ))))
+
+			(bind ?ingrPostre (send (send ?m get-Postre) get-Ingredientes))
+			(bind ?nombresPostre (create$))
+			(progn$ (?ing ?ingrPostre) (bind ?nombresPostre (insert$ ?nombresPostre 1 (send (instance-address * ?ing) get-Nombre ))))
+
+			(bind ?posible TRUE)
+
+			(progn$ (?ing ?proh)
+				(if (or
+							(member ?ing ?nombresPrimero)
+							(member ?ing ?nombresSegundo)
+							(member ?ing ?nombresPostre)
+						)
+					then
+						;(printout t "el ingrediente " ?ing crlf)
+						(bind ?posible FALSE)
+				)
+			)
+
+			(if (eq ?posible TRUE) then
+				;(printout t "insertamos el menu" crlf)
+				(bind ?resultado (insert$ ?resultado 1 ?m))
+				;else (printout t "No INSERTAMOS EL MENU " crlf)
+			)
+
+		)
+		(return ?resultado)
+)
+[15:34, 5/19/2017] Hermes Valenciano: (progn$ (?m ?lista) (send ?m imprimir))
+[15:42, 5/19/2017] Hermes Valenciano: ;------------------------------------MODULES------------------------------------
 ;-------------------------------------------------------------------------------
 
 (defmodule MAIN (export ?ALL))
@@ -938,7 +980,7 @@
 	)
 	(printout t "Precio total: " ?self:Precio "€" crlf)
 
-	(printout t "_____________________" crlf)
+	(printout t "_______" crlf)
 )
 
 
@@ -1502,27 +1544,29 @@
     (not (lista-menus))
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-temporada ?lista ?temp))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
-			;(printout t (length$ ?lista) crlf)
+		(printout t (length$ ?lista) crlf)
 		;(progn$ (?m ?lista) (send ?m imprimir))
 
-		(assert (lista-menus (menus ?lista)))
+		(assert (lista-menus (menus $?lista)))
 
 		(focus refinamiento)
 )
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
+
+;Elimina los menus que contengan un plato que contenga un ingrediente prohibido
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
 	(bind ?resultado (create$))
 
@@ -1575,21 +1619,23 @@
 				(and (>= ?p ?min) (<= ?p ?max)) then (bind ?resultado (insert$ ?resultado 1 ?m))
 			)
 		)
+		(return ?resultado)
 )
 
 (deffunction refinamiento::obtener-barato(?lista)
-	(bind ?minPrec 0.0)
+	(bind ?minPrec 50000.0)
 	(progn$ (?m ?lista)
 		(if (< (send ?m get-Precio) ?minPrec) then
 				(bind ?minPrec (send ?m get-Precio))
 				(bind ?barato ?m)
+				;(printout t "Encuentro uno mas barato " ?minPrec crlf)
 		)
 	)
 	(return ?barato)
 )
 
 (deffunction refinamiento::obtener-caro(?lista)
-	(bind ?maxPrec 50000.0)
+	(bind ?maxPrec 0.0)
 	(progn$ (?m ?lista)
 		(if (> (send ?m get-Precio) ?maxPrec) then
 				(bind ?maxPrec (send ?m get-Precio))
@@ -1620,29 +1666,26 @@
 		?listam <- (lista-menus (menus $?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes $?proh))
 	=>
-		;(printout t "Entro en refinamiento " crlf)
-		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
-		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
+		(printout t (length$ ?lista) crlf)
+		(bind $?lista (filtrar-ingredientes-prohibidos $?lista ?proh))
+		(printout t (length$ ?lista) crlf)
+	  (bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
+		(printout t (length$ ?lista) crlf)
 		;(progn$ (?m ?lista) (send ?m imprimir))
-		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
-		; (bind $?lista (filtrar-precio-concreto $?lista ?min ?max))
-		; (bind $?lista (ordenar $?lista))
-		(modify ?listam (menus $?lista))
-		(focus resultados-output)
-)
 
-;----------------------------resultados-output----------------------------------
-;-------------------------------------------------------------------------------
-
-;Imprime 3 menus, el más barato, el más caro y el del medio
-(defrule resultados-output::printear ""
-		;(declare (salience 399))
-		?listam <- (lista-menus (menus $?lista))
-	=>
 		(printout t "El menu economico es: " crlf)
-		(send (nth$ 1 $?lista) imprimir)
+
+		(bind ?barato (obtener-barato ?lista))
+		(bind ?minPrec (send ?barato get-Precio))
+		(send ?barato imprimir)
+
+		(bind ?caro (obtener-caro ?lista))
+		(bind ?maxPrec (send ?caro get-Precio))
+
+		(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
 		(printout t "El menu medio es: " crlf)
-		(send (nth$ (/ (length$ $?lista) 2) $?lista) imprimir)
+		(send ?medio imprimir)
+
 		(printout t "El menu caro es: " crlf)
-		(send (nth$ (length$ $?lista) $?lista) imprimir)
+		(send ?caro imprimir)
 )
