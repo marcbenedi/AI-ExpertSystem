@@ -1993,19 +1993,13 @@
     (not (lista-menus))
 	=>
 		(bind ?lista (generar-combinaciones ?est-abs))
-		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-duplicados ?lista))
-		(printout t (length$ ?lista) crlf)
 		(bind ?lista (eliminar-menus-platos-incompatibles ?lista))
-		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-temporada ?lista ?temp))
-		(printout t (length$ ?lista) crlf)
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
-		(printout t (length$ ?lista) crlf)
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
-		(printout t (length$ ?lista) crlf)
 
 		(assert (lista-menus (menus ?lista)))
 
