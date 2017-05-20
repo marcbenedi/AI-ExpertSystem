@@ -1,5 +1,5 @@
 ;; Ontologia -----------------------
-; Fri May 12 11:16:51 CEST 2017
+; Sat May 20 07:09:40 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -219,7 +219,7 @@
 ;+		(cardinality 1 1)
 		(create-accessor read-write)));; Instancias -----------------------
 (definstances instancies
-; Fri May 12 11:16:51 CEST 2017
+; Sat May 20 07:09:40 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -469,13 +469,6 @@
 	(Temperatura Frio)
 	(TipoPlato Pescado))
 
-([KB_565836_Class65] of  Bebida
-
-	(Alcoholica "Si")
-	(Nombre "Cava con motas de oro de 24 kilates")
-	(Precio 200.0)
-	(TipoBebida Cava))
-
 ([KB_565836_Class66] of  Bebida
 
 	(Alcoholica "No")
@@ -485,7 +478,6 @@
 
 ([KB_565836_Class67] of  Plato
 
-	(BebidaUnica [KB_565836_Class65])
 	(Complejo "Si")
 	(Disponibilidad Verano)
 	(Estilo Sibarita)
@@ -537,6 +529,528 @@
 ([ProjectIA2_Class10] of  Ingrediente
 
 	(Nombre "Cebolla"))
+
+([ProjectIA2_Class10000] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Invierno)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class7]
+		[ProjectIA2_Class13]
+		[ProjectIA2_Class10001]
+		[ProjectIA2_Class10]
+		[KB_565836_Class36])
+	(Nombre "Pavo de navidad")
+	(Ordinal Segundo)
+	(Precio 150.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10001] of  Ingrediente
+
+	(Nombre "Pavo"))
+
+([ProjectIA2_Class10002] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class16]
+		[ProjectIA2_Class10003]
+		[KB_565836_Class48])
+	(Nombre "Hummus para ninos")
+	(Ordinal Primero)
+	(Precio 15.0)
+	(Temperatura Frio)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class10003] of  Ingrediente
+
+	(Nombre "Leche"))
+
+([ProjectIA2_Class10004] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class10005]
+		[ProjectIA2_Class10006]
+		[ProjectIA2_Class10007]
+		[ProjectIA2_Class10008])
+	(Nombre "Bagatela de frutos rojos")
+	(Ordinal Postre)
+	(Precio 7.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class10005] of  Ingrediente
+
+	(Nombre "Arandanos"))
+
+([ProjectIA2_Class10006] of  Ingrediente
+
+	(Nombre "Fresas"))
+
+([ProjectIA2_Class10007] of  Ingrediente
+
+	(Nombre "Moras"))
+
+([ProjectIA2_Class10008] of  Ingrediente
+
+	(Nombre "Bizcocho"))
+
+([ProjectIA2_Class10009] of  Bebida
+
+	(Alcoholica "No")
+	(Nombre "Fanta naranja")
+	(Precio 2.5)
+	(TipoBebida Refresco))
+
+([ProjectIA2_Class10010] of  Bebida
+
+	(Alcoholica "No")
+	(Nombre "Fanta limon")
+	(Precio 2.5)
+	(TipoBebida Refresco))
+
+([ProjectIA2_Class10011] of  Bebida
+
+	(Alcoholica "Si")
+	(Nombre "Cerveza")
+	(Precio 2.5)
+	(TipoBebida Cerveza))
+
+([ProjectIA2_Class10012] of  Bebida
+
+	(Alcoholica "No")
+	(Nombre "Agua con gas")
+	(Precio 1.2)
+	(TipoBebida Agua))
+
+([ProjectIA2_Class10013] of  Bebida
+
+	(Alcoholica "No")
+	(Nombre "Nestea")
+	(Precio 2.0)
+	(TipoBebida Refresco))
+
+([ProjectIA2_Class10014] of  Bebida
+
+	(Alcoholica "Si")
+	(Nombre "Sangria")
+	(Precio 12.0)
+	(TipoBebida Vino))
+
+([ProjectIA2_Class10015] of  Plato
+
+	(BebidaIncompatible [KB_565836_Class66])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class53]
+		[ProjectIA2_Class28])
+	(Nombre "Albondigas guisadas")
+	(Ordinal Segundo)
+	(Precio 7.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10016] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class30]
+		[KB_565836_Class66])
+	(BebidaUnica [KB_565836_Class27])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class18]
+		[ProjectIA2_Class10017]
+		[ProjectIA2_Class10018]
+		[ProjectIA2_Class10019])
+	(Nombre "Habas a la catalana")
+	(Ordinal Primero)
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Legumbre))
+
+([ProjectIA2_Class10017] of  Ingrediente
+
+	(Nombre "Bacon"))
+
+([ProjectIA2_Class10018] of  Ingrediente
+
+	(Nombre "Panceta"))
+
+([ProjectIA2_Class10019] of  Ingrediente
+
+	(Nombre "Butifarra"))
+
+([ProjectIA2_Class10020] of  Plato
+
+	(BebidaIncompatible [ProjectIA2_Class10014])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class10022])
+	(Nombre "Rosquillas tradicionales")
+	(Ordinal Postre)
+	(Precio 7.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class10022] of  Ingrediente
+
+	(Nombre "Harina"))
+
+([ProjectIA2_Class10023] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class16]
+		[KB_565836_Class34])
+	(Nombre "Guiso de garbanzos y salchicha ahumada")
+	(Ordinal Primero)
+	(Precio 12.0)
+	(Temperatura Caliente)
+	(TipoPlato Legumbre Carne))
+
+([ProjectIA2_Class10024] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class66]
+		[KB_565836_Class30])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class10025]
+		[KB_565836_Class23]
+		[KB_565836_Class53])
+	(Nombre "Pisto con migas y huevo")
+	(Ordinal Primero)
+	(PlatoIncompatible [ProjectIA2_Class0])
+	(Precio 8.0)
+	(Temperatura Caliente)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class10025] of  Ingrediente
+
+	(Nombre "Pimiento"))
+
+([ProjectIA2_Class10026] of  Plato
+
+	(BebidaIncompatible [ProjectIA2_Class10010])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class16]
+		[KB_565836_Class23]
+		[ProjectIA2_Class10])
+	(Nombre "Potage de garbanzos")
+	(Ordinal Primero)
+	(PlatoIncompatible [KB_565836_Class67])
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Legumbre))
+
+([ProjectIA2_Class10027] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class10003]
+		[ProjectIA2_Class10028])
+	(Nombre "Flan con caramelo")
+	(Ordinal Postre)
+	(Precio 4.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class10028] of  Ingrediente
+
+	(Nombre "Caramelo"))
+
+([ProjectIA2_Class10029] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class16]
+		[KB_565836_Class39]
+		[ProjectIA2_Class10019]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class11])
+	(Nombre "Escudella")
+	(Ordinal Primero)
+	(Precio 13.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne Legumbre))
+
+([ProjectIA2_Class10030] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class10025]
+		[KB_565836_Class23]
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class10022])
+	(Nombre "Empanada gallega")
+	(Ordinal Primero)
+	(Precio 9.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10031] of  Plato
+
+	(BebidaUnica [KB_565836_Class27])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10032]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class10025]
+		[KB_565836_Class47]
+		[KB_565836_Class23])
+	(Nombre "Conejo estofado a la vasca")
+	(Ordinal Primero)
+	(Precio 12.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10032] of  Ingrediente
+
+	(Nombre "Conejo"))
+
+([ProjectIA2_Class10034] of  Plato
+
+	(Complejo "Si")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class10035]
+		[ProjectIA2_Class10025]
+		[ProjectIA2_Class26])
+	(Nombre "Hojaldre de merluza")
+	(Ordinal Primero)
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class10035] of  Ingrediente
+
+	(Nombre "Merluza"))
+
+([ProjectIA2_Class10036] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[KB_565836_Class33]
+		[ProjectIA2_Class10037])
+	(Nombre "Chuleta de cerdo con salsa de naranja")
+	(Ordinal Segundo)
+	(Precio 25.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10037] of  Ingrediente
+
+	(Nombre "Naranja"))
+
+([ProjectIA2_Class10038] of  Plato
+
+	(BebidaIncompatible [KB_565836_Class66])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[KB_565836_Class47]
+		[KB_565836_Class46]
+		[KB_565836_Class35])
+	(Nombre "Timbal de patata con salmon y aguacate")
+	(Ordinal Primero)
+	(Precio 19.0)
+	(Temperatura Frio)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class10039] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[KB_565836_Class46]
+		[ProjectIA2_Class13]
+		[ProjectIA2_Class10003]
+		[ProjectIA2_Class10040])
+	(Nombre "Salmon en salsa de almejas")
+	(Ordinal Segundo)
+	(Precio 18.0)
+	(Temperatura Caliente)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class10040] of  Ingrediente
+
+	(Nombre "Almejas"))
+
+([ProjectIA2_Class10041] of  Plato
+
+	(Complejo "Si")
+	(Disponibilidad Total)
+	(Estilo Moderno)
+	(Ingredientes
+		[ProjectIA2_Class31]
+		[ProjectIA2_Class12]
+		[ProjectIA2_Class10]
+		[KB_565836_Class38])
+	(Nombre "Crema de aguacate con gambas")
+	(Ordinal Primero)
+	(Precio 17.0)
+	(Temperatura Caliente)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class10042] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class10043]
+		[ProjectIA2_Class10044]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class10025])
+	(Nombre "Vistec relleno de verduras al horno")
+	(Ordinal Segundo)
+	(Precio 30.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10043] of  Ingrediente
+
+	(Nombre "Bistec"))
+
+([ProjectIA2_Class10044] of  Ingrediente
+
+	(Nombre "Champinon"))
+
+([ProjectIA2_Class10045] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class5]
+		[KB_565836_Class38]
+		[ProjectIA2_Class26])
+	(Nombre "Revuelto de setas con gambas y huevo")
+	(Ordinal Primero)
+	(Precio 35.0)
+	(Temperatura Caliente)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class10046] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class10047]
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class14]
+		[ProjectIA2_Class10048])
+	(Nombre "Pastel de coliflor con jamon y queso")
+	(Ordinal Primero)
+	(Precio 2500.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class10047] of  Ingrediente
+
+	(Nombre "Coliflor"))
+
+([ProjectIA2_Class10048] of  Ingrediente
+
+	(Nombre "Jamon"))
+
+([ProjectIA2_Class10049] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class10022]
+		[ProjectIA2_Class10050]
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class13])
+	(Nombre "Torta de chocolate")
+	(Ordinal Postre)
+	(PlatoIncompatible [ProjectIA2_Class10000])
+	(Precio 28.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class10050] of  Ingrediente
+
+	(Nombre "Cacao"))
+
+([ProjectIA2_Class10051] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class10003]
+		[ProjectIA2_Class10050]
+		[ProjectIA2_Class10052])
+	(Nombre "Crema chantilly con dulce de leche y cacao")
+	(Ordinal Postre)
+	(Precio 28.0)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class10052] of  Ingrediente
+
+	(Nombre "Vainilla"))
+
+([ProjectIA2_Class10053] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Sibarita)
+	(Ingredientes
+		[ProjectIA2_Class10054]
+		[ProjectIA2_Class18])
+	(Nombre "Ensalada de esparragos trigueros")
+	(Ordinal Primero)
+	(Precio 30.0)
+	(Temperatura Frio)
+	(TipoPlato Vegano Ensalada))
+
+([ProjectIA2_Class10054] of  Ingrediente
+
+	(Nombre "Esparragos"))
 
 ([ProjectIA2_Class11] of  Ingrediente
 
@@ -817,49 +1331,7 @@
 	(Nombre "Quinua"))
 )
 ;; Nuestro codigo -----------------------
-[15:26, 5/19/2017] Hermes Valenciano: (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
-	(bind ?resultado (create$))
-
-	(loop-for-count (?i 1 (length$ ?lista) ) do
-			(bind ?m (nth$ ?i ?lista))
-
-			(bind ?ingrPrimero (send (send ?m get-Primero) get-Ingredientes))
-			(bind ?nombresPrimero (create$))
-			(progn$ (?ing ?ingrPrimero) (bind ?nombresPrimero (insert$ ?nombresPrimero 1 (send (instance-address * ?ing) get-Nombre ))))
-
-			(bind ?ingrSegundo (send (send ?m get-Segundo) get-Ingredientes))
-			(bind ?nombresSegundo (create$))
-			(progn$ (?ing ?ingrSegundo) (bind ?nombresSegundo (insert$ ?nombresSegundo 1 (send (instance-address * ?ing) get-Nombre ))))
-
-			(bind ?ingrPostre (send (send ?m get-Postre) get-Ingredientes))
-			(bind ?nombresPostre (create$))
-			(progn$ (?ing ?ingrPostre) (bind ?nombresPostre (insert$ ?nombresPostre 1 (send (instance-address * ?ing) get-Nombre ))))
-
-			(bind ?posible TRUE)
-
-			(progn$ (?ing ?proh)
-				(if (or
-							(member ?ing ?nombresPrimero)
-							(member ?ing ?nombresSegundo)
-							(member ?ing ?nombresPostre)
-						)
-					then
-						;(printout t "el ingrediente " ?ing crlf)
-						(bind ?posible FALSE)
-				)
-			)
-
-			(if (eq ?posible TRUE) then
-				;(printout t "insertamos el menu" crlf)
-				(bind ?resultado (insert$ ?resultado 1 ?m))
-				;else (printout t "No INSERTAMOS EL MENU " crlf)
-			)
-
-		)
-		(return ?resultado)
-)
-[15:34, 5/19/2017] Hermes Valenciano: (progn$ (?m ?lista) (send ?m imprimir))
-[15:42, 5/19/2017] Hermes Valenciano: ;------------------------------------MODULES------------------------------------
+;------------------------------------MODULES------------------------------------
 ;-------------------------------------------------------------------------------
 
 (defmodule MAIN (export ?ALL))
@@ -888,13 +1360,6 @@
 	(import MAIN ?ALL)
 	(import generacion-soluciones ?ALL)
 	(import recopilacion-restr ?ALL)
-	(export ?ALL)
-)
-
-;Modulo encargado de imprimir 3 menus (economico, medio,caro)
-(defmodule resultados-output
-	(import MAIN ?ALL)
-	(import generacion-soluciones ?ALL)
 	(export ?ALL)
 )
 
@@ -938,14 +1403,6 @@
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
-; (defmessage-handler MAIN::Menu calculaPrecio()
-;   (bind ?coste (send ?self:Primero get-Precio))
-; 	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
-; 	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
-; 	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
-; 	(bind ?self:Precio ?coste)
-; )
-
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
 	(if (neq (send ?self obtenir-BebidaUnica) [nil]) then
@@ -980,7 +1437,7 @@
 	)
 	(printout t "Precio total: " ?self:Precio "€" crlf)
 
-	(printout t "_______" crlf)
+	(printout t "_____________________" crlf)
 )
 
 
@@ -1137,10 +1594,10 @@
 			(bind ?nombres (insert$ ?nombres 1 ?nombre))
 		)
 	)
-	;(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
   (focus abstraccion)
 )
+
 ;-----------------------------------abstraccion---------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -1260,7 +1717,7 @@
 (deffunction generacion-soluciones::platos-por-estilo (?estilo)
 	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
 	(return ?filtrados)
-) ;TESTADA
+)
 
 ;Devuelve TRUE o FALSE dependiendo de si el plato puede ser servido como ordinal
 (deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
@@ -1270,13 +1727,13 @@
 		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
 	)
 	(return FALSE)
-) ; TESTED
+)
 
 ;Dada una lista de platos, filtra por ordinal ("Primero Segundo Postre")
 (deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
 	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
 	(return ?ordinales)
-) ;TESTED
+)
 
 ;Genera todos los menus posibles que tengan un estilo concreto
 (deffunction generacion-soluciones::generar-combinaciones(?est-abs)
@@ -1380,9 +1837,6 @@
 )
 
 (deffunction generacion-soluciones::puede-bebida-en-menu(?bebida ?menu ?pa)
-	;(printout t "pa: " ?pa crlf)
-	;(printout t "bebida: " (send ?bebida get-Nombre) crlf)
-	; (printout t "bebida alcoholica: " (send ?bebida get-Alcoholica) crlf)
 	(if (and (eq ?pa "no") (eq (send ?bebida get-Alcoholica) "Si" )) then
 	 (return FALSE)
 	)
@@ -1404,8 +1858,6 @@
 
 ;Asigna una bebida al menu (o por plato)
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
-	;(bind ?respuesta (create$))
-	;(printout t ?pa crlf)
 	(progn$ (?m ?lista)
 		(bind ?recPri (send (send ?m get-Primero) obtenir-BebidaUnica))
 		(bind ?recSeg (send (send ?m get-Segundo) obtenir-BebidaUnica))
@@ -1425,7 +1877,6 @@
 			)
 
 			(if (eq (send ?m obtenir-BebidaUnica) [nil]) then
-				;(printout t "ENTRO EN LA SELECCION ALEATORIA" crlf)
 				(bind $?incPri (send (send ?m get-Primero) get-BebidaIncompatible))
 				(bind $?incSeg (send (send ?m get-Segundo) get-BebidaIncompatible))
 				(bind ?bebs (find-all-instances ((?b Bebida))
@@ -1490,8 +1941,6 @@
 				(bind ?preu (+ (send ?primer-plato precio-con-bebida) (send ?segundo-plato precio-con-bebida) (send ?postre get-Precio) ))
 			)
 			(send ?m put-Precio ?preu)
-
-			;(printout t (send ?m imprimir))
 	)
 	(return ?lista)
 )
@@ -1557,16 +2006,13 @@
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 		(printout t (length$ ?lista) crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
 
-		(assert (lista-menus (menus $?lista)))
+		(assert (lista-menus (menus ?lista)))
 
 		(focus refinamiento)
 )
 ;-------------------------------refinamiento------------------------------------
 ;-------------------------------------------------------------------------------
-
-;Elimina los menus que contengan un plato que contenga un ingrediente prohibido
 (deffunction refinamiento::filtrar-ingredientes-prohibidos(?lista ?proh)
 	(bind ?resultado (create$))
 
@@ -1594,15 +2040,12 @@
 							(member ?ing ?nombresPostre)
 						)
 					then
-						;(printout t "el ingrediente " ?ing crlf)
 						(bind ?posible FALSE)
 				)
 			)
 
 			(if (eq ?posible TRUE) then
-				;(printout t "insertamos el menu" crlf)
 				(bind ?resultado (insert$ ?resultado 1 ?m))
-				;else (printout t "No INSERTAMOS EL MENU " crlf)
 			)
 
 		)
@@ -1623,12 +2066,11 @@
 )
 
 (deffunction refinamiento::obtener-barato(?lista)
-	(bind ?minPrec 50000.0)
+	(bind ?minPrec 10000.0)
 	(progn$ (?m ?lista)
 		(if (< (send ?m get-Precio) ?minPrec) then
 				(bind ?minPrec (send ?m get-Precio))
 				(bind ?barato ?m)
-				;(printout t "Encuentro uno mas barato " ?minPrec crlf)
 		)
 	)
 	(return ?barato)
@@ -1661,19 +2103,14 @@
 
 ;Filtra los menus con las restricciones concretas
 (defrule refinamiento::refinar ""
-		;(lista-menus)
 		(declare (salience 499))
 		?listam <- (lista-menus (menus $?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes $?proh))
 	=>
-		(printout t (length$ ?lista) crlf)
-		(bind $?lista (filtrar-ingredientes-prohibidos $?lista ?proh))
-		(printout t (length$ ?lista) crlf)
-	  (bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
-		(printout t (length$ ?lista) crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
+		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
+		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
 
-		(printout t "El menu economico es: " crlf)
+		(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
 
 		(bind ?barato (obtener-barato ?lista))
 		(bind ?minPrec (send ?barato get-Precio))

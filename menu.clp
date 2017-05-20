@@ -30,13 +30,6 @@
 	(export ?ALL)
 )
 
-;Modulo encargado de imprimir 3 menus (economico, medio,caro)
-; (defmodule resultados-output
-; 	(import MAIN ?ALL)
-; 	(import generacion-soluciones ?ALL)
-; 	(export ?ALL)
-; )
-
 ;-----------------------------------TEMPLATES-----------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -76,14 +69,6 @@
 
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
-
-; (defmessage-handler MAIN::Menu calculaPrecio()
-;   (bind ?coste (send ?self:Primero get-Precio))
-; 	(bind ?coste (+ ?coste (send ?self:Segundo get-Precio)))
-; 	(bind ?coste (+ ?coste (send ?self:Postre get-Precio)))
-; 	(bind ?coste (+ ?coste (send ?self:BebidaUnica get-Precio)))
-; 	(bind ?self:Precio ?coste)
-; )
 
 (defmessage-handler MAIN::Plato imprimir()
   (printout t ?self:Nombre " " ?self:Precio "€" crlf)
@@ -276,10 +261,10 @@
 			(bind ?nombres (insert$ ?nombres 1 ?nombre))
 		)
 	)
-	;(printout t ?nombres crlf)
 	(modify ?restr (ingredientes ?nombres))
   (focus abstraccion)
 )
+
 ;-----------------------------------abstraccion---------------------------------
 ;-------------------------------------------------------------------------------
 
@@ -399,7 +384,7 @@
 (deffunction generacion-soluciones::platos-por-estilo (?estilo)
 	(bind $?filtrados (find-all-instances ((?a Plato)) (eq (str-cat (send ?a get-Estilo)) ?estilo) ))
 	(return ?filtrados)
-) ;TESTADA
+)
 
 ;Devuelve TRUE o FALSE dependiendo de si el plato puede ser servido como ordinal
 (deffunction generacion-soluciones::puede-ser (?plato ?ordinal)
@@ -409,13 +394,13 @@
 		(if ( eq (str-cat ?e) ?ordinal) then (return TRUE) )
 	)
 	(return FALSE)
-) ; TESTED
+)
 
 ;Dada una lista de platos, filtra por ordinal ("Primero Segundo Postre")
 (deffunction generacion-soluciones::filtra-ordinal (?lista ?ordinal)
 	(bind $?ordinales (find-all-instances ((?a Plato)) (and (puede-ser ?a ?ordinal) (member ?a ?lista))))
 	(return ?ordinales)
-) ;TESTED
+)
 
 ;Genera todos los menus posibles que tengan un estilo concreto
 (deffunction generacion-soluciones::generar-combinaciones(?est-abs)
@@ -519,9 +504,6 @@
 )
 
 (deffunction generacion-soluciones::puede-bebida-en-menu(?bebida ?menu ?pa)
-	;(printout t "pa: " ?pa crlf)
-	;(printout t "bebida: " (send ?bebida get-Nombre) crlf)
-	; (printout t "bebida alcoholica: " (send ?bebida get-Alcoholica) crlf)
 	(if (and (eq ?pa "no") (eq (send ?bebida get-Alcoholica) "Si" )) then
 	 (return FALSE)
 	)
@@ -543,8 +525,6 @@
 
 ;Asigna una bebida al menu (o por plato)
 (deffunction generacion-soluciones::asignar-bebida(?lista ?bpp ?pa)
-	;(bind ?respuesta (create$))
-	;(printout t ?pa crlf)
 	(progn$ (?m ?lista)
 		(bind ?recPri (send (send ?m get-Primero) obtenir-BebidaUnica))
 		(bind ?recSeg (send (send ?m get-Segundo) obtenir-BebidaUnica))
@@ -564,7 +544,6 @@
 			)
 
 			(if (eq (send ?m obtenir-BebidaUnica) [nil]) then
-				;(printout t "ENTRO EN LA SELECCION ALEATORIA" crlf)
 				(bind $?incPri (send (send ?m get-Primero) get-BebidaIncompatible))
 				(bind $?incSeg (send (send ?m get-Segundo) get-BebidaIncompatible))
 				(bind ?bebs (find-all-instances ((?b Bebida))
@@ -629,8 +608,6 @@
 				(bind ?preu (+ (send ?primer-plato precio-con-bebida) (send ?segundo-plato precio-con-bebida) (send ?postre get-Precio) ))
 			)
 			(send ?m put-Precio ?preu)
-
-			;(printout t (send ?m imprimir))
 	)
 	(return ?lista)
 )
@@ -696,7 +673,6 @@
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 		(printout t (length$ ?lista) crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
 
 		(assert (lista-menus (menus ?lista)))
 
@@ -731,15 +707,12 @@
 							(member ?ing ?nombresPostre)
 						)
 					then
-						;(printout t "el ingrediente " ?ing crlf)
 						(bind ?posible FALSE)
 				)
 			)
 
 			(if (eq ?posible TRUE) then
-				;(printout t "insertamos el menu" crlf)
 				(bind ?resultado (insert$ ?resultado 1 ?m))
-				;else (printout t "No INSERTAMOS EL MENU " crlf)
 			)
 
 		)
@@ -797,25 +770,14 @@
 
 ;Filtra los menus con las restricciones concretas
 (defrule refinamiento::refinar ""
-		;(lista-menus)
 		(declare (salience 499))
 		?listam <- (lista-menus (menus $?lista))
 		?restr <- (restricciones (min ?min) (max ?max) (ingredientes $?proh))
 	=>
-	(printout t (length$ ?lista) crlf)
-		;(printout t "Entro en refinamiento " crlf)
 		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
-		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
-		;(progn$ (?m ?lista) (send ?m imprimir))
-		;(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
 		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
-		(printout t (length$ ?lista) crlf)
-		; (bind $?lista (ordenar $?lista))
-		;(modify ?listam (menus ?lista))
-		;(focus resultados-output)
 
-		;(progn$ (?m ?lista) (send ?m imprimir))
-			(printout t "---------------------_XXXXXXXXXXX---------------" crlf)
+		(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
 
 		(bind ?barato (obtener-barato ?lista))
 		(bind ?minPrec (send ?barato get-Precio))
@@ -831,19 +793,3 @@
 		(printout t "El menu caro es: " crlf)
 		(send ?caro imprimir)
 )
-
-;----------------------------resultados-output----------------------------------
-;-------------------------------------------------------------------------------
-;
-; ;Imprime 3 menus, el más barato, el más caro y el del medio
-; (defrule resultados-output::printear ""
-; 		;(declare (salience 399))
-; 		?listam <- (lista-menus (menus $?lista))
-; 	=>
-; 		(printout t "El menu economico es: " crlf)
-; 		(send (nth$ 1 $?lista) imprimir)
-; 		(printout t "El menu medio es: " crlf)
-; 		(send (nth$ (/ (length$ $?lista) 2) $?lista) imprimir)
-; 		(printout t "El menu caro es: " crlf)
-; 		(send (nth$ (length$ $?lista) $?lista) imprimir)
-; )
