@@ -1,4 +1,4 @@
-; Sat May 20 20:51:40 CEST 2017
+; Sun May 21 09:42:55 CEST 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -109,12 +109,12 @@
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Postre
+	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Primero
+	(single-slot Postre
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
@@ -139,15 +139,15 @@
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot TipoPlato
-		(type SYMBOL)
-		(allowed-values Carne Pescado Vegano Sopa Pasta Ensalada Legumbre Arroz Fruta Postre)
-		(cardinality 1 ?VARIABLE)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot TipoPlato
+		(type SYMBOL)
+		(allowed-values Carne Pescado Vegano Sopa Pasta Ensalada Legumbre Arroz Fruta Postre)
+		(cardinality 1 ?VARIABLE)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
 		(type INSTANCE)
@@ -177,13 +177,13 @@
 		(type INSTANCE)
 ;+		(allowed-classes Bebida)
 		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Temperatura
 		(type SYMBOL)
 		(allowed-values Frio Caliente)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write)))
 

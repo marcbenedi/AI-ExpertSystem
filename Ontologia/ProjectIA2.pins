@@ -1,4 +1,4 @@
-; Sat May 20 20:51:40 CEST 2017
+; Sun May 21 09:42:55 CEST 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -595,6 +595,17 @@
 		[ProjectIA2_Class10022])
 	(Nombre "Empanada Gallega")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10004]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10051]
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class17]
+		[KB_565836_Class61]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class20000]
+		[ProjectIA2_Class8])
 	(Precio 9.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -1214,6 +1225,9 @@
 
 ([ProjectIA2_Class20028] of  Plato
 
+	(BebidaIncompatible
+		[KB_565836_Class66]
+		[KB_565836_Class30])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1225,6 +1239,19 @@
 		[ProjectIA2_Class20029])
 	(Nombre "Salmón ahumado con Ensalada Verde")
 	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class21]
+		[ProjectIA2_Class10030]
+		[ProjectIA2_Class20033]
+		[KB_565836_Class63]
+		[KB_565836_Class40]
+		[ProjectIA2_Class0]
+		[ProjectIA2_Class10042]
+		[ProjectIA2_Class20027]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class10041])
 	(Precio 11.0)
 	(Temperatura Frio)
 	(TipoPlato Pescado))
@@ -1235,6 +1262,12 @@
 
 ([ProjectIA2_Class20030] of  Plato
 
+	(BebidaIncompatible
+		[ProjectIA2_Class10010]
+		[ProjectIA2_Class10009]
+		[ProjectIA2_Class10013]
+		[KB_565836_Class30]
+		[KB_565836_Class29])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1243,12 +1276,23 @@
 		[ProjectIA2_Class20007])
 	(Nombre "Foie Gras de la Casa")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20023]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20049]
+		[ProjectIA2_Class10031]
+		[ProjectIA2_Class20052]
+		[ProjectIA2_Class20032]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class10046])
 	(Precio 8.0)
 	(Temperatura Frio)
 	(TipoPlato Carne))
 
 ([ProjectIA2_Class20031] of  Plato
 
+	(BebidaIncompatible [KB_565836_Class30])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1256,7 +1300,15 @@
 		[KB_565836_Class39]
 		[KB_565836_Class47])
 	(Nombre "Pollo con puré de patatas")
-	(Ordinal Segundo)
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class35]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class0]
+		[KB_565836_Class59]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class10039]
+		[ProjectIA2_Class20028])
 	(Precio 5.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -1273,12 +1325,28 @@
 		[ProjectIA2_Class20008])
 	(Nombre "Tortilla de patatas")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10041]
+		[ProjectIA2_Class3]
+		[ProjectIA2_Class10038]
+		[KB_565836_Class57]
+		[KB_565836_Class64])
 	(Precio 7.5)
 	(Temperatura Caliente)
 	(TipoPlato Ensalada))
 
 ([ProjectIA2_Class20033] of  Plato
 
+	(BebidaIncompatible
+		[KB_565836_Class28]
+		[KB_565836_Class27]
+		[ProjectIA2_Class10014]
+		[ProjectIA2_Class10011]
+		[ProjectIA2_Class10009]
+		[ProjectIA2_Class10010]
+		[KB_565836_Class29]
+		[KB_565836_Class66])
 	(Complejo "No")
 	(Disponibilidad Verano)
 	(Estilo Tradicional)
@@ -1292,12 +1360,21 @@
 		[ProjectIA2_Class34])
 	(Nombre "Gazpacho")
 	(Ordinal Primero Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class20045]
+		[ProjectIA2_Class20023]
+		[ProjectIA2_Class10000]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class32]
+		[KB_565836_Class40])
 	(Precio 10.0)
 	(Temperatura Frio)
 	(TipoPlato Vegano))
 
 ([ProjectIA2_Class20034] of  Plato
 
+	(BebidaIncompatible [KB_565836_Class30])
+	(BebidaUnica [KB_565836_Class28])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1310,6 +1387,16 @@
 		[ProjectIA2_Class20005])
 	(Nombre "Migas")
 	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class10030]
+		[ProjectIA2_Class10000]
+		[ProjectIA2_Class10024]
+		[ProjectIA2_Class20000]
+		[ProjectIA2_Class20031]
+		[ProjectIA2_Class20027]
+		[KB_565836_Class59]
+		[ProjectIA2_Class32])
 	(Precio 12.99)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -1336,6 +1423,13 @@
 		[ProjectIA2_Class20005])
 	(Nombre "Escalivada")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20014]
+		[ProjectIA2_Class10053]
+		[KB_565836_Class63]
+		[ProjectIA2_Class27]
+		[ProjectIA2_Class8]
+		[ProjectIA2_Class10042])
 	(Precio 8.99)
 	(Temperatura Caliente)
 	(TipoPlato Vegano))
@@ -1352,6 +1446,14 @@
 		[ProjectIA2_Class10052])
 	(Nombre "Crepes")
 	(Ordinal Postre)
+	(PlatoIncompatible
+		[ProjectIA2_Class3]
+		[KB_565836_Class59]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class20052]
+		[ProjectIA2_Class32]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class10041])
 	(Precio 7.99)
 	(Temperatura Caliente)
 	(TipoPlato Postre))
@@ -1417,7 +1519,19 @@
 		[ProjectIA2_Class20046]
 		[ProjectIA2_Class20047])
 	(Nombre "Calçots con Romesco")
-	(Ordinal Segundo)
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10051]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10041]
+		[ProjectIA2_Class3]
+		[KB_565836_Class59]
+		[KB_565836_Class63]
+		[ProjectIA2_Class32]
+		[ProjectIA2_Class10039]
+		[ProjectIA2_Class20028]
+		[ProjectIA2_Class10015])
 	(Precio 18.5)
 	(Temperatura Caliente)
 	(TipoPlato Vegano))
@@ -1436,6 +1550,9 @@
 
 ([ProjectIA2_Class20049] of  Plato
 
+	(BebidaIncompatible
+		[KB_565836_Class30]
+		[ProjectIA2_Class10011])
 	(Complejo "No")
 	(Disponibilidad Otono)
 	(Estilo Tradicional)
@@ -1447,6 +1564,16 @@
 		[ProjectIA2_Class20007])
 	(Nombre "Caracoles a la Francesa")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10004]
+		[ProjectIA2_Class35]
+		[ProjectIA2_Class10015]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class20033]
+		[ProjectIA2_Class17]
+		[ProjectIA2_Class20027])
 	(Precio 15.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -1461,6 +1588,9 @@
 
 ([ProjectIA2_Class20052] of  Plato
 
+	(BebidaIncompatible
+		[KB_565836_Class27]
+		[ProjectIA2_Class10014])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1468,13 +1598,24 @@
 		[ProjectIA2_Class20051]
 		[KB_565836_Class47])
 	(Nombre "Mejillones a la Francesa")
-	(Ordinal Segundo)
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class3]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class10034]
+		[KB_565836_Class63]
+		[ProjectIA2_Class32]
+		[KB_565836_Class40]
+		[ProjectIA2_Class10000])
 	(Precio 10.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
 
 ([ProjectIA2_Class20053] of  Plato
 
+	(BebidaIncompatible [KB_565836_Class30])
 	(Complejo "No")
 	(Disponibilidad Total)
 	(Estilo Tradicional)
@@ -1483,6 +1624,16 @@
 		[KB_565836_Class47])
 	(Nombre "Pescado con Patatas Fritas")
 	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class21]
+		[KB_565836_Class59]
+		[ProjectIA2_Class10034]
+		[KB_565836_Class63]
+		[ProjectIA2_Class20028]
+		[ProjectIA2_Class10039])
 	(Precio 9.99)
 	(Temperatura Caliente)
 	(TipoPlato Pescado))

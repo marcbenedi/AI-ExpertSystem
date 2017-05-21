@@ -1,4 +1,4 @@
-; Sat May 20 20:51:40 CEST 2017
+; Sun May 21 09:42:55 CEST 2017
 ; 
 ;+ (version "3.4.8")
 ;+ (build "Build 629")
@@ -20,13 +20,13 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[ProjectIA2_ProjectKB_Class10063]
-		[ProjectIA2_ProjectKB_Class10064]
-		[ProjectIA2_ProjectKB_Class10065]
-		[ProjectIA2_ProjectKB_Class10066]
-		[ProjectIA2_ProjectKB_Class10067]
-		[ProjectIA2_ProjectKB_Class10068]
-		[ProjectIA2_ProjectKB_Class10069]))
+		[ProjectIA2_ProjectKB_Class10167]
+		[ProjectIA2_ProjectKB_Class10168]
+		[ProjectIA2_ProjectKB_Class10169]
+		[ProjectIA2_ProjectKB_Class10170]
+		[ProjectIA2_ProjectKB_Class10171]
+		[ProjectIA2_ProjectKB_Class10172]
+		[ProjectIA2_ProjectKB_Class10173]))
 
 ([CLSES_TAB] of  Widget
 
@@ -70,7 +70,7 @@
 	(is_hidden FALSE)
 	(widget_class_name "edu.stanford.smi.protege.widget.InstancesTab"))
 
-([KB_154059_Class3] of  Map
+([KB_230686_Class3] of  Map
 )
 
 ([KB_468814_Class0] of  String
@@ -81,9 +81,9 @@
 ([KB_468814_Class1] of  Map
 
 	(entries
-		[ProjectIA2_ProjectKB_Class10070]
-		[ProjectIA2_ProjectKB_Class10071]
-		[ProjectIA2_ProjectKB_Class10072]))
+		[ProjectIA2_ProjectKB_Class10174]
+		[ProjectIA2_ProjectKB_Class10175]
+		[ProjectIA2_ProjectKB_Class10176]))
 
 ([KB_468814_Class159] of  String
 
@@ -363,56 +363,56 @@
 ([ProjectIA2_ProjectKB_Class10011] of  Property_List
 )
 
-([ProjectIA2_ProjectKB_Class10063] of  String
+([ProjectIA2_ProjectKB_Class10167] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([ProjectIA2_ProjectKB_Class10064] of  String
+([ProjectIA2_ProjectKB_Class10168] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
 
-([ProjectIA2_ProjectKB_Class10065] of  String
+([ProjectIA2_ProjectKB_Class10169] of  String
 
 	(name "Menu")
 	(string_value "Platos"))
 
-([ProjectIA2_ProjectKB_Class10066] of  String
+([ProjectIA2_ProjectKB_Class10170] of  String
 
 	(name "Bebida")
 	(string_value "Nombre"))
 
-([ProjectIA2_ProjectKB_Class10067] of  String
+([ProjectIA2_ProjectKB_Class10171] of  String
 
 	(name "Ingrediente")
 	(string_value "Nombre"))
 
-([ProjectIA2_ProjectKB_Class10068] of  String
+([ProjectIA2_ProjectKB_Class10172] of  String
 
 	(name "Plato")
 	(string_value "Nombre"))
 
-([ProjectIA2_ProjectKB_Class10069] of  String
+([ProjectIA2_ProjectKB_Class10173] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
 
-([ProjectIA2_ProjectKB_Class10070] of  Map_Entry
+([ProjectIA2_ProjectKB_Class10174] of  Map_Entry
 
 	(key "suppress_instance_counting")
 	(key_class "java.lang.String")
 	(value "false")
 	(value_class "java.lang.String"))
 
-([ProjectIA2_ProjectKB_Class10071] of  Map_Entry
+([ProjectIA2_ProjectKB_Class10175] of  Map_Entry
 
 	(key "change_tracking_active")
 	(key_class "java.lang.String")
 	(value "false")
 	(value_class "java.lang.String"))
 
-([ProjectIA2_ProjectKB_Class10072] of  Map_Entry
+([ProjectIA2_ProjectKB_Class10176] of  Map_Entry
 
 	(key "add_name_on_instance_form")
 	(key_class "java.lang.String")
