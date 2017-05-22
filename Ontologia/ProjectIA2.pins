@@ -1,4 +1,4 @@
-; Mon May 22 12:48:15 CEST 2017
+; Mon May 22 13:28:03 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -339,7 +339,7 @@
 		[ProjectIA2_Class16]
 		[ProjectIA2_Class10003]
 		[KB_565836_Class48])
-	(Nombre "Hummus para ninos")
+	(Nombre "Hummus")
 	(Ordinal Primero)
 	(Precio 15.0)
 	(Temperatura Frio)
@@ -623,7 +623,7 @@
 		[KB_565836_Class47]
 		[KB_565836_Class23])
 	(Nombre "Conejo estofado a la vasca")
-	(Ordinal Primero)
+	(Ordinal Segundo)
 	(Precio 12.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -732,7 +732,7 @@
 		[ProjectIA2_Class11]
 		[ProjectIA2_Class10]
 		[ProjectIA2_Class10025])
-	(Nombre "Vistec relleno de verduras al horno")
+	(Nombre "Bistec relleno de verduras al horno")
 	(Ordinal Segundo)
 	(Precio 30.0)
 	(Temperatura Caliente)
@@ -869,7 +869,7 @@
 		[ProjectIA2_Class11]
 		[ProjectIA2_Class14])
 	(Nombre "Garbanzos salteados")
-	(Ordinal Segundo Primero)
+	(Ordinal Primero)
 	(Precio 10.0)
 	(Temperatura Caliente)
 	(TipoPlato Legumbre))
@@ -935,7 +935,7 @@
 		[ProjectIA2_Class20007]
 		[ProjectIA2_Class20008])
 	(Nombre "Sopa de Calabaza")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20045]
 		[ProjectIA2_Class29]
@@ -997,7 +997,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class20007])
 	(Nombre "Sopa de Lentejas con Foie Gras")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20043]
 		[KB_565836_Class64]
@@ -1042,7 +1042,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class20007])
 	(Nombre "Ensalada de Apio")
-	(Ordinal Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class10053]
 		[ProjectIA2_Class20038]
@@ -1205,7 +1205,7 @@
 	(Ingredientes
 		[KB_565836_Class32]
 		[KB_565836_Class47])
-	(Nombre "Vistec con Patatas Fritas")
+	(Nombre "Bistec con Patatas Fritas")
 	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class10036]
@@ -1300,7 +1300,7 @@
 		[KB_565836_Class39]
 		[KB_565836_Class47])
 	(Nombre "Pollo con puré de patatas")
-	(Ordinal Segundo Primero)
+	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class35]
 		[ProjectIA2_Class29]
@@ -1359,7 +1359,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class34])
 	(Nombre "Gazpacho")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20045]
 		[ProjectIA2_Class20023]
@@ -1519,7 +1519,7 @@
 		[ProjectIA2_Class20046]
 		[ProjectIA2_Class20047])
 	(Nombre "Calçots con Romesco")
-	(Ordinal Segundo Primero)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class10036]
 		[ProjectIA2_Class10051]
@@ -1622,8 +1622,8 @@
 	(Ingredientes
 		[ProjectIA2_Class10035]
 		[KB_565836_Class47])
-	(Nombre "Pescado con Patatas Fritas")
-	(Ordinal Segundo Primero)
+	(Nombre "Pescado con patatas fritas")
+	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class20020]
 		[ProjectIA2_Class20022]
@@ -1685,7 +1685,7 @@
 		[KB_565836_Class23]
 		[ProjectIA2_Class10]
 		[ProjectIA2_Class26])
-	(Nombre "Pechuga de pollo arrebozadas con tomate picante")
+	(Nombre "Pechuga de pollo rebozada con tomate picante")
 	(Ordinal Segundo)
 	(Precio 7.0)
 	(Temperatura Caliente)
@@ -1702,7 +1702,7 @@
 	(Estilo Sibarita)
 	(Ingredientes [ProjectIA2_Class28])
 	(Nombre "Rollos de verdel con germinados y algas")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(Precio 15.0)
 	(Temperatura Frio)
 	(TipoPlato Pescado))
