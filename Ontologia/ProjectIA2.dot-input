@@ -1,13 +1,15 @@
 digraph "ProjectIA2" {
 
-"Plato" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Plato|{BebidaUnica|Instance|{Bebida}}|{Precio|Float}|{Nombre|String}|{Estilo|Symbol|{Tradicional|Moderno|Minimalista|...}}|{Disponibilidad|Symbol|{Total|Invierno|Primavera|...}}|{...}}"]
+"Plato" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Plato|{Precio|Float}|{Complejo|String}|{TipoPlato|Symbol*|{Carne|Pescado|Vegano|...}}|{Temperatura|Symbol|{Frio|Caliente}}|{Ordinal|Symbol*|{Primero|Segundo|Postre}}|{...}}"]
 "Plato"->"Bebida" [style=filled, label="BebidaUnica", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
 "Plato"->"Bebida" [style=filled, label="BebidaIncompatible*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
-"Plato"->"Plato" [style=filled, label="PlatoIncompatible*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
 "Plato"->"Ingrediente" [style=filled, label="Ingredientes*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
-"Menu" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Menu|{BebidaUnica|Instance|{Bebida}}|{Precio|Float}|{Platos|Instance*|{Plato}}}"]
+"Plato"->"Plato" [style=filled, label="PlatoIncompatible*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Menu" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Menu|{BebidaUnica|Instance|{Bebida}}|{Precio|Float}|{Primero|Instance|{Plato}}|{Segundo|Instance|{Plato}}|{Postre|Instance|{Plato}}}"]
 "Menu"->"Bebida" [style=filled, label="BebidaUnica", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
-"Menu"->"Plato" [style=filled, label="Platos*", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
-"Bebida" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Bebida|{Nombre|String}|{Precio|Float}|{TipoBebida|Symbol|{Refresco|Agua|Vino|...}}}"]
+"Menu"->"Plato" [style=filled, label="Primero", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Menu"->"Plato" [style=filled, label="Segundo", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Menu"->"Plato" [style=filled, label="Postre", color="0.6666667,1.0,1.0", fontcolor="0.6666667,1.0,1.0"]
+"Bebida" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Bebida|{Precio|Float}|{Nombre|String}|{TipoBebida|Symbol|{Refresco|Agua|Vino|...}}|{Alcoholica|String}}"]
 "Ingrediente" [shape=record, color="0.0,0.0,0.0", fontcolor="0.0,0.0,0.0", label="{Ingrediente|{Nombre|String}}"]
 }

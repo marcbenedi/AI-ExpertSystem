@@ -1,5 +1,5 @@
 ;; Ontologia -----------------------
-; Sat May 20 07:09:40 CEST 2017
+; Mon May 22 12:48:15 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -66,14 +66,14 @@
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Temperatura
@@ -105,14 +105,14 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Precio
-		(type FLOAT)
-		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Primero
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Precio
+		(type FLOAT)
+		(range 0.0 9999.99)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Segundo
@@ -159,13 +159,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot BebidaIncompatible
@@ -191,13 +191,13 @@
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot TipoBebida
@@ -219,7 +219,7 @@
 ;+		(cardinality 1 1)
 		(create-accessor read-write)));; Instancias -----------------------
 (definstances instancies
-; Sat May 20 07:09:40 CEST 2017
+; Mon May 22 12:48:15 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -386,7 +386,7 @@
 		[KB_565836_Class47]
 		[KB_565836_Class39])
 	(Nombre "Pollo con patatas")
-	(Ordinal Primero Segundo)
+	(Ordinal Segundo)
 	(Precio 5.5)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -812,9 +812,21 @@
 		[ProjectIA2_Class10025]
 		[KB_565836_Class23]
 		[ProjectIA2_Class26]
+		[ProjectIA2_Class10022]
 		[ProjectIA2_Class10022])
-	(Nombre "Empanada gallega")
+	(Nombre "Empanada Gallega")
 	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10004]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10051]
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class17]
+		[KB_565836_Class61]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class20000]
+		[ProjectIA2_Class8])
 	(Precio 9.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -982,7 +994,7 @@
 		[ProjectIA2_Class10048])
 	(Nombre "Pastel de coliflor con jamon y queso")
 	(Ordinal Primero)
-	(Precio 2500.0)
+	(Precio 25.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
 
@@ -1123,6 +1135,729 @@
 ([ProjectIA2_Class2] of  Ingrediente
 
 	(Nombre "Calamar"))
+
+([ProjectIA2_Class20000] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class66]
+		[ProjectIA2_Class10014]
+		[ProjectIA2_Class10011])
+	(Complejo "No")
+	(Disponibilidad Invierno)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20002]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class20003]
+		[ProjectIA2_Class20005]
+		[ProjectIA2_Class20004]
+		[ProjectIA2_Class10]
+		[KB_565836_Class47]
+		[ProjectIA2_Class20007]
+		[ProjectIA2_Class20008])
+	(Nombre "Sopa de Calabaza")
+	(Ordinal Primero Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class20045]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10036]
+		[KB_565836_Class40]
+		[ProjectIA2_Class32]
+		[ProjectIA2_Class3]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class0])
+	(Precio 8.0)
+	(Temperatura Caliente)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class20002] of  Ingrediente
+
+	(Nombre "Calabaza"))
+
+([ProjectIA2_Class20003] of  Ingrediente
+
+	(Nombre "Puerro"))
+
+([ProjectIA2_Class20004] of  Ingrediente
+
+	(Nombre "Nuez Moscada"))
+
+([ProjectIA2_Class20005] of  Ingrediente
+
+	(Nombre "Aceite de Oliva"))
+
+([ProjectIA2_Class20006] of  Ingrediente
+
+	(Nombre "Aceite de Girasol"))
+
+([ProjectIA2_Class20007] of  Ingrediente
+
+	(Nombre "Pimienta Negra"))
+
+([ProjectIA2_Class20008] of  Ingrediente
+
+	(Nombre "Sal"))
+
+([ProjectIA2_Class20009] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10010]
+		[ProjectIA2_Class10009]
+		[KB_565836_Class29])
+	(Complejo "Si")
+	(Disponibilidad Otono)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20011]
+		[ProjectIA2_Class20010]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class6]
+		[ProjectIA2_Class13]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20007])
+	(Nombre "Sopa de Lentejas con Foie Gras")
+	(Ordinal Primero Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class20043]
+		[KB_565836_Class64]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class20033]
+		[KB_565836_Class63]
+		[ProjectIA2_Class25]
+		[ProjectIA2_Class8]
+		[ProjectIA2_Class10026]
+		[ProjectIA2_Class10045])
+	(Precio 13.5)
+	(Temperatura Caliente)
+	(TipoPlato Sopa))
+
+([ProjectIA2_Class20010] of  Ingrediente
+
+	(Nombre "Foie Gras"))
+
+([ProjectIA2_Class20011] of  Ingrediente
+
+	(Nombre "Lentejas"))
+
+([ProjectIA2_Class20012] of  Ingrediente
+
+	(Nombre "Ajo"))
+
+([ProjectIA2_Class20014] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10011]
+		[KB_565836_Class66]
+		[KB_565836_Class30])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20015]
+		[ProjectIA2_Class34]
+		[KB_565836_Class48]
+		[ProjectIA2_Class20016]
+		[ProjectIA2_Class20017]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20007])
+	(Nombre "Ensalada de Apio")
+	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class10053]
+		[ProjectIA2_Class20038]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class20000]
+		[KB_565836_Class67]
+		[KB_565836_Class64]
+		[ProjectIA2_Class10000])
+	(Precio 5.5)
+	(Temperatura Frio)
+	(TipoPlato Ensalada))
+
+([ProjectIA2_Class20015] of  Ingrediente
+
+	(Nombre "Apio"))
+
+([ProjectIA2_Class20016] of  Ingrediente
+
+	(Nombre "Nueces"))
+
+([ProjectIA2_Class20017] of  Ingrediente
+
+	(Nombre "Miel"))
+
+([ProjectIA2_Class20020] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10010]
+		[ProjectIA2_Class10009]
+		[KB_565836_Class29]
+		[KB_565836_Class66]
+		[ProjectIA2_Class10012]
+		[ProjectIA2_Class10013]
+		[KB_565836_Class30]
+		[ProjectIA2_Class10014])
+	(BebidaUnica [KB_565836_Class28])
+	(Complejo "Si")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10017]
+		[KB_565836_Class32]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class20003]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class13]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20007])
+	(Nombre "Carne Bourguignon")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20027]
+		[ProjectIA2_Class35]
+		[ProjectIA2_Class10015]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10031]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class0]
+		[KB_565836_Class40]
+		[ProjectIA2_Class17]
+		[ProjectIA2_Class10034]
+		[KB_565836_Class61]
+		[ProjectIA2_Class10026])
+	(Precio 22.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20022] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10010]
+		[ProjectIA2_Class10009]
+		[KB_565836_Class29]
+		[ProjectIA2_Class10013]
+		[KB_565836_Class30]
+		[ProjectIA2_Class10014]
+		[ProjectIA2_Class10011])
+	(BebidaUnica [KB_565836_Class28])
+	(Complejo "Si")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class32]
+		[ProjectIA2_Class14]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class12])
+	(Nombre "Carpaccio de Ternera")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10015]
+		[ProjectIA2_Class20027]
+		[ProjectIA2_Class20049]
+		[KB_565836_Class64]
+		[ProjectIA2_Class20023]
+		[ProjectIA2_Class10031]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class0]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class20033]
+		[KB_565836_Class63]
+		[ProjectIA2_Class10000]
+		[KB_565836_Class40])
+	(Precio 27.0)
+	(Temperatura Frio)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20023] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10011]
+		[KB_565836_Class27]
+		[KB_565836_Class28])
+	(Complejo "No")
+	(Disponibilidad Primavera)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20007]
+		[KB_565836_Class33]
+		[ProjectIA2_Class20026]
+		[ProjectIA2_Class20025])
+	(Nombre "Cerdo con Curry de Madras")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20020]
+		[KB_565836_Class64]
+		[ProjectIA2_Class20045]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class21]
+		[ProjectIA2_Class20043]
+		[KB_565836_Class25]
+		[ProjectIA2_Class10045]
+		[ProjectIA2_Class10038]
+		[ProjectIA2_Class10049]
+		[ProjectIA2_Class10042])
+	(Precio 11.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20024] of  Ingrediente
+
+	(Nombre "Mostaza"))
+
+([ProjectIA2_Class20025] of  Ingrediente
+
+	(Nombre "Curry"))
+
+([ProjectIA2_Class20026] of  Ingrediente
+
+	(Nombre "Canela"))
+
+([ProjectIA2_Class20027] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class32]
+		[KB_565836_Class47])
+	(Nombre "Vistec con Patatas Fritas")
+	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20049]
+		[ProjectIA2_Class10046]
+		[KB_565836_Class59]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class27]
+		[KB_565836_Class61]
+		[ProjectIA2_Class10020]
+		[ProjectIA2_Class10042])
+	(Precio 6.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20028] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class66]
+		[KB_565836_Class30])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class46]
+		[ProjectIA2_Class11]
+		[ProjectIA2_Class10]
+		[KB_565836_Class35]
+		[ProjectIA2_Class20029])
+	(Nombre "Salmón ahumado con Ensalada Verde")
+	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class21]
+		[ProjectIA2_Class10030]
+		[ProjectIA2_Class20033]
+		[KB_565836_Class63]
+		[KB_565836_Class40]
+		[ProjectIA2_Class0]
+		[ProjectIA2_Class10042]
+		[ProjectIA2_Class20027]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class10041])
+	(Precio 11.0)
+	(Temperatura Frio)
+	(TipoPlato Pescado))
+
+([ProjectIA2_Class20029] of  Ingrediente
+
+	(Nombre "Oliva"))
+
+([ProjectIA2_Class20030] of  Plato
+
+	(BebidaIncompatible
+		[ProjectIA2_Class10010]
+		[ProjectIA2_Class10009]
+		[ProjectIA2_Class10013]
+		[KB_565836_Class30]
+		[KB_565836_Class29])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20010]
+		[ProjectIA2_Class20007])
+	(Nombre "Foie Gras de la Casa")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20023]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20049]
+		[ProjectIA2_Class10031]
+		[ProjectIA2_Class20052]
+		[ProjectIA2_Class20032]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class10046])
+	(Precio 8.0)
+	(Temperatura Frio)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20031] of  Plato
+
+	(BebidaIncompatible [KB_565836_Class30])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class39]
+		[KB_565836_Class47])
+	(Nombre "Pollo con puré de patatas")
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class35]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class0]
+		[KB_565836_Class59]
+		[ProjectIA2_Class10034]
+		[ProjectIA2_Class10039]
+		[ProjectIA2_Class20028])
+	(Precio 5.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20032] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class26]
+		[KB_565836_Class47]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class20008])
+	(Nombre "Tortilla de patatas")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10041]
+		[ProjectIA2_Class3]
+		[ProjectIA2_Class10038]
+		[KB_565836_Class57]
+		[KB_565836_Class64])
+	(Precio 7.5)
+	(Temperatura Caliente)
+	(TipoPlato Ensalada))
+
+([ProjectIA2_Class20033] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class28]
+		[KB_565836_Class27]
+		[ProjectIA2_Class10014]
+		[ProjectIA2_Class10011]
+		[ProjectIA2_Class10009]
+		[ProjectIA2_Class10010]
+		[KB_565836_Class29]
+		[KB_565836_Class66])
+	(Complejo "No")
+	(Disponibilidad Verano)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class23]
+		[ProjectIA2_Class12]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class10]
+		[ProjectIA2_Class20005]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class34])
+	(Nombre "Gazpacho")
+	(Ordinal Primero Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class20045]
+		[ProjectIA2_Class20023]
+		[ProjectIA2_Class10000]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class32]
+		[KB_565836_Class40])
+	(Precio 10.0)
+	(Temperatura Frio)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class20034] of  Plato
+
+	(BebidaIncompatible [KB_565836_Class30])
+	(BebidaUnica [KB_565836_Class28])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class53]
+		[ProjectIA2_Class10018]
+		[ProjectIA2_Class20035]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20005])
+	(Nombre "Migas")
+	(Ordinal Segundo)
+	(PlatoIncompatible
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class10030]
+		[ProjectIA2_Class10000]
+		[ProjectIA2_Class10024]
+		[ProjectIA2_Class20000]
+		[ProjectIA2_Class20031]
+		[ProjectIA2_Class20027]
+		[KB_565836_Class59]
+		[ProjectIA2_Class32])
+	(Precio 12.99)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20035] of  Ingrediente
+
+	(Nombre "Chorizo"))
+
+([ProjectIA2_Class20036] of  Ingrediente
+
+	(Nombre "Berenjenas"))
+
+([ProjectIA2_Class20038] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20036]
+		[ProjectIA2_Class20012]
+		[KB_565836_Class23]
+		[ProjectIA2_Class10025]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20005])
+	(Nombre "Escalivada")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20014]
+		[ProjectIA2_Class10053]
+		[KB_565836_Class63]
+		[ProjectIA2_Class27]
+		[ProjectIA2_Class8]
+		[ProjectIA2_Class10042])
+	(Precio 8.99)
+	(Temperatura Caliente)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class20040] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Verano)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10022]
+		[ProjectIA2_Class20041]
+		[ProjectIA2_Class6]
+		[ProjectIA2_Class10052])
+	(Nombre "Crepes")
+	(Ordinal Postre)
+	(PlatoIncompatible
+		[ProjectIA2_Class3]
+		[KB_565836_Class59]
+		[ProjectIA2_Class20030]
+		[ProjectIA2_Class20052]
+		[ProjectIA2_Class32]
+		[ProjectIA2_Class20009]
+		[ProjectIA2_Class10041])
+	(Precio 7.99)
+	(Temperatura Caliente)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class20041] of  Ingrediente
+
+	(Nombre "Chocolate"))
+
+([ProjectIA2_Class20042] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[KB_565836_Class53]
+		[KB_565836_Class33]
+		[ProjectIA2_Class14]
+		[ProjectIA2_Class10017]
+		[ProjectIA2_Class10019]
+		[ProjectIA2_Class2]
+		[ProjectIA2_Class10044]
+		[ProjectIA2_Class10048]
+		[KB_565836_Class46]
+		[KB_565836_Class32])
+	(Nombre "Tapas")
+	(Ordinal Primero)
+	(Precio 19.99)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20043] of  Plato
+
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10003]
+		[ProjectIA2_Class26]
+		[ProjectIA2_Class10037]
+		[KB_565836_Class48]
+		[ProjectIA2_Class20026])
+	(Nombre "Crema Catalana")
+	(Ordinal Postre)
+	(Precio 12.5)
+	(Temperatura Frio)
+	(TipoPlato Postre))
+
+([ProjectIA2_Class20044] of  Ingrediente
+
+	(Nombre "Calçots"))
+
+([ProjectIA2_Class20045] of  Plato
+
+	(Complejo "Si")
+	(Disponibilidad Invierno)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20044]
+		[KB_565836_Class23]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class20005]
+		[KB_565836_Class53]
+		[ProjectIA2_Class20046]
+		[ProjectIA2_Class20047])
+	(Nombre "Calçots con Romesco")
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class10051]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10041]
+		[ProjectIA2_Class3]
+		[KB_565836_Class59]
+		[KB_565836_Class63]
+		[ProjectIA2_Class32]
+		[ProjectIA2_Class10039]
+		[ProjectIA2_Class20028]
+		[ProjectIA2_Class10015])
+	(Precio 18.5)
+	(Temperatura Caliente)
+	(TipoPlato Vegano))
+
+([ProjectIA2_Class20046] of  Ingrediente
+
+	(Nombre "Ñora"))
+
+([ProjectIA2_Class20047] of  Ingrediente
+
+	(Nombre "Almendra"))
+
+([ProjectIA2_Class20048] of  Ingrediente
+
+	(Nombre "Perejil"))
+
+([ProjectIA2_Class20049] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class30]
+		[ProjectIA2_Class10011])
+	(Complejo "No")
+	(Disponibilidad Otono)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20050]
+		[ProjectIA2_Class20048]
+		[ProjectIA2_Class20012]
+		[ProjectIA2_Class20008]
+		[ProjectIA2_Class20007])
+	(Nombre "Caracoles a la Francesa")
+	(Ordinal Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class10004]
+		[ProjectIA2_Class35]
+		[ProjectIA2_Class10015]
+		[ProjectIA2_Class29]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class24]
+		[ProjectIA2_Class20033]
+		[ProjectIA2_Class17]
+		[ProjectIA2_Class20027])
+	(Precio 15.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20050] of  Ingrediente
+
+	(Nombre "Caracol"))
+
+([ProjectIA2_Class20051] of  Ingrediente
+
+	(Nombre "Mejillones"))
+
+([ProjectIA2_Class20052] of  Plato
+
+	(BebidaIncompatible
+		[KB_565836_Class27]
+		[ProjectIA2_Class10014])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class20051]
+		[KB_565836_Class47])
+	(Nombre "Mejillones a la Francesa")
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class3]
+		[ProjectIA2_Class10029]
+		[ProjectIA2_Class10034]
+		[KB_565836_Class63]
+		[ProjectIA2_Class32]
+		[KB_565836_Class40]
+		[ProjectIA2_Class10000])
+	(Precio 10.0)
+	(Temperatura Caliente)
+	(TipoPlato Carne))
+
+([ProjectIA2_Class20053] of  Plato
+
+	(BebidaIncompatible [KB_565836_Class30])
+	(Complejo "No")
+	(Disponibilidad Total)
+	(Estilo Tradicional)
+	(Ingredientes
+		[ProjectIA2_Class10035]
+		[KB_565836_Class47])
+	(Nombre "Pescado con Patatas Fritas")
+	(Ordinal Segundo Primero)
+	(PlatoIncompatible
+		[ProjectIA2_Class20020]
+		[ProjectIA2_Class20022]
+		[ProjectIA2_Class10036]
+		[ProjectIA2_Class21]
+		[KB_565836_Class59]
+		[ProjectIA2_Class10034]
+		[KB_565836_Class63]
+		[ProjectIA2_Class20028]
+		[ProjectIA2_Class10039])
+	(Precio 9.99)
+	(Temperatura Caliente)
+	(TipoPlato Pescado))
 
 ([ProjectIA2_Class21] of  Plato
 
@@ -1893,9 +2628,6 @@
 			(send (send ?m get-Primero) put-BebidaUnica [nil])
 			(send (send ?m get-Segundo) put-BebidaUnica [nil])
 			(send (send ?m get-Postre) put-BebidaUnica [nil])
-
-
-
 			else ;Bebida para cada plato (1 y 2)
 			(if
 				(or
@@ -2005,6 +2737,7 @@
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
+		;(progn$ (?m ?lista) (send ?m imprimir))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 
@@ -2115,6 +2848,7 @@
 
 		(bind ?barato (obtener-barato ?lista))
 		(bind ?minPrec (send ?barato get-Precio))
+		(printout t "El menu barato es: " crlf)
 		(send ?barato imprimir)
 
 		(bind ?caro (obtener-caro ?lista))

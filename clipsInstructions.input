@@ -2,12 +2,11 @@
 (load ./expertsys.clp)
 (reset)
 (run)
-300
-40
+500
 1
 1
 1
-6
-20
-44
+2
+1
+1
 0
