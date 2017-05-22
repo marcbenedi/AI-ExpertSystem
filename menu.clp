@@ -560,7 +560,6 @@
 			(send (send ?m get-Primero) put-BebidaUnica [nil])
 			(send (send ?m get-Segundo) put-BebidaUnica [nil])
 			(send (send ?m get-Postre) put-BebidaUnica [nil])
-
 			else ;Bebida para cada plato (1 y 2)
 			(if
 				(or
@@ -781,6 +780,7 @@
 
 		(bind ?barato (obtener-barato ?lista))
 		(bind ?minPrec (send ?barato get-Precio))
+		(printout t "El menu barato es: " crlf)
 		(send ?barato imprimir)
 
 		(bind ?caro (obtener-caro ?lista))
