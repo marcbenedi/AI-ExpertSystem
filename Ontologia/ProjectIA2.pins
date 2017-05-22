@@ -1,7 +1,7 @@
-; Sun May 21 09:42:55 CEST 2017
+; Mon May 22 12:48:15 CEST 2017
 ; 
-;+ (version "3.4.8")
-;+ (build "Build 629")
+;+ (version "3.5")
+;+ (build "Build 663")
 
 ([KB_565836_Class23] of  Ingrediente
 
@@ -165,7 +165,7 @@
 		[KB_565836_Class47]
 		[KB_565836_Class39])
 	(Nombre "Pollo con patatas")
-	(Ordinal Primero Segundo)
+	(Ordinal Segundo)
 	(Precio 5.5)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -773,7 +773,7 @@
 		[ProjectIA2_Class10048])
 	(Nombre "Pastel de coliflor con jamon y queso")
 	(Ordinal Primero)
-	(Precio 2500.0)
+	(Precio 25.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
 

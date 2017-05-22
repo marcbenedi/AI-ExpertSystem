@@ -556,6 +556,11 @@
 				 )
 				 (send ?m put-BebidaUnica (random-slot ?bebs))
 			)
+
+			(send (send ?m get-Primero) put-BebidaUnica [nil])
+			(send (send ?m get-Segundo) put-BebidaUnica [nil])
+			(send (send ?m get-Postre) put-BebidaUnica [nil])
+
 			else ;Bebida para cada plato (1 y 2)
 			(if
 				(or
@@ -665,6 +670,7 @@
 		(bind ?lista (filtrar-temporada ?lista ?temp))
 		(bind ?lista (filtrar-complejidad ?lista ?tam))
 		(bind ?lista (asignar-bebida ?lista ?bpp ?pa))
+		;(progn$ (?m ?lista) (send ?m imprimir))
 		(bind ?lista (calcular-precio ?lista ?bpp))
 		(bind ?lista (filtrar-rango-precio ?lista ?min ?max))
 
