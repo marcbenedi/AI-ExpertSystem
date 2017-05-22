@@ -776,20 +776,24 @@
 		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
 		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
 
-		(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
 
-		(bind ?barato (obtener-barato ?lista))
-		(bind ?minPrec (send ?barato get-Precio))
-		(printout t "El menu barato es: " crlf)
-		(send ?barato imprimir)
+		(if (eq (length$ ?lista) 0) then
+			(printout t "No se han obtenido resultados. Intentalo de nuevo relajando algunas restricciones" crlf)
+		else
+			(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
+			(bind ?barato (obtener-barato ?lista))
+			(bind ?minPrec (send ?barato get-Precio))
+			(printout t "El menu barato es: " crlf)
+			(send ?barato imprimir)
 
-		(bind ?caro (obtener-caro ?lista))
-		(bind ?maxPrec (send ?caro get-Precio))
+			(bind ?caro (obtener-caro ?lista))
+			(bind ?maxPrec (send ?caro get-Precio))
 
-		(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
-		(printout t "El menu medio es: " crlf)
-		(send ?medio imprimir)
+			(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
+			(printout t "El menu medio es: " crlf)
+			(send ?medio imprimir)
 
-		(printout t "El menu caro es: " crlf)
-		(send ?caro imprimir)
+			(printout t "El menu caro es: " crlf)
+			(send ?caro imprimir)
+		)
 )

@@ -1,5 +1,5 @@
 ;; Ontologia -----------------------
-; Mon May 22 12:48:15 CEST 2017
+; Mon May 22 13:28:03 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -23,13 +23,13 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
@@ -56,24 +56,24 @@
 ;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
-		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
 		(allowed-values Total Invierno Primavera Verano Otono)
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(single-slot Primero
+	(multislot BebidaIncompatible
 		(type INSTANCE)
-;+		(allowed-classes Plato)
-;+		(cardinality 1 1)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Primero
+		(type INSTANCE)
+;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Temperatura
@@ -105,14 +105,14 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Primero
-		(type INSTANCE)
-;+		(allowed-classes Plato)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Primero
+		(type INSTANCE)
+;+		(allowed-classes Plato)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Segundo
@@ -159,18 +159,14 @@
 ;+		(allowed-classes Bebida)
 ;+		(cardinality 0 1)
 		(create-accessor read-write))
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Estilo
 		(type SYMBOL)
 		(allowed-values Tradicional Moderno Sibarita)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot BebidaIncompatible
-		(type INSTANCE)
-;+		(allowed-classes Bebida)
+	(single-slot Nombre
+		(type STRING)
+;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot Disponibilidad
 		(type SYMBOL)
@@ -178,26 +174,30 @@
 		(default Total)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
-	(multislot Ingredientes
+	(multislot BebidaIncompatible
 		(type INSTANCE)
-;+		(allowed-classes Ingrediente)
-		(cardinality 1 ?VARIABLE)
+;+		(allowed-classes Bebida)
 		(create-accessor read-write))
 	(multislot PlatoIncompatible
 		(type INSTANCE)
 ;+		(allowed-classes Plato)
+		(create-accessor read-write))
+	(multislot Ingredientes
+		(type INSTANCE)
+;+		(allowed-classes Ingrediente)
+		(cardinality 1 ?VARIABLE)
 		(create-accessor read-write)))
 
 (defclass Bebida
 	(is-a USER)
 	(role concrete)
-	(single-slot Nombre
-		(type STRING)
-;+		(cardinality 1 1)
-		(create-accessor read-write))
 	(single-slot Precio
 		(type FLOAT)
 		(range 0.0 9999.99)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot Nombre
+		(type STRING)
 ;+		(cardinality 1 1)
 		(create-accessor read-write))
 	(single-slot TipoBebida
@@ -219,7 +219,7 @@
 ;+		(cardinality 1 1)
 		(create-accessor read-write)));; Instancias -----------------------
 (definstances instancies
-; Mon May 22 12:48:15 CEST 2017
+; Mon May 22 13:28:03 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -560,7 +560,7 @@
 		[ProjectIA2_Class16]
 		[ProjectIA2_Class10003]
 		[KB_565836_Class48])
-	(Nombre "Hummus para ninos")
+	(Nombre "Hummus")
 	(Ordinal Primero)
 	(Precio 15.0)
 	(Temperatura Frio)
@@ -844,7 +844,7 @@
 		[KB_565836_Class47]
 		[KB_565836_Class23])
 	(Nombre "Conejo estofado a la vasca")
-	(Ordinal Primero)
+	(Ordinal Segundo)
 	(Precio 12.0)
 	(Temperatura Caliente)
 	(TipoPlato Carne))
@@ -953,7 +953,7 @@
 		[ProjectIA2_Class11]
 		[ProjectIA2_Class10]
 		[ProjectIA2_Class10025])
-	(Nombre "Vistec relleno de verduras al horno")
+	(Nombre "Bistec relleno de verduras al horno")
 	(Ordinal Segundo)
 	(Precio 30.0)
 	(Temperatura Caliente)
@@ -1090,7 +1090,7 @@
 		[ProjectIA2_Class11]
 		[ProjectIA2_Class14])
 	(Nombre "Garbanzos salteados")
-	(Ordinal Segundo Primero)
+	(Ordinal Primero)
 	(Precio 10.0)
 	(Temperatura Caliente)
 	(TipoPlato Legumbre))
@@ -1156,7 +1156,7 @@
 		[ProjectIA2_Class20007]
 		[ProjectIA2_Class20008])
 	(Nombre "Sopa de Calabaza")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20045]
 		[ProjectIA2_Class29]
@@ -1218,7 +1218,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class20007])
 	(Nombre "Sopa de Lentejas con Foie Gras")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20043]
 		[KB_565836_Class64]
@@ -1263,7 +1263,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class20007])
 	(Nombre "Ensalada de Apio")
-	(Ordinal Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class10053]
 		[ProjectIA2_Class20038]
@@ -1426,7 +1426,7 @@
 	(Ingredientes
 		[KB_565836_Class32]
 		[KB_565836_Class47])
-	(Nombre "Vistec con Patatas Fritas")
+	(Nombre "Bistec con Patatas Fritas")
 	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class10036]
@@ -1521,7 +1521,7 @@
 		[KB_565836_Class39]
 		[KB_565836_Class47])
 	(Nombre "Pollo con puré de patatas")
-	(Ordinal Segundo Primero)
+	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class35]
 		[ProjectIA2_Class29]
@@ -1580,7 +1580,7 @@
 		[ProjectIA2_Class20008]
 		[ProjectIA2_Class34])
 	(Nombre "Gazpacho")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class20045]
 		[ProjectIA2_Class20023]
@@ -1740,7 +1740,7 @@
 		[ProjectIA2_Class20046]
 		[ProjectIA2_Class20047])
 	(Nombre "Calçots con Romesco")
-	(Ordinal Segundo Primero)
+	(Ordinal Primero)
 	(PlatoIncompatible
 		[ProjectIA2_Class10036]
 		[ProjectIA2_Class10051]
@@ -1843,8 +1843,8 @@
 	(Ingredientes
 		[ProjectIA2_Class10035]
 		[KB_565836_Class47])
-	(Nombre "Pescado con Patatas Fritas")
-	(Ordinal Segundo Primero)
+	(Nombre "Pescado con patatas fritas")
+	(Ordinal Segundo)
 	(PlatoIncompatible
 		[ProjectIA2_Class20020]
 		[ProjectIA2_Class20022]
@@ -1906,7 +1906,7 @@
 		[KB_565836_Class23]
 		[ProjectIA2_Class10]
 		[ProjectIA2_Class26])
-	(Nombre "Pechuga de pollo arrebozadas con tomate picante")
+	(Nombre "Pechuga de pollo rebozada con tomate picante")
 	(Ordinal Segundo)
 	(Precio 7.0)
 	(Temperatura Caliente)
@@ -1923,7 +1923,7 @@
 	(Estilo Sibarita)
 	(Ingredientes [ProjectIA2_Class28])
 	(Nombre "Rollos de verdel con germinados y algas")
-	(Ordinal Primero Segundo)
+	(Ordinal Primero)
 	(Precio 15.0)
 	(Temperatura Frio)
 	(TipoPlato Pescado))
@@ -2844,20 +2844,24 @@
 		(bind ?lista (filtrar-ingredientes-prohibidos ?lista ?proh))
 		(bind ?lista (filtrar-precio-concreto ?lista ?min ?max))
 
-		(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
 
-		(bind ?barato (obtener-barato ?lista))
-		(bind ?minPrec (send ?barato get-Precio))
-		(printout t "El menu barato es: " crlf)
-		(send ?barato imprimir)
+		(if (eq (length$ ?lista) 0) then
+			(printout t "No se han obtenido resultados. Intentalo de nuevo relajando algunas restricciones" crlf)
+		else
+			(printout t "---------------------ESTOS SON LOS MENUS RECOMENDADOS---------------------" crlf)
+			(bind ?barato (obtener-barato ?lista))
+			(bind ?minPrec (send ?barato get-Precio))
+			(printout t "El menu barato es: " crlf)
+			(send ?barato imprimir)
 
-		(bind ?caro (obtener-caro ?lista))
-		(bind ?maxPrec (send ?caro get-Precio))
+			(bind ?caro (obtener-caro ?lista))
+			(bind ?maxPrec (send ?caro get-Precio))
 
-		(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
-		(printout t "El menu medio es: " crlf)
-		(send ?medio imprimir)
+			(bind ?medio (obtener-medio ?lista ?minPrec ?maxPrec))
+			(printout t "El menu medio es: " crlf)
+			(send ?medio imprimir)
 
-		(printout t "El menu caro es: " crlf)
-		(send ?caro imprimir)
+			(printout t "El menu caro es: " crlf)
+			(send ?caro imprimir)
+		)
 )
